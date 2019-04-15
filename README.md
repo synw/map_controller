@@ -1,16 +1,76 @@
-# map_controller
+# Map controller
 
-A new Flutter project.
+Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
-## Getting Started
+## Api
 
-This project is a starting point for a Flutter application.
+Api for the `StatefulMapController` class
 
-A few resources to get you started if this is your first Flutter project:
+### Map controls
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+#### Zoom
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+**`zoom`**: get the current zoom value
+
+**`zoomIn()`**: increase the zoom level by 1
+
+**`zoomOut()`**: decrease the zoom level by 1
+
+**`zoomTo`**(`Double` *value*): zoom to the provided value
+
+#### Center
+
+**`center`**: get the current center `LatLng` value
+
+**`centerOnPoint`**(`LatLng` *point*): center on the `LatLng` value
+
+### Map assets
+
+#### Markers
+
+**`addMarker`**(`String` *name*, `Marker` *marker*): add a named marker on the map
+
+**`addMarkers`**(`Map<String, Marker>` *markers*): add several named markers on the map
+
+**`removeMarker`**(`String` *name*, `Marker` *marker*): remove a named marker from the map
+
+**`removeMarkers`**(`Map<String, Marker>` *markers*): remove several named markers from the map
+
+**`markers`**: get the markers that are on the map
+
+**`namedMarkers`**: get the markers with their names that are on the map
+
+#### Lines
+
+**`addLine`**(`String` *name*,
+          `List<LatLng>` *points*,
+          `double` *width* = 1.0,
+          `Color` *color* = Colors.green,
+          `bool` *isDotted* = false): add a line on the map
+
+**`lines`**: get the lines that are on the map
+
+#### Polygons
+
+**`addPolygon`**(`String` *name*,
+          `List<LatLng>` *points*,
+          `double` *width* = 1.0,
+          `Color` *color* = const Color(0xFF00FF00),
+          `double` *borderWidth* = 0.0,
+          `Color` *borderColor* = const Color(0xFFFFFF00)): add a polygon on the map
+
+**`polygons`**: get the polygons that are on the map
+
+### On ready callback
+
+Execute some code right after the map is ready:
+
+   ```dart
+   @override
+   void initState() {
+      statefulMapController.onReady.then((_) {
+         setState((_) =>_ready = true);
+      });
+      super.initState();
+   }
+   ```
