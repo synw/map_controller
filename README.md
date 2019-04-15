@@ -74,3 +74,24 @@ Execute some code right after the map is ready:
       super.initState();
    }
    ```
+
+### Changefeed
+
+A changefeed is available: it's a stream with all state changes from the map controller. Ex:
+
+   ```dart
+   import 'dart:async';
+
+   StreamSubscription _changefeed;
+   int _myzoom;
+
+   statefulMapController.onReady.then((_) {
+       _myzoom = liveMapController.zoom;
+       _changefeed = liveMapController.changeFeed.listen((change) {
+        if (change.name == "zoom") {
+          setState(() {
+              _myzoom = change.value;
+          });
+        }
+      });
+   }
