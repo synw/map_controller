@@ -1,5 +1,7 @@
 # Map controller
 
+[![pub package](https://img.shields.io/pub/v/map_controller.svg)](https://pub.dartlang.org/packages/map_controller)
+
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
 ## Api
