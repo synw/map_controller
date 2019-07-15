@@ -5,9 +5,9 @@ import 'package:latlong/latlong.dart';
 import 'markers.dart';
 
 /// State of the map
-class LiveMapState {
+class MapState {
   /// Default constructor
-  LiveMapState(
+  MapState(
       {@required this.mapController,
       @required this.notify,
       @required this.markersState})

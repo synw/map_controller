@@ -19,7 +19,7 @@ class StatefulMapController {
     _markersState = MarkersState(mapController: mapController, notify: notify);
     _linesState = LinesState(notify: notify);
     _polygonsState = PolygonsState(notify: notify);
-    _mapState = LiveMapState(
+    _mapState = MapState(
         mapController: mapController,
         notify: notify,
         markersState: _markersState);
@@ -37,7 +37,7 @@ class StatefulMapController {
   /// The Flutter Map [MapOptions]
   MapOptions mapOptions;
 
-  LiveMapState _mapState;
+  MapState _mapState;
   MarkersState _markersState;
   LinesState _linesState;
   PolygonsState _polygonsState;
@@ -134,7 +134,7 @@ class StatefulMapController {
   void notify(String name, dynamic value, Function from) {
     StatefulMapControllerStateChange change =
         StatefulMapControllerStateChange(name: name, value: value, from: from);
-    //if (change.name != "updateMarkers") print("STATE MUTATION: $change");
+    //print("STATE MUTATION: $change");
     _subject.add(change);
   }
 }
