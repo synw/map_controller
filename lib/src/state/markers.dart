@@ -70,8 +70,9 @@ class MarkersState {
 
   /// Add multiple markers on the map
   Future<void> addMarkers({@required Map<String, Marker> markers}) async {
-    if (markers == null)
+    if (markers == null) {
       throw (ArgumentError.notNull("markers must not be null"));
+    }
     if (markers == null) throw ArgumentError("markers must not be null");
     try {
       markers.forEach((k, v) {

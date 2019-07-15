@@ -22,7 +22,7 @@ class _MapControllerPageState extends State<MapControllerPage> {
     Place("Tour Eiffel", LatLng(48.85801, 2.294713))
   ];
 
-  var _markersOnMap = <Place>[];
+  final _markersOnMap = <Place>[];
   bool ready = false;
 
   void addMarker(BuildContext context) {
@@ -37,8 +37,6 @@ class _MapControllerPageState extends State<MapControllerPage> {
                   return const Icon(Icons.location_on);
                 }));
         _markersOnMap.add(place);
-        // print("MOVE");
-        //mapController.move(LatLng(48.85801, 2.294713), mapController.zoom);
         return;
       }
     }
