@@ -2,7 +2,7 @@ name: map_controller
 description: A map controller for Flutter map. Manage markers, lines and polygons.
 homepage: https://github.com/synw/map_controller
 author: synw <ansterj@gmail.com>
-version: 0.1.0
+version: 0.2.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_map: ^0.6.1+2
+  flutter_map: ^0.7.0+1
   latlong: ^0.6.1
-  rxdart: ^0.22.0
+  rxdart: ^0.22.1
   pedantic: ^1.6.0
 
   # The following adds the Cupertino Icons font to your application.
