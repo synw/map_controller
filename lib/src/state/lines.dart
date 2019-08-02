@@ -13,11 +13,14 @@ class LinesState {
 
   final Map<String, Polyline> _namedLines = {};
 
+  /// The named lines on the map
+  Map<String, Polyline> get namedLines => _namedLines;
+
   /// The lines present on the map
   List<Polyline> get lines => _namedLines.values.toList();
 
   /// Add a line on the map
-  Future<void> addLine(
+  void addLine(
       {@required String name,
       @required List<LatLng> points,
       double width = 1.0,
@@ -27,5 +30,13 @@ class LinesState {
     _namedLines[name] = Polyline(
         points: points, strokeWidth: width, color: color, isDotted: isDotted);
     notify("updateLines", _namedLines[name], addLine);
+  }
+
+  /// Remove a line from the map
+  void removeLine(String name) {
+    if (_namedLines.containsKey(name)) {
+      _namedLines.remove(name);
+      notify("updateLines", null, removeLine);
+    }
   }
 }

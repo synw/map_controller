@@ -13,11 +13,14 @@ class PolygonsState {
 
   final Map<String, Polygon> _namedPolygons = {};
 
+  /// The named polygons on the map
+  Map<String, Polygon> get namedPolygons => _namedPolygons;
+
   /// The lines present on the map
   List<Polygon> get polygons => _namedPolygons.values.toList();
 
   /// Add a polygon on the map
-  Future<void> addPolygon(
+  void addPolygon(
       {@required String name,
       @required List<LatLng> points,
       Color color,
@@ -29,5 +32,13 @@ class PolygonsState {
         borderStrokeWidth: borderWidth,
         borderColor: borderColor);
     notify("updatePolygons", _namedPolygons[name], addPolygon);
+  }
+
+  /// Remove a polygon from the map
+  void removePolygon(String name) {
+    if (_namedPolygons.containsKey(name)) {
+      _namedPolygons.remove(name);
+      notify("updatePolygons", null, removePolygon);
+    }
   }
 }

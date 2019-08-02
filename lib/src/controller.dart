@@ -67,8 +67,14 @@ class StatefulMapController {
   /// The lines present on the map
   List<Polyline> get lines => _linesState.lines;
 
+  /// The named lines present on the map
+  Map<String, Polyline> get namedLines => _linesState.namedLines;
+
   /// The polygons present on the map
   List<Polygon> get polygons => _polygonsState.polygons;
+
+  /// The named polygons present on the map
+  Map<String, Polygon> get namedPolygons => _polygonsState.namedPolygons;
 
   /// Zoom in one level
   Future<void> zoomIn() => _mapState.zoomIn();
@@ -103,10 +109,10 @@ class StatefulMapController {
       _markersState.removeMarkers(names: names);
 
   /// Add a line on the map
-  Future<void> addLine(
+  void addLine(
           {@required String name,
           @required List<LatLng> points,
-          double width = 1.0,
+          double width = 3.0,
           Color color = Colors.green,
           bool isDotted = false}) =>
       _linesState.addLine(
@@ -116,11 +122,17 @@ class StatefulMapController {
           width: width,
           isDotted: isDotted);
 
+  /// Remove a line from the map
+  void removeLine(String name) => _linesState.removeLine(name);
+
+  /// Remove a polygon from the map
+  void removePolygon(String name) => _polygonsState.removePolygon(name);
+
   /// Add a polygon on the map
-  Future<void> addPolygon(
+  void addPolygon(
           {@required String name,
           @required List<LatLng> points,
-          Color color = const Color(0xFF00FF00),
+          Color color = Colors.lightBlue,
           double borderWidth = 0.0,
           Color borderColor = const Color(0xFFFFFF00)}) =>
       _polygonsState.addPolygon(
