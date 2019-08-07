@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import '../models.dart';
 
 /// State of the lines on the map
 class LinesState {
@@ -20,7 +21,7 @@ class LinesState {
   List<Polyline> get lines => _namedLines.values.toList();
 
   /// Add a line on the map
-  void addLine(
+  Future<void> addLine(
       {@required String name,
       @required List<LatLng> points,
       double width = 1.0,
@@ -29,14 +30,15 @@ class LinesState {
     //print("ADD LINE $name of ${points.length} points");
     _namedLines[name] = Polyline(
         points: points, strokeWidth: width, color: color, isDotted: isDotted);
-    notify("updateLines", _namedLines[name], addLine);
+    notify("updateLines", _namedLines[name], addLine,
+        MapControllerChangeType.lines);
   }
 
   /// Remove a line from the map
-  void removeLine(String name) {
+  Future<void> removeLine(String name) async {
     if (_namedLines.containsKey(name)) {
       _namedLines.remove(name);
-      notify("updateLines", null, removeLine);
+      notify("updateLines", null, removeLine, MapControllerChangeType.lines);
     }
   }
 }

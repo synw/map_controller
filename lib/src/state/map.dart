@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'markers.dart';
+import '../models.dart';
 
 /// State of the map
 class MapState {
@@ -30,7 +31,7 @@ class MapState {
     double z = mapController.zoom + 1;
     mapController.move(mapController.center, z);
     _zoom = z;
-    notify("zoom", z, zoomIn);
+    notify("zoom", z, zoomIn, MapControllerChangeType.zoom);
   }
 
   /// Zoom out one level
@@ -39,7 +40,7 @@ class MapState {
     double z = mapController.zoom - 1;
     mapController.move(mapController.center, z);
     _zoom = z;
-    notify("zoom", z, zoomOut);
+    notify("zoom", z, zoomOut, MapControllerChangeType.zoom);
   }
 
   /// Zoom to level
@@ -47,14 +48,14 @@ class MapState {
     //print("ZOOM TO $value");
     mapController.move(mapController.center, value);
     _zoom = value;
-    notify("zoom", value, zoomOut);
+    notify("zoom", value, zoomOut, MapControllerChangeType.zoom);
   }
 
   /// Center the map on a [LatLng]
   Future<void> centerOnPoint(LatLng point) async {
     mapController.move(point, mapController.zoom);
     _center = point;
-    notify("center", point, centerOnPoint);
+    notify("center", point, centerOnPoint, MapControllerChangeType.center);
   }
 
   /// Tell listeners that the zoom or center has changed
@@ -64,11 +65,13 @@ class MapState {
     //print("Position changed: zoom ${posChange.zoom} / ${posChange.center}");
     if (posChange.zoom != _zoom) {
       _zoom = posChange.zoom;
-      notify("zoom", posChange.zoom, onPositionChanged);
+      notify("zoom", posChange.zoom, onPositionChanged,
+          MapControllerChangeType.zoom);
     }
     if (posChange.center != _center) {
       _center = posChange.center;
-      notify("center", posChange.center, onPositionChanged);
+      notify("center", posChange.center, onPositionChanged,
+          MapControllerChangeType.center);
     }
   }
 }

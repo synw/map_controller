@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import '../models.dart';
 
 /// State of the polygons on the map
 class PolygonsState {
@@ -20,7 +21,7 @@ class PolygonsState {
   List<Polygon> get polygons => _namedPolygons.values.toList();
 
   /// Add a polygon on the map
-  void addPolygon(
+  Future<void> addPolygon(
       {@required String name,
       @required List<LatLng> points,
       Color color,
@@ -31,14 +32,16 @@ class PolygonsState {
         color: color,
         borderStrokeWidth: borderWidth,
         borderColor: borderColor);
-    notify("updatePolygons", _namedPolygons[name], addPolygon);
+    notify("updatePolygons", _namedPolygons[name], addPolygon,
+        MapControllerChangeType.polygons);
   }
 
   /// Remove a polygon from the map
-  void removePolygon(String name) {
+  Future<void> removePolygon(String name) async {
     if (_namedPolygons.containsKey(name)) {
       _namedPolygons.remove(name);
-      notify("updatePolygons", null, removePolygon);
+      notify("updatePolygons", null, removePolygon,
+          MapControllerChangeType.polygons);
     }
   }
 }

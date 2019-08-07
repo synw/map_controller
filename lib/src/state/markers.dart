@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
+import '../models.dart';
 
 /// The state of the markers on the map
 class MarkersState {
@@ -41,7 +42,8 @@ class MarkersState {
     } catch (e) {
       throw ("Can not build for add marker: $e");
     }
-    notify("updateMarkers", _markers, addMarker);
+    notify(
+        "updateMarkers", _markers, addMarker, MapControllerChangeType.markers);
   }
 
   /// Remove a marker from the map
@@ -65,7 +67,8 @@ class MarkersState {
       throw ("Can not build for remove marker: $e");
     }
     //print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
-    notify("updateMarkers", _markers, removeMarker);
+    notify("updateMarkers", _markers, removeMarker,
+        MapControllerChangeType.markers);
   }
 
   /// Add multiple markers on the map
@@ -82,7 +85,8 @@ class MarkersState {
       throw ("Can not add markers: $e");
     }
     _buildMarkers();
-    notify("updateMarkers", _markers, addMarkers);
+    notify(
+        "updateMarkers", _markers, addMarkers, MapControllerChangeType.markers);
   }
 
   /// Remove multiple markers from the map
@@ -92,7 +96,8 @@ class MarkersState {
       _namedMarkers.remove(name);
     });
     _buildMarkers();
-    notify("updateMarkers", _markers, removeMarkers);
+    notify("updateMarkers", _markers, removeMarkers,
+        MapControllerChangeType.markers);
   }
 
   void _buildMarkers() {
