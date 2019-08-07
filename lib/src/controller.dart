@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:geojson/geojson.dart' as geojson;
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -109,7 +111,7 @@ class StatefulMapController {
       _markersState.removeMarkers(names: names);
 
   /// Add a line on the map
-  void addLine(
+  Future<void> addLine(
           {@required String name,
           @required List<LatLng> points,
           double width = 3.0,
@@ -123,13 +125,13 @@ class StatefulMapController {
           isDotted: isDotted);
 
   /// Remove a line from the map
-  void removeLine(String name) => _linesState.removeLine(name);
+  Future<void> removeLine(String name) => _linesState.removeLine(name);
 
   /// Remove a polygon from the map
-  void removePolygon(String name) => _polygonsState.removePolygon(name);
+  Future<void> removePolygon(String name) => _polygonsState.removePolygon(name);
 
   /// Add a polygon on the map
-  void addPolygon(
+  Future<void> addPolygon(
           {@required String name,
           @required List<LatLng> points,
           Color color = Colors.lightBlue,
@@ -142,10 +144,69 @@ class StatefulMapController {
           borderWidth: borderWidth,
           borderColor: borderColor);
 
+  /// Display some geojson data on the map
+  Future<void> fromGeoJson(String data,
+      {bool verbose = false,
+      Icon markerIcon = const Icon(Icons.location_on)}) async {
+    final features = await geojson.featuresFromGeoJson(data, verbose: verbose);
+    for (final feature in features.collection) {
+      switch (feature.type) {
+        case geojson.FeatureType.point:
+          final point = feature.geometry as geojson.Point;
+          unawaited(addMarker(
+            name: point.name,
+            marker: Marker(
+                point:
+                    LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
+                builder: (BuildContext context) => markerIcon),
+          ));
+          break;
+        case geojson.FeatureType.multipoint:
+          final mp = feature.geometry as geojson.MultiPoint;
+          for (final geoPoint in mp.geoSerie.geoPoints) {
+            unawaited(addMarker(
+              name: geoPoint.name,
+              marker: Marker(
+                  point: LatLng(geoPoint.latitude, geoPoint.longitude),
+                  builder: (BuildContext context) => markerIcon),
+            ));
+          }
+          break;
+        case geojson.FeatureType.line:
+          final line = feature.geometry as geojson.Line;
+          unawaited(addLine(name: line.name, points: line.geoSerie.toLatLng()));
+          break;
+        case geojson.FeatureType.multiline:
+          final ml = feature.geometry as geojson.MultiLine;
+          for (final line in ml.lines) {
+            unawaited(
+                addLine(name: line.name, points: line.geoSerie.toLatLng()));
+          }
+          break;
+        case geojson.FeatureType.polygon:
+          final poly = feature.geometry as geojson.Polygon;
+          for (final geoSerie in poly.geoSeries) {
+            unawaited(
+                addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
+          }
+          break;
+        case geojson.FeatureType.multipolygon:
+          final mp = feature.geometry as geojson.MultiPolygon;
+          for (final poly in mp.polygons) {
+            for (final geoSerie in poly.geoSeries) {
+              unawaited(
+                  addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
+            }
+          }
+      }
+    }
+  }
+
   /// Notify to the changefeed
-  void notify(String name, dynamic value, Function from) {
-    StatefulMapControllerStateChange change =
-        StatefulMapControllerStateChange(name: name, value: value, from: from);
+  void notify(
+      String name, dynamic value, Function from, MapControllerChangeType type) {
+    StatefulMapControllerStateChange change = StatefulMapControllerStateChange(
+        name: name, value: value, from: from, type: type);
     //print("STATE MUTATION: $change");
     _subject.add(change);
   }
