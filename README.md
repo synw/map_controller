@@ -86,3 +86,28 @@ A changefeed is available: it's a stream with all state changes from the map con
        statefulMapController.changeFeed.listen((change) => setState(() {}));
       });
    }
+   ```
+
+### Geojson data
+
+ The map controller can draw on the map from geojson data:
+
+```dart
+void loadData() async {
+  // data is from http://geojson.xyz/
+  print("Loading geojson data");
+  final data = await rootBundle.loadString('assets/airports.geojson');
+  await statefulMapController.fromGeoJson(data,
+    markerIcon: Icon(Icons.local_airport), verbose: true);
+}
+
+@override
+void initState() {
+  mapController = MapController();
+  statefulMapController = StatefulMapController(mapController: mapController);
+  statefulMapController.onReady.then((_) => loadData());
+  sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
+  super.initState();
+}
+
+```
