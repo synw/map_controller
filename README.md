@@ -94,7 +94,6 @@ A changefeed is available: it's a stream with all state changes from the map con
 
 ```dart
 void loadData() async {
-  // data is from http://geojson.xyz/
   print("Loading geojson data");
   final data = await rootBundle.loadString('assets/airports.geojson');
   await statefulMapController.fromGeoJson(data,
