@@ -25,8 +25,7 @@ class MarkersState {
   Map<String, Marker> get namedMarkers => _namedMarkers;
 
   /// Add a marker on the map
-  Future<void> addMarker(
-      {@required Marker marker, @required String name}) async {
+  Future<void> addMarker({Marker marker, @required String name}) async {
     if (marker == null) throw ArgumentError("marker must not be null");
     if (name == null) throw ArgumentError("name must not be null");
     //print("STATE ADD MARKER $name");

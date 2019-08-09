@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:geojson/geojson.dart' as geojson;
+import 'package:geojson/geojson.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -148,11 +148,11 @@ class StatefulMapController {
   Future<void> fromGeoJson(String data,
       {bool verbose = false,
       Icon markerIcon = const Icon(Icons.location_on)}) async {
-    final features = await geojson.featuresFromGeoJson(data, verbose: verbose);
-    for (final feature in features.collection) {
+    final geojson = GeoJson();
+    geojson.processedFeatures.listen((GeoJsonFeature feature) {
       switch (feature.type) {
-        case geojson.FeatureType.point:
-          final point = feature.geometry as geojson.Point;
+        case GeoJsonFeatureType.point:
+          final point = feature.geometry as GeoJsonPoint;
           unawaited(addMarker(
             name: point.name,
             marker: Marker(
@@ -161,8 +161,8 @@ class StatefulMapController {
                 builder: (BuildContext context) => markerIcon),
           ));
           break;
-        case geojson.FeatureType.multipoint:
-          final mp = feature.geometry as geojson.MultiPoint;
+        case GeoJsonFeatureType.multipoint:
+          final mp = feature.geometry as GeoJsonMultiPoint;
           for (final geoPoint in mp.geoSerie.geoPoints) {
             unawaited(addMarker(
               name: geoPoint.name,
@@ -172,26 +172,26 @@ class StatefulMapController {
             ));
           }
           break;
-        case geojson.FeatureType.line:
-          final line = feature.geometry as geojson.Line;
+        case GeoJsonFeatureType.line:
+          final line = feature.geometry as GeoJsonLine;
           unawaited(addLine(name: line.name, points: line.geoSerie.toLatLng()));
           break;
-        case geojson.FeatureType.multiline:
-          final ml = feature.geometry as geojson.MultiLine;
+        case GeoJsonFeatureType.multiline:
+          final ml = feature.geometry as GeoJsonMultiLine;
           for (final line in ml.lines) {
             unawaited(
                 addLine(name: line.name, points: line.geoSerie.toLatLng()));
           }
           break;
-        case geojson.FeatureType.polygon:
-          final poly = feature.geometry as geojson.Polygon;
+        case GeoJsonFeatureType.polygon:
+          final poly = feature.geometry as GeoJsonPolygon;
           for (final geoSerie in poly.geoSeries) {
             unawaited(
                 addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
           }
           break;
-        case geojson.FeatureType.multipolygon:
-          final mp = feature.geometry as geojson.MultiPolygon;
+        case GeoJsonFeatureType.multipolygon:
+          final mp = feature.geometry as GeoJsonMultiPolygon;
           for (final poly in mp.polygons) {
             for (final geoSerie in poly.geoSeries) {
               unawaited(
@@ -199,7 +199,8 @@ class StatefulMapController {
             }
           }
       }
-    }
+    });
+    unawaited(geojson.parse(data));
   }
 
   /// Notify to the changefeed
