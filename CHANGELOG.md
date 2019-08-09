@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- Add map controller change type
+- Add the `fromGeoJson` method
+
 ## 0.3.0
 
 Add methods to add and remove polygons and lines
