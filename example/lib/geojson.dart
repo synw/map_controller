@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -14,8 +15,8 @@ class _GeoJsonPageState extends State<GeoJsonPage> {
     // data is from http://geojson.xyz/
     print("Loading geojson data");
     final data = await rootBundle.loadString('assets/airports.geojson');
-    await statefulMapController.fromGeoJson(data,
-        markerIcon: Icon(Icons.local_airport), verbose: true);
+    unawaited(statefulMapController.fromGeoJson(data,
+        markerIcon: Icon(Icons.local_airport), verbose: true));
   }
 
   @override
