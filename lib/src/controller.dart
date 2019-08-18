@@ -15,7 +15,7 @@ import 'state/polygons.dart';
 /// The map controller
 class StatefulMapController {
   /// Provide a Flutter map [MapController]
-  StatefulMapController({@required this.mapController})
+  StatefulMapController({@required this.mapController, this.verbose = false})
       : assert(mapController != null) {
     // init state
     _markersState = MarkersState(mapController: mapController, notify: notify);
@@ -38,6 +38,9 @@ class StatefulMapController {
 
   /// The Flutter Map [MapOptions]
   MapOptions mapOptions;
+
+  /// Verbosity level
+  final bool verbose;
 
   MapState _mapState;
   MarkersState _markersState;
@@ -200,15 +203,33 @@ class StatefulMapController {
           }
       }
     });
-    unawaited(geojson.parse(data));
+    await geojson.parse(data);
   }
+
+  /// Export all the map assets to a [GeoJsonFeatureCollection]
+  GeoJsonFeatureCollection toGeoJsonFeatures() {
+    final featureCollection = GeoJsonFeatureCollection();
+    featureCollection.collection = <GeoJsonFeature>[];
+    final markersFeature = _markersState.toGeoJsonFeatures();
+    final linesFeature = _linesState.toGeoJsonFeatures();
+    final polygonsFeature = _polygonsState.toGeoJsonFeatures();
+    featureCollection.collection.add(markersFeature);
+    featureCollection.collection.add(linesFeature);
+    featureCollection.collection.add(polygonsFeature);
+    return featureCollection;
+  }
+
+  /// Convert the map assets to a geojson string
+  String toGeoJson() => toGeoJsonFeatures().serialize();
 
   /// Notify to the changefeed
   void notify(
       String name, dynamic value, Function from, MapControllerChangeType type) {
     StatefulMapControllerStateChange change = StatefulMapControllerStateChange(
         name: name, value: value, from: from, type: type);
-    //print("STATE MUTATION: $change");
+    if (verbose) {
+      print("Map state change: $change");
+    }
     _subject.add(change);
   }
 }

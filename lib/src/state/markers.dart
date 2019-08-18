@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geojson/geojson.dart';
+import 'package:geopoint/geopoint.dart';
 import '../models.dart';
 
 /// The state of the markers on the map
@@ -97,6 +99,29 @@ class MarkersState {
     _buildMarkers();
     notify("updateMarkers", _markers, removeMarkers,
         MapControllerChangeType.markers);
+  }
+
+  /// Export all markers to a [GeoJsonFeature] with geometry
+  /// type [GeoJsonMultiPoint]
+  GeoJsonFeature toGeoJsonFeatures() {
+    final multiPoint = GeoJsonMultiPoint();
+    var geoPoints = <GeoPoint>[];
+    for (final k in namedMarkers.keys) {
+      final m = namedMarkers[k];
+      geoPoints.add(GeoPoint(
+        latitude: m.point.latitude,
+        longitude: m.point.longitude,
+      ));
+    }
+    multiPoint.name = "map_markers";
+    multiPoint.geoSerie =
+        GeoSerie.fromNameAndType(name: multiPoint.name, typeStr: "group");
+    multiPoint.geoSerie.geoPoints = geoPoints;
+    final feature = GeoJsonFeature<GeoJsonMultiPoint>();
+    feature.type = GeoJsonFeatureType.multipoint;
+    feature.properties = <String, dynamic>{"name": multiPoint.name};
+    feature.geometry = multiPoint;
+    return feature;
   }
 
   void _buildMarkers() {
