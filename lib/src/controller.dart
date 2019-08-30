@@ -60,6 +60,9 @@ class StatefulMapController {
   /// The map zoom value
   double get zoom => mapController.zoom;
 
+  /// Rotate the map
+  set rotate(double degree) => mapController.rotate(degree);
+
   /// The map center value
   LatLng get center => mapController.center;
 
