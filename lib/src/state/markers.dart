@@ -33,27 +33,45 @@ class MarkersState {
     //print("STATE ADD MARKER $name");
     //print("STATE MARKERS: $_namedMarkers");
     try {
+      //_buildMarkers();
+      int markerAt = _markerAt(_namedMarkers[name], name);
+      if (markerAt == null) {
+        _markers.add(marker);
+      } else {
+        _markers[markerAt] = marker;
+      }
+    } catch (e) {
+      throw ("Can not build marker $name for add: $e");
+    }
+    notify("updateMarkers", marker, addMarker, MapControllerChangeType.markers);
+    try {
       _namedMarkers[name] = marker;
     } catch (e) {
       throw ("Can not add marker: $e");
     }
     //print("STATE MARKERS AFTER ADD: $_namedMarkers");
-    try {
-      _buildMarkers();
-    } catch (e) {
-      throw ("Can not build for add marker: $e");
-    }
-    notify(
-        "updateMarkers", _markers, addMarker, MapControllerChangeType.markers);
   }
 
   /// Remove a marker from the map
   Future<void> removeMarker({@required String name}) async {
     if (name == null) throw ArgumentError("name must not be null");
     //if (name != "livemarker") {
-    //print("STATE REMOVE MARKER $name");
-    //print("STATE MARKERS: $_namedMarkers");
+    print("STATE REMOVE MARKER $name");
+    print("STATE MARKERS: $_namedMarkers");
     //}
+    try {
+      //_buildMarkers();
+      int removeAt = _markerAt(_namedMarkers[name], name);
+      if (removeAt != null) {
+        _markers.removeAt(removeAt);
+      } else {
+        throw ("Can not find marker $name for removal");
+      }
+    } catch (e) {
+      throw ("Can not build for remove marker: $e");
+    }
+    notify(
+        "updateMarkers", name, removeMarker, MapControllerChangeType.markers);
     try {
       var res = _namedMarkers.remove(name);
       if (res == null) {
@@ -62,14 +80,23 @@ class MarkersState {
     } catch (e) {
       throw ("Can not remove marker: $e");
     }
-    try {
-      _buildMarkers();
-    } catch (e) {
-      throw ("Can not build for remove marker: $e");
+    print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
+  }
+
+  int _markerAt(Marker marker, String name) {
+    if (!_namedMarkers.containsKey(name)) {
+      return null;
     }
-    //print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
-    notify("updateMarkers", _markers, removeMarker,
-        MapControllerChangeType.markers);
+    var i = 0;
+    int removeAt;
+    for (final m in _markers) {
+      if (m.point == _namedMarkers[name].point) {
+        removeAt = i;
+        break;
+      }
+      ++i;
+    }
+    return removeAt;
   }
 
   /// Add multiple markers on the map
@@ -87,7 +114,7 @@ class MarkersState {
     }
     _buildMarkers();
     notify(
-        "updateMarkers", _markers, addMarkers, MapControllerChangeType.markers);
+        "updateMarkers", markers, addMarkers, MapControllerChangeType.markers);
   }
 
   /// Remove multiple markers from the map
@@ -97,8 +124,8 @@ class MarkersState {
       _namedMarkers.remove(name);
     });
     _buildMarkers();
-    notify("updateMarkers", _markers, removeMarkers,
-        MapControllerChangeType.markers);
+    notify(
+        "updateMarkers", names, removeMarkers, MapControllerChangeType.markers);
   }
 
   /// Export all markers to a [GeoJsonFeature] with geometry
@@ -125,14 +152,7 @@ class MarkersState {
   }
 
   void _buildMarkers() {
-    var listMarkers = <Marker>[];
-    //print("BEFORE BUILD MARKERS");
-    //_printMarkers();
-    for (var k in _namedMarkers.keys) {
-      //print("Adding $k: ${_namedMarkers[k]}");
-      listMarkers.add(_namedMarkers[k]);
-    }
-    _markers = listMarkers;
+    _markers = _namedMarkers.values.toList();
     //print("AFTER BUILD MARKERS");
     //_printMarkers();
   }

@@ -40,7 +40,7 @@ class LinesState {
   Future<void> removeLine(String name) async {
     if (_namedLines.containsKey(name)) {
       _namedLines.remove(name);
-      notify("updateLines", null, removeLine, MapControllerChangeType.lines);
+      notify("updateLines", name, removeLine, MapControllerChangeType.lines);
     }
   }
 

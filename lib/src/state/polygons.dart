@@ -42,7 +42,7 @@ class PolygonsState {
   Future<void> removePolygon(String name) async {
     if (_namedPolygons.containsKey(name)) {
       _namedPolygons.remove(name);
-      notify("updatePolygons", null, removePolygon,
+      notify("updatePolygons", name, removePolygon,
           MapControllerChangeType.polygons);
     }
   }
