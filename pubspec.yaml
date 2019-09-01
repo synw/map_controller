@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_map: ^0.7.0+1
+  flutter_map: ^0.7.2
   latlong: ^0.6.1
-  rxdart: ^0.22.1
+  rxdart: ^0.22.2
   pedantic: ^1.6.0
   geojson: ^0.6.0
 
