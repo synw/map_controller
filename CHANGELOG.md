@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+- Add support for geojson
+- Add the `rotate` method
+- Update dependencies
+
 ## 0.4.0
 
 - Add map controller change type
