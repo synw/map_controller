@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:geojson/geojson.dart';
+import 'package:geopoint/geopoint.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -116,19 +117,46 @@ class StatefulMapController {
   Future<void> removeMarkers({@required List<String> names}) =>
       _markersState.removeMarkers(names: names);
 
+  /// Fit bounds and zoom the map to center on a line
+  Future<void> fitLine(String name) async {
+    final line = _linesState.namedLines[name];
+    var bounds = LatLngBounds();
+    line.points.forEach((point) => bounds.extend(point));
+    mapController.fitBounds(bounds);
+  }
+
   /// Add a line on the map
   Future<void> addLine(
-          {@required String name,
-          @required List<LatLng> points,
-          double width = 3.0,
-          Color color = Colors.green,
-          bool isDotted = false}) =>
-      _linesState.addLine(
-          name: name,
-          points: points,
-          color: color,
-          width: width,
-          isDotted: isDotted);
+      {@required String name,
+      @required List<LatLng> points,
+      double width = 3.0,
+      Color color = Colors.green,
+      bool isDotted = false}) async {
+    await _linesState.addLine(
+        name: name,
+        points: points,
+        color: color,
+        width: width,
+        isDotted: isDotted);
+  }
+
+  /// Add a line on the map
+  Future<void> addLineFromGeoPoints(
+      {@required String name,
+      @required List<GeoPoint> geoPoints,
+      double width = 3.0,
+      Color color = Colors.green,
+      bool isDotted = false}) async {
+    final points =
+        GeoSerie(type: GeoSerieType.line, name: "serie", geoPoints: geoPoints)
+            .toLatLng();
+    await _linesState.addLine(
+        name: name,
+        points: points,
+        color: color,
+        width: width,
+        isDotted: isDotted);
+  }
 
   /// Remove a line from the map
   Future<void> removeLine(String name) => _linesState.removeLine(name);
