@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.2
+
+- Add the `fitLine` method
+- Add the `addLineFromGeoPoint` method
+
 ## 0.4.1
 
 - Add support for geojson
