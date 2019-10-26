@@ -151,6 +151,22 @@ class MarkersState {
     return feature;
   }
 
+  /// Fit a marker on map
+  void fitOne(String name) {
+    final bounds = LatLngBounds();
+    bounds.extend(namedMarkers[name].point);
+    mapController.fitBounds(bounds);
+  }
+
+  /// Fit all markers on map
+  void fitAll() {
+    final bounds = LatLngBounds();
+    for (final m in namedMarkers.keys) {
+      bounds.extend(namedMarkers[m].point);
+    }
+    mapController.fitBounds(bounds);
+  }
+
   void _buildMarkers() {
     _markers = _namedMarkers.values.toList();
     //print("AFTER BUILD MARKERS");

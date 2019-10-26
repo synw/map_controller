@@ -117,6 +117,12 @@ class StatefulMapController {
   Future<void> removeMarkers({@required List<String> names}) =>
       _markersState.removeMarkers(names: names);
 
+  /// Fit bounds for all markers on map
+  Future<void> fitMarkers() async => _markersState.fitAll();
+
+  /// Fit bounds for one marker on map
+  Future<void> fitMarker(String name) async => _markersState.fitOne(name);
+
   /// Fit bounds and zoom the map to center on a line
   Future<void> fitLine(String name) async {
     final line = _linesState.namedLines[name];
