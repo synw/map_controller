@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'markers.dart';
+
 import 'geojson.dart';
 import 'index.dart';
+import 'markers.dart';
 
-final routes = {
+final Map<String, Widget Function(BuildContext)> routes = {
   '/': (BuildContext context) => IndexPage(),
   '/markers': (BuildContext context) => MarkersPage(),
   '/geojson': (BuildContext context) => GeoJsonPage(),

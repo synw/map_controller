@@ -53,8 +53,7 @@ class PolygonsState {
     final multiPolygon = GeoJsonMultiPolygon(name: "map_polygons");
     for (final k in namedPolygons.keys) {
       final mapPolygon = namedPolygons[k];
-      final polygon = GeoJsonPolygon();
-      polygon.name = k;
+      final polygon = GeoJsonPolygon()..name = k;
       final geoSerie = GeoSerie(name: polygon.name, type: GeoSerieType.polygon);
       for (final point in mapPolygon.points) {
         geoSerie.geoPoints.add(
@@ -63,10 +62,10 @@ class PolygonsState {
       polygon.geoSeries = [geoSerie];
       multiPolygon.polygons.add(polygon);
     }
-    final feature = GeoJsonFeature<GeoJsonMultiPolygon>();
-    feature.type = GeoJsonFeatureType.multipolygon;
-    feature.geometry = multiPolygon;
-    feature.properties = <String, dynamic>{"name": "map_polygons"};
+    final feature = GeoJsonFeature<GeoJsonMultiPolygon>()
+      ..type = GeoJsonFeatureType.multipolygon
+      ..geometry = multiPolygon
+      ..properties = <String, dynamic>{"name": "map_polygons"};
     return feature;
   }
 }

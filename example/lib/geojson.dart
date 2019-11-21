@@ -11,7 +11,7 @@ class _GeoJsonPageState extends State<GeoJsonPage> {
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
 
-  void loadData() async {
+  Future<void> loadData() async {
     // data is from http://geojson.xyz/
     print("Loading geojson data");
     final data = await rootBundle.loadString('assets/airports.geojson');

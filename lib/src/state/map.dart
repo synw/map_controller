@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'markers.dart';
+
 import '../models.dart';
+import 'markers.dart';
 
 /// State of the map
 class MapState {
@@ -28,7 +29,7 @@ class MapState {
   /// Zoom in one level
   Future<void> zoomIn() async {
     //print("ZOOM IN");
-    double z = mapController.zoom + 1;
+    final z = mapController.zoom + 1;
     mapController.move(mapController.center, z);
     _zoom = z;
     notify("zoom", z, zoomIn, MapControllerChangeType.zoom);
@@ -37,7 +38,7 @@ class MapState {
   /// Zoom out one level
   Future<void> zoomOut() async {
     //print("ZOOM OUT");
-    double z = mapController.zoom - 1;
+    final z = mapController.zoom - 1;
     mapController.move(mapController.center, z);
     _zoom = z;
     notify("zoom", z, zoomOut, MapControllerChangeType.zoom);

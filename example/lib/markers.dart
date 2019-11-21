@@ -29,7 +29,7 @@ class _MarkersPageState extends State<MarkersPage> {
   bool ready = false;
 
   void addMarker(BuildContext context) {
-    for (var place in places) {
+    for (final place in places) {
       if (!_markersOnMap.contains(place)) {
         print("Adding marker ${place.name}");
         statefulMapController.addMarker(

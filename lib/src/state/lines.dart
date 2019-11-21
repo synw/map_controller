@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
+import 'package:latlong/latlong.dart';
+
 import '../models.dart';
 
 /// State of the lines on the map
@@ -50,8 +51,7 @@ class LinesState {
     final multiLine = GeoJsonMultiLine(name: "map_lines");
     for (final k in namedLines.keys) {
       final polyline = namedLines[k];
-      final line = GeoJsonLine();
-      line.name = k;
+      final line = GeoJsonLine()..name = k;
       final geoSerie = GeoSerie(name: line.name, type: GeoSerieType.line);
       for (final point in polyline.points) {
         geoSerie.geoPoints.add(
@@ -60,10 +60,10 @@ class LinesState {
       line.geoSerie = geoSerie;
       multiLine.lines.add(line);
     }
-    final feature = GeoJsonFeature<GeoJsonMultiLine>();
-    feature.type = GeoJsonFeatureType.multiline;
-    feature.geometry = multiLine;
-    feature.properties = <String, dynamic>{"name": "map_lines"};
+    final feature = GeoJsonFeature<GeoJsonMultiLine>()
+      ..type = GeoJsonFeatureType.multiline
+      ..geometry = multiLine
+      ..properties = <String, dynamic>{"name": "map_lines"};
     return feature;
   }
 }

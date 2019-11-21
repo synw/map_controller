@@ -1,16 +1,18 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:pedantic/pedantic.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:rxdart/rxdart.dart';
+
 import 'models.dart';
+import 'state/lines.dart';
 import 'state/map.dart';
 import 'state/markers.dart';
-import 'state/lines.dart';
 import 'state/polygons.dart';
 
 /// The map controller
@@ -48,11 +50,11 @@ class StatefulMapController {
   LinesState _linesState;
   PolygonsState _polygonsState;
 
-  final Completer<Null> _readyCompleter = Completer<Null>();
+  final Completer<void> _readyCompleter = Completer<void>();
   final _subject = PublishSubject<StatefulMapControllerStateChange>();
 
   /// On ready callback: this is fired when the contoller is ready
-  Future<Null> get onReady => _readyCompleter.future;
+  Future<void> get onReady => _readyCompleter.future;
 
   /// A stream with changes occuring on the map
   Observable<StatefulMapControllerStateChange> get changeFeed =>
@@ -126,8 +128,8 @@ class StatefulMapController {
   /// Fit bounds and zoom the map to center on a line
   Future<void> fitLine(String name) async {
     final line = _linesState.namedLines[name];
-    var bounds = LatLngBounds();
-    line.points.forEach((point) => bounds.extend(point));
+    final bounds = LatLngBounds();
+    line.points.forEach(bounds.extend);
     mapController.fitBounds(bounds);
   }
 
@@ -245,8 +247,8 @@ class StatefulMapController {
 
   /// Export all the map assets to a [GeoJsonFeatureCollection]
   GeoJsonFeatureCollection toGeoJsonFeatures() {
-    final featureCollection = GeoJsonFeatureCollection();
-    featureCollection.collection = <GeoJsonFeature>[];
+    final featureCollection = GeoJsonFeatureCollection()
+      ..collection = <GeoJsonFeature>[];
     final markersFeature = _markersState.toGeoJsonFeatures();
     final linesFeature = _linesState.toGeoJsonFeatures();
     final polygonsFeature = _polygonsState.toGeoJsonFeatures();
@@ -262,7 +264,7 @@ class StatefulMapController {
   /// Notify to the changefeed
   void notify(
       String name, dynamic value, Function from, MapControllerChangeType type) {
-    StatefulMapControllerStateChange change = StatefulMapControllerStateChange(
+    final change = StatefulMapControllerStateChange(
         name: name, value: value, from: from, type: type);
     if (verbose) {
       print("Map state change: $change");
