@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- Upgrade dependencies
+- Use more strict analysis options
+- Add `fitLine` and `addLineFromGeoPoints` methods
+- Add `fitMarker` and `fitMarkers` methods 
+
 ## 0.4.2
 
 - Add the `fitLine` method
