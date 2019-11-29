@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+Add tile layer management
+
 ## 0.5.0
 
 - Upgrade dependencies
