@@ -110,3 +110,55 @@ void initState() {
 }
 
 ```
+
+### Tile layer management
+
+Some predefined tile layers are available.
+
+   ```dart
+   FlutterMap(
+      mapController: mapController,
+      options: MapOptions(
+         center: LatLng(48.853831, 2.348722), zoom: 11.0),
+      layers: [
+         // Use the map controller's tile layer
+         statefulMapController.tileLayer,
+         MarkerLayerOptions(markers: statefulMapController.markers),
+         // ...
+      ],
+   )
+   ```
+
+To switch tile layers at runtime use:
+
+   ```dart
+   statefulMapController.switchTileLayer(TileLayerType.monochrome);
+   ```
+
+Available layers:
+
+   ```dart
+   TileLayerType.normal
+   TileLayerType.topography
+   TileLayerType.monochrome
+   TileLayerType.hike
+   ```
+
+A tile layers bar is available:
+
+   ```dart
+   Stack(children: <Widget>[
+      FlutterMap(
+         mapController: mapController,
+         options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
+         layers: [
+         statefulMapController.tileLayer,
+         MarkerLayerOptions(markers: statefulMapController.markers),
+         ],
+      ),
+      Positioned(
+         top: 15.0,
+         right: 15.0,
+         child: TileLayersBar(controller: statefulMapController))
+   ])
+   ```
