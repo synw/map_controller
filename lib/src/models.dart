@@ -18,7 +18,10 @@ enum MapControllerChangeType {
   polygons,
 
   /// Update position stream state
-  positionStream
+  positionStream,
+
+  /// Change the tile layer
+  tileLayer
 }
 
 /// Desctiption of a state change

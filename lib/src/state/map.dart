@@ -4,15 +4,11 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
 import '../models.dart';
-import 'markers.dart';
 
 /// State of the map
 class MapState {
   /// Default constructor
-  MapState(
-      {@required this.mapController,
-      @required this.notify,
-      @required this.markersState})
+  MapState({@required this.mapController, @required this.notify})
       : assert(mapController != null);
 
   /// The [MapController]
@@ -21,8 +17,6 @@ class MapState {
   /// Function to notify the changefeed
   final Function notify;
 
-  /// Markers state
-  MarkersState markersState;
   double _zoom = 1.0;
   LatLng _center = LatLng(0.0, 0.0);
 

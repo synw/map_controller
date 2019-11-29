@@ -14,20 +14,28 @@ import 'state/lines.dart';
 import 'state/map.dart';
 import 'state/markers.dart';
 import 'state/polygons.dart';
+import 'state/tile_layer.dart';
+import 'types.dart';
 
 /// The map controller
 class StatefulMapController {
   /// Provide a Flutter map [MapController]
-  StatefulMapController({@required this.mapController, this.verbose = false})
+  StatefulMapController(
+      {@required this.mapController,
+      this.tileLayerType = TileLayerType.normal,
+      this.customTileLayer,
+      this.verbose = false})
       : assert(mapController != null) {
     // init state
     _markersState = MarkersState(mapController: mapController, notify: notify);
     _linesState = LinesState(notify: notify);
     _polygonsState = PolygonsState(notify: notify);
-    _mapState = MapState(
-        mapController: mapController,
-        notify: notify,
-        markersState: _markersState);
+    _mapState = MapState(mapController: mapController, notify: notify);
+    if (customTileLayer != null) {
+      tileLayerType = TileLayerType.custom;
+    }
+    _tileLayerState = TileLayerState(
+        type: tileLayerType, customTileLayer: customTileLayer, notify: notify);
     mapController.onReady.then((_) {
       // fire the map is ready callback
       if (!_readyCompleter.isCompleted) {
@@ -42,6 +50,12 @@ class StatefulMapController {
   /// The Flutter Map [MapOptions]
   MapOptions mapOptions;
 
+  /// The initial tile layer
+  TileLayerType tileLayerType;
+
+  /// A custom tile layer options
+  TileLayerOptions customTileLayer;
+
   /// Verbosity level
   final bool verbose;
 
@@ -49,6 +63,7 @@ class StatefulMapController {
   MarkersState _markersState;
   LinesState _linesState;
   PolygonsState _polygonsState;
+  TileLayerState _tileLayerState;
 
   final Completer<void> _readyCompleter = Completer<void>();
   final _subject = PublishSubject<StatefulMapControllerStateChange>();
@@ -86,6 +101,9 @@ class StatefulMapController {
 
   /// The named polygons present on the map
   Map<String, Polygon> get namedPolygons => _polygonsState.namedPolygons;
+
+  /// The current map tile layer
+  TileLayerOptions get tileLayer => _tileLayerState.tileLayer;
 
   /// Zoom in one level
   Future<void> zoomIn() => _mapState.zoomIn();
@@ -185,6 +203,10 @@ class StatefulMapController {
           color: color,
           borderWidth: borderWidth,
           borderColor: borderColor);
+
+  /// Switch to a tile layer
+  void switchTileLayer(TileLayerType layer) =>
+      _tileLayerState.switchTileLayer(layer);
 
   /// Display some geojson data on the map
   Future<void> fromGeoJson(String data,
