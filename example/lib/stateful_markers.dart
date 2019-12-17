@@ -38,19 +38,17 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
                 //anchorAlign: AnchorAlign.bottom,
                 height: 80.0,
                 width: 150.0,
-                state: <String, dynamic>{"isPoped": false},
+                state: <String, dynamic>{"showText": false},
                 point: place.point,
                 builder: (BuildContext context, Map<String, dynamic> state) {
                   Widget w;
                   final markerIcon = IconButton(
-                    icon: const Icon(Icons.location_on),
-                    onPressed: () => statefulMapController.mutateMarker(
-                        place.name,
-                        "isPoped",
-                        !(statefulMapController.statefulMarkers[place.name]
-                            .state["isPoped"] as bool)),
-                  );
-                  if (state["isPoped"] == true) {
+                      icon: const Icon(Icons.location_on),
+                      onPressed: () => statefulMapController.mutateMarker(
+                          place.name,
+                          "showText",
+                          !(state["showText"] as bool)));
+                  if (state["showText"] == true) {
                     w = Column(children: <Widget>[
                       markerIcon,
                       Container(
