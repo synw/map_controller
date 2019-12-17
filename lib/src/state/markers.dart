@@ -31,8 +31,12 @@ class MarkersState {
   /// Add a marker on the map
   Future<void> addMarker(
       {@required String name, @required Marker marker}) async {
-    if (marker == null) throw ArgumentError("marker must not be null");
-    if (name == null) throw ArgumentError("name must not be null");
+    if (marker == null) {
+      throw ArgumentError("marker must not be null");
+    }
+    if (name == null) {
+      throw ArgumentError("name must not be null");
+    }
     //print("STATE ADD MARKER $name");
     //print("STATE MARKERS: $_namedMarkers");
     try {
@@ -57,10 +61,12 @@ class MarkersState {
 
   /// Remove a marker from the map
   Future<void> removeMarker({@required String name}) async {
-    if (name == null) throw ArgumentError("name must not be null");
+    if (name == null) {
+      throw ArgumentError("name must not be null");
+    }
     //if (name != "livemarker") {
-    print("STATE REMOVE MARKER $name");
-    print("STATE MARKERS: $_namedMarkers");
+    //print("STATE REMOVE MARKER $name");
+    //print("STATE MARKERS: $_namedMarkers");
     //}
     try {
       //_buildMarkers();
