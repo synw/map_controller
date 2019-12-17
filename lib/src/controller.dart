@@ -16,6 +16,7 @@ import 'state/markers.dart';
 import 'state/polygons.dart';
 import 'state/tile_layer.dart';
 import 'types.dart';
+import 'state/stateful_markers.dart';
 
 /// The map controller
 class StatefulMapController {
@@ -31,6 +32,8 @@ class StatefulMapController {
     _linesState = LinesState(notify: notify);
     _polygonsState = PolygonsState(notify: notify);
     _mapState = MapState(mapController: mapController, notify: notify);
+    _statefulMarkersState =
+        StatefulMarkersState(mapController: mapController, notify: notify);
     if (customTileLayer != null) {
       tileLayerType = TileLayerType.custom;
     }
@@ -64,6 +67,7 @@ class StatefulMapController {
   LinesState _linesState;
   PolygonsState _polygonsState;
   TileLayerState _tileLayerState;
+  StatefulMarkersState _statefulMarkersState;
 
   final Completer<void> _readyCompleter = Completer<void>();
   final _subject = PublishSubject<StatefulMapControllerStateChange>();
@@ -84,8 +88,19 @@ class StatefulMapController {
   /// The map center value
   LatLng get center => mapController.center;
 
+  /// The stateful markers present on the map
+  Map<String, StatefulMarker> get statefulMarkers =>
+      _statefulMarkersState.statefulMarkers;
+
+  void addStatefulMarker({String name, StatefulMarker statefulMarker}) =>
+      _statefulMarkersState.addStatefulMarker(name, statefulMarker);
+
+  void mutateMarker(String name, String property, dynamic value) =>
+      _statefulMarkersState.mutate(name, property, value);
+
   /// The markers present on the map
-  List<Marker> get markers => _markersState.markers;
+  List<Marker> get markers =>
+      _markersState.markers..addAll(_statefulMarkersState.markers);
 
   /// The markers present on the map and their names
   Map<String, Marker> get namedMarkers => _markersState.namedMarkers;
