@@ -95,7 +95,7 @@ class StatefulMapController {
   void addStatefulMarker({String name, StatefulMarker statefulMarker}) =>
       _statefulMarkersState.addStatefulMarker(name, statefulMarker);
 
-  void mutateMarker(String name, String property, dynamic value) =>
+  void mutateMarker({String name, String property, dynamic value}) =>
       _statefulMarkersState.mutate(name, property, value);
 
   /// The markers present on the map
