@@ -45,9 +45,9 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
                   final markerIcon = IconButton(
                       icon: const Icon(Icons.location_on),
                       onPressed: () => statefulMapController.mutateMarker(
-                          place.name,
-                          "showText",
-                          !(state["showText"] as bool)));
+                          name: place.name,
+                          property: "showText",
+                          value: !(state["showText"] as bool)));
                   if (state["showText"] == true) {
                     w = Column(children: <Widget>[
                       markerIcon,
