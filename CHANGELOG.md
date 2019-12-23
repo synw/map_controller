@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 0.6.1
+
+Fix for rxdart api change
+
 ## 0.6.0
 
 Upgrade to Flutter map 0.8.0 for Flutter 1.12+ compatibility
