@@ -72,7 +72,7 @@ class StatefulMapController {
   Future<void> get onReady => _readyCompleter.future;
 
   /// A stream with changes occuring on the map
-  Observable<StatefulMapControllerStateChange> get changeFeed =>
+  Stream<StatefulMapControllerStateChange> get changeFeed =>
       _subject.distinct();
 
   /// The map zoom value
