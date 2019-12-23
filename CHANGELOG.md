@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+Upgrade to Flutter map 0.8.0 for Flutter 1.12+ compatibility
+
 ## 0.5.1
 
 Add tile layer management
