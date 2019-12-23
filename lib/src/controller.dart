@@ -262,6 +262,10 @@ class StatefulMapController {
                   addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
             }
           }
+          break;
+        case GeoJsonFeatureType.geometryCollection:
+          // TODO : implement
+          throw "GeoJsonFeatureType.geometryCollection Not implemented";
       }
     });
     await geojson.parse(data);
