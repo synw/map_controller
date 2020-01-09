@@ -55,10 +55,7 @@ class TileLayerState {
         if (customTileLayer != null) {
           tlo = customTileLayer;
         } else {
-          tlo = TileLayerOptions(
-              urlTemplate:
-                  "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
-              subdomains: ['a', 'b', 'c']);
+          tlo = customTileLayer;
         }
         break;
       default:
