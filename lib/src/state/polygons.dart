@@ -50,6 +50,9 @@ class PolygonsState {
   /// Export all polygons to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPolygon]
   GeoJsonFeature<GeoJsonMultiPolygon> toGeoJsonFeatures() {
+    if (namedPolygons.isEmpty) {
+      return null;
+    }
     final multiPolygon = GeoJsonMultiPolygon(name: "map_polygons");
     for (final k in namedPolygons.keys) {
       final mapPolygon = namedPolygons[k];

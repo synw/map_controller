@@ -139,6 +139,9 @@ class MarkersState {
   /// Export all markers to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPoint]
   GeoJsonFeature toGeoJsonFeatures() {
+    if (namedMarkers.isEmpty) {
+      return null;
+    }
     final multiPoint = GeoJsonMultiPoint();
     final geoPoints = <GeoPoint>[];
     for (final k in namedMarkers.keys) {

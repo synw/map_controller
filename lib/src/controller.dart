@@ -211,7 +211,8 @@ class StatefulMapController {
   /// Display some geojson data on the map
   Future<void> fromGeoJson(String data,
       {bool verbose = false,
-      Icon markerIcon = const Icon(Icons.location_on)}) async {
+      Icon markerIcon = const Icon(Icons.location_on),
+      bool noIsolate = false}) async {
     final geojson = GeoJson();
     geojson.processedFeatures.listen((GeoJsonFeature feature) {
       switch (feature.type) {
@@ -268,7 +269,11 @@ class StatefulMapController {
           throw "GeoJsonFeatureType.geometryCollection Not implemented";
       }
     });
-    await geojson.parse(data);
+    if (noIsolate) {
+      await geojson.parseInMainThread(data);
+    } else {
+      await geojson.parse(data);
+    }
   }
 
   /// Export all the map assets to a [GeoJsonFeatureCollection]
@@ -278,9 +283,15 @@ class StatefulMapController {
     final markersFeature = _markersState.toGeoJsonFeatures();
     final linesFeature = _linesState.toGeoJsonFeatures();
     final polygonsFeature = _polygonsState.toGeoJsonFeatures();
-    featureCollection.collection.add(markersFeature);
-    featureCollection.collection.add(linesFeature);
-    featureCollection.collection.add(polygonsFeature);
+    if (markersFeature != null) {
+      featureCollection.collection.add(markersFeature);
+    }
+    if (linesFeature != null) {
+      featureCollection.collection.add(linesFeature);
+    }
+    if (polygonsFeature != null) {
+      featureCollection.collection.add(polygonsFeature);
+    }
     return featureCollection;
   }
 

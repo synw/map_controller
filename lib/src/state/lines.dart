@@ -48,6 +48,9 @@ class LinesState {
   /// Export all lines to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiLine]
   GeoJsonFeature<GeoJsonMultiLine> toGeoJsonFeatures() {
+    if (namedLines.isEmpty) {
+      return null;
+    }
     final multiLine = GeoJsonMultiLine(name: "map_lines");
     for (final k in namedLines.keys) {
       final polyline = namedLines[k];
