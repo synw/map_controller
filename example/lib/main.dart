@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'geojson.dart';
 import 'index.dart';
 import 'markers.dart';
+import 'stateful_markers.dart';
 import 'tile_layer.dart';
 
 final Map<String, Widget Function(BuildContext)> routes = {
@@ -10,6 +11,7 @@ final Map<String, Widget Function(BuildContext)> routes = {
   '/markers': (BuildContext context) => MarkersPage(),
   '/geojson': (BuildContext context) => GeoJsonPage(),
   '/tile_layer': (BuildContext context) => TileLayerPage(),
+  '/stateful_markers': (BuildContext context) => StatefulMarkersPage(),
 };
 
 void main() => runApp(MyApp());

@@ -19,6 +19,11 @@ class IndexPage extends StatelessWidget {
               link: "/markers",
             ),
             MainButton(
+              icon: Icons.edit_location,
+              text: "Stateful markers",
+              link: "/stateful_markers",
+            ),
+            MainButton(
               icon: Icons.map,
               text: "Tile layer",
               link: "/tile_layer",

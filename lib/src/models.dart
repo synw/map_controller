@@ -1,4 +1,40 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
+
+typedef StatefulMarkerBuidler = Widget Function(
+    BuildContext, Map<String, dynamic>);
+
+class StatefulMarker {
+  StatefulMarker(
+      {@required this.point,
+      @required this.state,
+      @required this.builder,
+      this.width = 30.0,
+      this.height = 30.0,
+      this.anchorAlign = AnchorAlign.center});
+
+  final LatLng point;
+  final double width;
+  final double height;
+  final AnchorAlign anchorAlign;
+  final Map<String, dynamic> state;
+  final StatefulMarkerBuidler builder;
+
+  Marker get marker => _build();
+
+  void mutate(String name, dynamic value) => state[name] = value;
+
+  Marker _build() {
+    return Marker(
+        anchorPos: AnchorPos.align(anchorAlign),
+        point: point,
+        width: width,
+        height: height,
+        builder: (BuildContext c) => builder(c, state));
+  }
+}
 
 /// The type of the controller change
 enum MapControllerChangeType {
