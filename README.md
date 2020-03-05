@@ -4,6 +4,68 @@
 
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
+## Usage
+
+   ```dart
+   import 'dart:async';
+   import 'package:flutter/material.dart';
+   import 'package:flutter_map/flutter_map.dart';
+   import 'package:latlong/latlong.dart';
+   import 'package:map_controller/map_controller.dart';
+
+   class _MapPageState extends State<MapPage> {
+     MapController mapController;
+     StatefulMapController statefulMapController;
+     StreamSubscription<StatefulMapControllerStateChange> sub;
+   
+     @override
+     void initState() {
+       // intialize the controllers
+       mapController = MapController();
+       statefulMapController = StatefulMapController(mapController: mapController);
+
+       // wait for the controller to be ready before using it
+       statefulMapController.onReady.then((_) => print("The map controller is ready")));
+
+       /// [Important] listen to the changefeed to rebuild the map on changes:
+       /// this will rebuild the map when for example addMarker or any method 
+       /// that mutates the map assets is called
+       sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
+       super.initState();
+     }
+   
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         body: SafeArea(
+             child: Stack(children: <Widget>[
+           FlutterMap(
+             mapController: mapController,
+             options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
+             layers: [
+               MarkerLayerOptions(markers: statefulMapController.markers),
+               PolylineLayerOptions(polylines: statefulMapController.lines),
+               PolygonLayerOptions(polygons: statefulMapController.polygons)
+             ],
+           ),
+           // ...
+         ])),
+       );
+     }
+   
+     @override
+     void dispose() {
+       sub.cancel();
+       super.dispose();
+     }
+   }
+   
+   class MapPage extends StatefulWidget {
+     @override
+     _MapPageState createState() => _MapPageState();
+   }
+   ```
+
 ## Api
 
 Api for the `StatefulMapController` class
