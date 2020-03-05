@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- Update dependencies
+- Add stateful markers management
+- Fix in tile layer
 
 ## 0.6.1
 
