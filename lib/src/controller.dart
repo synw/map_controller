@@ -14,9 +14,9 @@ import 'state/lines.dart';
 import 'state/map.dart';
 import 'state/markers.dart';
 import 'state/polygons.dart';
+import 'state/stateful_markers.dart';
 import 'state/tile_layer.dart';
 import 'types.dart';
-import 'state/stateful_markers.dart';
 
 /// The map controller
 class StatefulMapController {
@@ -94,6 +94,9 @@ class StatefulMapController {
 
   void addStatefulMarker({String name, StatefulMarker statefulMarker}) =>
       _statefulMarkersState.addStatefulMarker(name, statefulMarker);
+
+  void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) =>
+      _statefulMarkersState.addStatefulMarkers(statefulMarkers);
 
   void mutateMarker({String name, String property, dynamic value}) =>
       _statefulMarkersState.mutate(name, property, value);
@@ -228,6 +231,8 @@ class StatefulMapController {
       {bool verbose = false,
       Icon markerIcon = const Icon(Icons.location_on),
       bool noIsolate = false}) async {
+    print("From geojson $data");
+
     final geojson = GeoJson();
     geojson.processedFeatures.listen((GeoJsonFeature feature) {
       switch (feature.type) {
