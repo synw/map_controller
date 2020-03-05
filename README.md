@@ -68,7 +68,7 @@ Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
 ## Api
 
-Api for the `StatefulMapController` class
+Api for the [StatefulMapController](https://pub.dev/documentation/map_controller/latest/map_controller/StatefulMapController-class.html) class
 
 ### Map controls
 
@@ -103,6 +103,43 @@ Api for the `StatefulMapController` class
 **`markers`**: get the markers that are on the map
 
 **`namedMarkers`**: get the markers with their names that are on the map
+
+#### Stateful markers
+
+*New in 0.9*: the stateful makers hold their own state and can be mutated 
+
+   ```dart
+   statefulMapController.addStatefulMarker(
+      name: "some marker",
+      statefulMarker: StatefulMarker(
+         height: 80.0,
+         width: 120.0,
+         state: <String, dynamic>{"showText": false},
+         point: LatLng(48.853831, 2.348722),
+         builder: (BuildContext context, Map<String, dynamic> state) {
+            Widget w;
+            final markerIcon = IconButton(
+               icon: const Icon(Icons.location_on),
+               onPressed: () => statefulMapController.mutateMarker(
+                     name: "some marker",
+                     property: "showText",
+                     value: !(state["showText"] as bool)));
+            if (state["showText"] == true) {
+               w = Column(children: <Widget>[
+               markerIcon,
+               Container(
+                     color: Colors.white,
+                     child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(place.name, textScaleFactor: 1.3))),
+               ]);
+            } else {
+               w = markerIcon;
+            }
+            return w;
+         })
+      );
+   ```
 
 #### Lines
 
