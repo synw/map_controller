@@ -106,7 +106,7 @@ Api for the [StatefulMapController](https://pub.dev/documentation/map_controller
 
 #### Stateful markers
 
-*New in 0.9*: the stateful makers hold their own state and can be mutated 
+*New in 0.7*: the stateful makers hold their own state and can be mutated 
 
    ```dart
    statefulMapController.addStatefulMarker(
