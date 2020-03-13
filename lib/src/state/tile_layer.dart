@@ -38,18 +38,27 @@ class TileLayerState {
       case TileLayerType.hike:
         tlo = TileLayerOptions(
             urlTemplate: "https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']);
+            subdomains: ['a', 'b', 'c'],
+            tileProvider: kIsWeb
+                ? _NonCachingNetworkTileProvider()
+                : NetworkTileProvider());
         break;
       case TileLayerType.topography:
         tlo = TileLayerOptions(
             urlTemplate: "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']);
+            subdomains: ['a', 'b', 'c'],
+            tileProvider: kIsWeb
+                ? _NonCachingNetworkTileProvider()
+                : NetworkTileProvider());
         break;
       case TileLayerType.monochrome:
         tlo = TileLayerOptions(
             urlTemplate:
                 "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']);
+            subdomains: ['a', 'b', 'c'],
+            tileProvider: kIsWeb
+                ? _NonCachingNetworkTileProvider()
+                : NetworkTileProvider());
         break;
       case TileLayerType.custom:
         if (customTileLayer != null) {
@@ -61,8 +70,18 @@ class TileLayerState {
       default:
         tlo = TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']);
+            subdomains: ['a', 'b', 'c'],
+            tileProvider: kIsWeb
+                ? _NonCachingNetworkTileProvider()
+                : NetworkTileProvider());
     }
     return tlo;
+  }
+}
+
+class _NonCachingNetworkTileProvider extends TileProvider {
+  @override
+  ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+    return NetworkImage(getTileUrl(coords, options));
   }
 }
