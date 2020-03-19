@@ -88,10 +88,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
             zoom: 11.0,
           ),
           layers: [
-            TileLayerOptions(
-                urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c']),
+            statefulMapController.tileLayer,
             MarkerLayerOptions(
               markers: statefulMapController.markers,
             ),

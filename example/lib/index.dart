@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class IndexPage extends StatelessWidget {
@@ -8,11 +9,12 @@ class IndexPage extends StatelessWidget {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            MainButton(
-              icon: Icons.filter,
-              text: "Geojson",
-              link: "/geojson",
-            ),
+            if (!kIsWeb)
+              MainButton(
+                icon: Icons.filter,
+                text: "Geojson",
+                link: "/geojson",
+              ),
             MainButton(
               icon: Icons.location_on,
               text: "Markers",

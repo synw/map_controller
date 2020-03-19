@@ -39,9 +39,7 @@ class _GeoJsonPageState extends State<GeoJsonPage> {
           zoom: 2.0,
         ),
         layers: [
-          TileLayerOptions(
-              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-              subdomains: ['a', 'b', 'c']),
+          statefulMapController.tileLayer,
           MarkerLayerOptions(
             markers: statefulMapController.markers,
           ),
