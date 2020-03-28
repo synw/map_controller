@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.1
+
+- Minor dependency update
+- Add web support for tile layers
+
 ## 0.7.0
 
 - Update dependencies
