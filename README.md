@@ -4,6 +4,8 @@
 
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
+[View the web demo](https://synw.github.io/map_controller)
+
 ## Usage
 
    ```dart
