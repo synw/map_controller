@@ -14,7 +14,7 @@ dependencies:
   flutter_map: ^0.8.2
   latlong: ^0.6.1
   rxdart: ^0.23.1
-  geojson: ^0.9.0
+  geojson: ^0.9.1
   geopoint: ^0.7.1
 
   # The following adds the Cupertino Icons font to your application.
