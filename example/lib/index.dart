@@ -10,22 +10,22 @@ class IndexPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             if (!kIsWeb)
-              MainButton(
+              const MainButton(
                 icon: Icons.filter,
                 text: "Geojson",
                 link: "/geojson",
               ),
-            MainButton(
+            const MainButton(
               icon: Icons.location_on,
               text: "Markers",
               link: "/markers",
             ),
-            MainButton(
+            const MainButton(
               icon: Icons.edit_location,
               text: "Stateful markers",
               link: "/stateful_markers",
             ),
-            MainButton(
+            const MainButton(
               icon: Icons.map,
               text: "Tile layer",
               link: "/tile_layer",
