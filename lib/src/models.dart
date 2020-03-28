@@ -20,7 +20,7 @@ class StatefulMarker {
   final double height;
   final AnchorAlign anchorAlign;
   final Map<String, dynamic> state;
-  final StatefulMarkerBuidler builder;
+  StatefulMarkerBuidler builder;
 
   Marker get marker => _build();
 
