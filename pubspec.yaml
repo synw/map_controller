@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   pedantic: ^1.8.0
   extra_pedantic: ^1.1.1+3
-  flutter_map: any
+  flutter_map: ">=0.8.0 <1.0.0"
   latlong: ^0.6.1
   rxdart: ^0.23.1
   geojson: ^0.9.1
