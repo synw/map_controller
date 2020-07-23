@@ -1,7 +1,7 @@
 name: map_controller
 description: A map controller for Flutter map. Manage markers, lines and polygons.
 homepage: https://github.com/synw/map_controller
-version: 0.8.0
+version: 0.8.1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
