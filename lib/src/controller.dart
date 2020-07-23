@@ -10,6 +10,7 @@ import 'package:map_controller/src/exceptions.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../map_controller.dart';
 import 'models.dart';
 import 'state/lines.dart';
 import 'state/map.dart';
@@ -105,6 +106,26 @@ class StatefulMapController {
   /// The markers present on the map
   List<Marker> get markers =>
       _markersState.markers..addAll(_statefulMarkersState.markers);
+
+  /// Return a [Marker] corresponding to [name] from the
+  /// [StatefulMarkersState].
+  Marker getMarker(String name) {
+    final marker = _statefulMarkersState.statefulMarkers[name];
+    return marker?.marker;
+  }
+
+  /// Return all [Marker] corresponding with [names].
+  /// If one of the name doesn't correspond to any marker it is not added
+  /// to the returned [List<Marker>].
+  /// If no markers were found return an empty [List<Marker>].
+  List<Marker> getMarkers(List<String> names) {
+    final markers = <Marker>[];
+    names.forEach((name) {
+      final marker = getMarker(name);
+      if (marker != null) markers.add(marker);
+    });
+    return markers;
+  }
 
   /// The markers present on the map and their names
   Map<String, Marker> get namedMarkers => _markersState.namedMarkers;
@@ -235,6 +256,7 @@ class StatefulMapController {
     print("From geojson $data");
 
     final geojson = GeoJson();
+    // ignore: strict_raw_type
     geojson.processedFeatures.listen((GeoJsonFeature feature) {
       switch (feature.type) {
         case GeoJsonFeatureType.point:
@@ -301,6 +323,7 @@ class StatefulMapController {
   /// Export all the map assets to a [GeoJsonFeatureCollection]
   GeoJsonFeatureCollection toGeoJsonFeatures() {
     final featureCollection = GeoJsonFeatureCollection()
+      // ignore: strict_raw_type
       ..collection = <GeoJsonFeature>[];
     final markersFeature = _markersState.toGeoJsonFeatures();
     final linesFeature = _linesState.toGeoJsonFeatures();

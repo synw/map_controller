@@ -16,7 +16,7 @@ class _GeoJsonPageState extends State<GeoJsonPage> {
     print("Loading geojson data");
     final data = await rootBundle.loadString('assets/airports.geojson');
     unawaited(statefulMapController.fromGeoJson(data,
-        markerIcon: Icon(Icons.local_airport), verbose: true));
+        markerIcon: const Icon(Icons.local_airport), verbose: true));
   }
 
   @override
