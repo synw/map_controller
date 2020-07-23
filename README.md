@@ -1,7 +1,5 @@
 # Map controller
 
-[![pub package](https://img.shields.io/pub/v/map_controller.svg)](https://pub.dartlang.org/packages/map_controller)
-
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
 [View the web demo](https://synw.github.io/map_controller)
@@ -105,6 +103,10 @@ Api for the [StatefulMapController](https://pub.dev/documentation/map_controller
 **`markers`**: get the markers that are on the map
 
 **`namedMarkers`**: get the markers with their names that are on the map
+
+**`getMarker`**(`String` *name*): return the marker with the corresponding name
+
+**`getMarkers`**(`List<String>` *names*): return the markers with the corresponding names
 
 #### Stateful markers
 
