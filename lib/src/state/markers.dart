@@ -138,6 +138,7 @@ class MarkersState {
 
   /// Export all markers to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPoint]
+  // ignore: strict_raw_type
   GeoJsonFeature toGeoJsonFeatures() {
     if (namedMarkers.isEmpty) {
       return null;

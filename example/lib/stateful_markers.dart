@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -90,14 +89,14 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
           layers: [
             statefulMapController.tileLayer,
             MarkerLayerOptions(
-              markers: statefulMapController.markers,
-            ),
+                markers: statefulMapController
+                    .getMarkers(['Notre-Dame', 'Montmartre'])),
           ],
         ),
       ),
       floatingActionButton: ready
           ? FloatingActionButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: () => addMarker(context),
             )
           : const Text(""),

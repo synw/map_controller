@@ -53,7 +53,7 @@ class MainButton extends StatelessWidget {
           child: Text(text,
               textAlign: TextAlign.center,
               textScaleFactor: 1.3,
-              style: TextStyle(color: Colors.grey)),
+              style: const TextStyle(color: Colors.grey)),
         )
       ]),
       onTap: () => Navigator.of(context).pushNamed(link),

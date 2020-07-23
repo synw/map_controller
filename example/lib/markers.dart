@@ -74,7 +74,7 @@ class _MarkersPageState extends State<MarkersPage> {
       ),
       floatingActionButton: ready
           ? FloatingActionButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: () => addMarker(context),
             )
           : const Text(""),
