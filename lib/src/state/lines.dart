@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
-import 'package:latlong/latlong.dart';
 
 import '../models.dart';
 
@@ -24,15 +23,8 @@ class LinesState {
   List<Polyline> get lines => _namedLines.values.toList();
 
   /// Add a line on the map
-  Future<void> addLine(
-      {@required String name,
-      @required List<LatLng> points,
-      double width = 1.0,
-      Color color = Colors.green,
-      bool isDotted = false}) async {
-    //print("ADD LINE $name of ${points.length} points");
-    _namedLines[name] = Polyline(
-        points: points, strokeWidth: width, color: color, isDotted: isDotted);
+  Future<void> addLine({@required String name, @required Polyline line}) async {
+    _namedLines[name] = line;
     notify("updateLines", _namedLines[name], addLine,
         MapControllerChangeType.lines);
   }
