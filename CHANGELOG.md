@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.2
+
+* Added methods `getLine` and `getLines` to `StatefulMapController`
+
 ## 0.8.1+1
 
 * Upgrade flutter_map dependency to 0.10.1+1
