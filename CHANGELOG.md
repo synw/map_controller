@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.3
+
+* Added methods `addPolyline` to `StatefulMapController`
+
 ## 0.8.2
 
 * Added methods `getLine` and `getLines` to `StatefulMapController`
