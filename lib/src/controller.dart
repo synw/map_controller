@@ -220,11 +220,14 @@ class StatefulMapController {
       Color color = Colors.green,
       bool isDotted = false}) async {
     await _linesState.addLine(
-        name: name,
+      name: name,
+      line: Polyline(
         points: points,
         color: color,
-        width: width,
-        isDotted: isDotted);
+        strokeWidth: width,
+        isDotted: isDotted,
+      ),
+    );
   }
 
   /// Add a line on the map
@@ -238,11 +241,20 @@ class StatefulMapController {
         GeoSerie(type: GeoSerieType.line, name: "serie", geoPoints: geoPoints)
             .toLatLng();
     await _linesState.addLine(
-        name: name,
+      name: name,
+      line: Polyline(
         points: points,
         color: color,
-        width: width,
-        isDotted: isDotted);
+        strokeWidth: width,
+        isDotted: isDotted,
+      ),
+    );
+  }
+
+  /// Add a line on the map.
+  Future<void> addPolyline(
+      {@required String name, @required Polyline polyline}) async {
+    await _linesState.addLine(name: name, line: polyline);
   }
 
   /// Remove a line from the map
