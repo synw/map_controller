@@ -107,17 +107,18 @@ class StatefulMapController {
   List<Marker> get markers =>
       _markersState.markers..addAll(_statefulMarkersState.markers);
 
-  /// Return a [Marker] corresponding to [name] from the
-  /// [StatefulMarkersState].
+  /// Return a [Marker] corresponding to [name] from the [StatefulMarkersState].
   Marker getMarker(String name) {
     final marker = _statefulMarkersState.statefulMarkers[name];
     return marker?.marker;
   }
 
-  /// Return all [Marker] corresponding with [names].
+  /// Return all [Marker] which have their name in [names].
+  ///
   /// If one of the name doesn't correspond to any marker it is not added
-  /// to the returned [List<Marker>].
-  /// If no markers were found return an empty [List<Marker>].
+  /// to the returned list.
+  ///
+  /// If no markers were found return an empty list.
   List<Marker> getMarkers(List<String> names) {
     final markers = <Marker>[];
     names.forEach((name) {
@@ -135,6 +136,26 @@ class StatefulMapController {
 
   /// The named lines present on the map
   Map<String, Polyline> get namedLines => _linesState.namedLines;
+
+  /// Return a [Polyline] corresponding to [name] from the [LinesState].
+  ///
+  /// If no corresponding line was found it will return [null].
+  Polyline getLine(String name) => _linesState.namedLines[name];
+
+  /// Return all [Polyline] which have their name in [names].
+  ///
+  /// If one of the name doesn't correspond to any marker it is not added
+  /// to the returned list.
+  ///
+  /// If no markers were found return an empty list.
+  List<Polyline> getLines(List<String> names) {
+    final lines = <Polyline>[];
+    names.forEach((name) {
+      final line = getLine(name);
+      if (line != null) lines.add(line);
+    });
+    return lines;
+  }
 
   /// The polygons present on the map
   List<Polygon> get polygons => _polygonsState.polygons;
