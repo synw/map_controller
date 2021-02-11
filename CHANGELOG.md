@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.0
+
+* Upgrade `flutter_map` dependency to `^0.11.0`
+* Upgrade `extra_pedantic` dependency to `^1.2.0`
+* Upgrade `rxdart` dependency to `0.25.0`
+* Added `meta: any` dependency
+* Made some Android migration
+
 ## 0.8.3
 
 * Added methods `addPolyline` to `StatefulMapController`
