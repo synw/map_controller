@@ -1,6 +1,6 @@
 {
-    "name": "map_controller_example",
-    "short_name": "map_controller_example",
+    "name": "map_controller",
+    "short_name": "map_controller",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
