@@ -103,8 +103,13 @@ class StatefulMapController {
       _statefulMarkersState.mutate(name, property, value);
 
   /// The markers present on the map
-  List<Marker> get markers =>
-      _markersState.markers..addAll(_statefulMarkersState.markers);
+  List<Marker> get markers {
+    List<Marker> markers = [];
+    markers
+      ..addAll(_markersState.markers)
+      ..addAll(_statefulMarkersState.markers);
+    return markers;
+  }
 
   /// The markers present on the map and their names
   Map<String, Marker> get namedMarkers => _markersState.namedMarkers;
