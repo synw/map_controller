@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.0
+
+- Update Flutter project and dependencies
+- Fix: prevent markers number from increasing
+
 ## 0.8.0
 
 Update dependencies
