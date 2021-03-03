@@ -161,11 +161,18 @@ class StatefulMapController {
   Future<void> removeMarkers({@required List<String> names}) =>
       _markersState.removeMarkers(names: names);
 
+  /// Remove all named markers from the map
+  Future<void> removeAllNamedMarkers() => _markersState.removeAllNamedMarkers();
+
   /// Fit bounds for all markers on map
-  Future<void> fitMarkers() async => _markersState.fitAll();
+  Future<void> fitMarkers(
+          {FitBoundsOptions options = const FitBoundsOptions()}) async =>
+      _markersState.fitAll(options: options);
 
   /// Fit bounds for one marker on map
-  Future<void> fitMarker(String name) async => _markersState.fitOne(name);
+  Future<void> fitMarker(String name,
+          {FitBoundsOptions options = const FitBoundsOptions()}) async =>
+      _markersState.fitOne(name, options: options);
 
   /// Fit bounds and zoom the map to center on a line
   Future<void> fitLine(String name) async {
