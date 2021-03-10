@@ -101,14 +101,16 @@ class StatefulMapController {
 
   void mutateMarker({String name, String property, dynamic value}) =>
       _statefulMarkersState.mutate(name, property, value);
+  void removeStatefulMarker({@required String name}) => _statefulMarkersState.removeMarker(name);
+
+  void removeStatefulMarkers() => _statefulMarkersState.removeMarkers();
 
   /// The markers present on the map
   List<Marker> get markers {
-    List<Marker> markers = [];
-    markers
-      ..addAll(_markersState.markers)
-      ..addAll(_statefulMarkersState.markers);
-    return markers;
+    return [
+      ..._markersState.markers,
+      ..._statefulMarkersState.markers,
+    ];
   }
 
   /// The markers present on the map and their names
