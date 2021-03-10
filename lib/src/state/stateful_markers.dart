@@ -40,4 +40,16 @@ class StatefulMarkersState {
     _statefulMarkers[name].mutate(property, value);
     addStatefulMarker(name, _statefulMarkers[name]);
   }
+
+  void removeMarker(String name) {
+    _statefulMarkers.remove(_statefulMarkers[name]);
+    _namedMarkers.remove(_namedMarkers[name]);
+    notify('updateMarkers', _statefulMarkers, removeMarker, MapControllerChangeType.markers);
+  }
+
+  void removeMarkers() {
+    _statefulMarkers.clear();
+    _namedMarkers.clear();
+    notify('updateMarkers', _statefulMarkers, removeMarkers, MapControllerChangeType.markers);
+  }
 }
