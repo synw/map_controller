@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:map_controller/map_controller.dart';
+import '../../map_controller.dart';
 
 import '../controller.dart';
 import '../types.dart';
