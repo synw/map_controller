@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.0
+
+* Upgrade `flutter_map` dependency to `^0.12.0`
+* Upgrade `geojson` dependency to `^0.10.0`
+* Upgrade `geopoint` dependency to `^0.8.0`
+* Fixed some warnings
+
 ## 0.9.0
 
 * Upgrade `flutter_map` dependency to `^0.11.0`
