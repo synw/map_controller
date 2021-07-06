@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
-import 'package:latlong/latlong.dart';
-import 'package:pedantic/pedantic.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../map_controller.dart';
-import 'exceptions.dart';
 import 'models.dart';
 import 'state/lines.dart';
 import 'state/map.dart';
@@ -279,101 +276,6 @@ class StatefulMapController {
   /// Switch to a tile layer
   void switchTileLayer(TileLayerType layer) =>
       _tileLayerState.switchTileLayer(layer);
-
-  /// Display some geojson data on the map
-  Future<void> fromGeoJson(String data,
-      {bool verbose = false,
-      Icon markerIcon = const Icon(Icons.location_on),
-      bool noIsolate = false}) async {
-    print("From geojson $data");
-
-    final geojson = GeoJson();
-    // ignore: strict_raw_type
-    geojson.processedFeatures.listen((GeoJsonFeature feature) {
-      switch (feature.type) {
-        case GeoJsonFeatureType.point:
-          final point = feature.geometry as GeoJsonPoint;
-          unawaited(addMarker(
-            name: point.name,
-            marker: Marker(
-                point:
-                    LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
-                builder: (BuildContext context) => markerIcon),
-          ));
-          break;
-        case GeoJsonFeatureType.multipoint:
-          final mp = feature.geometry as GeoJsonMultiPoint;
-          for (final geoPoint in mp.geoSerie.geoPoints) {
-            unawaited(addMarker(
-              name: geoPoint.name,
-              marker: Marker(
-                  point: LatLng(geoPoint.latitude, geoPoint.longitude),
-                  builder: (BuildContext context) => markerIcon),
-            ));
-          }
-          break;
-        case GeoJsonFeatureType.line:
-          final line = feature.geometry as GeoJsonLine;
-          unawaited(addLine(name: line.name, points: line.geoSerie.toLatLng()));
-          break;
-        case GeoJsonFeatureType.multiline:
-          final ml = feature.geometry as GeoJsonMultiLine;
-          for (final line in ml.lines) {
-            unawaited(
-                addLine(name: line.name, points: line.geoSerie.toLatLng()));
-          }
-          break;
-        case GeoJsonFeatureType.polygon:
-          final poly = feature.geometry as GeoJsonPolygon;
-          for (final geoSerie in poly.geoSeries) {
-            unawaited(
-                addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
-          }
-          break;
-        case GeoJsonFeatureType.multipolygon:
-          final mp = feature.geometry as GeoJsonMultiPolygon;
-          for (final poly in mp.polygons) {
-            for (final geoSerie in poly.geoSeries) {
-              unawaited(
-                  addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
-            }
-          }
-          break;
-        case GeoJsonFeatureType.geometryCollection:
-          // TODO : implement
-          throw const NotImplementedException(
-              "GeoJsonFeatureType.geometryCollection Not implemented");
-      }
-    });
-    if (noIsolate) {
-      await geojson.parseInMainThread(data);
-    } else {
-      await geojson.parse(data);
-    }
-  }
-
-  /// Export all the map assets to a [GeoJsonFeatureCollection]
-  GeoJsonFeatureCollection toGeoJsonFeatures() {
-    final featureCollection = GeoJsonFeatureCollection()
-      // ignore: strict_raw_type
-      ..collection = <GeoJsonFeature>[];
-    final markersFeature = _markersState.toGeoJsonFeatures();
-    final linesFeature = _linesState.toGeoJsonFeatures();
-    final polygonsFeature = _polygonsState.toGeoJsonFeatures();
-    if (markersFeature != null) {
-      featureCollection.collection.add(markersFeature);
-    }
-    if (linesFeature != null) {
-      featureCollection.collection.add(linesFeature);
-    }
-    if (polygonsFeature != null) {
-      featureCollection.collection.add(polygonsFeature);
-    }
-    return featureCollection;
-  }
-
-  /// Convert the map assets to a geojson string
-  String toGeoJson() => toGeoJsonFeatures().serialize();
 
   /// Notify to the changefeed
   void notify(

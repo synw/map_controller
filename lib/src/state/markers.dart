@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geojson/geojson.dart';
-import 'package:geopoint/geopoint.dart';
 
 import '../exceptions.dart';
 import '../models.dart';
@@ -134,34 +132,6 @@ class MarkersState {
     _buildMarkers();
     notify(
         "updateMarkers", names, removeMarkers, MapControllerChangeType.markers);
-  }
-
-  /// Export all markers to a [GeoJsonFeature] with geometry
-  /// type [GeoJsonMultiPoint]
-  // ignore: strict_raw_type
-  GeoJsonFeature toGeoJsonFeatures() {
-    if (namedMarkers.isEmpty) {
-      return null;
-    }
-    final multiPoint = GeoJsonMultiPoint();
-    final geoPoints = <GeoPoint>[];
-    for (final k in namedMarkers.keys) {
-      final m = namedMarkers[k];
-      geoPoints.add(GeoPoint(
-        latitude: m.point.latitude,
-        longitude: m.point.longitude,
-      ));
-    }
-    multiPoint
-      ..name = "map_markers"
-      ..geoSerie =
-          GeoSerie.fromNameAndType(name: multiPoint.name, typeStr: "group");
-    multiPoint.geoSerie.geoPoints = geoPoints;
-    final feature = GeoJsonFeature<GeoJsonMultiPoint>()
-      ..type = GeoJsonFeatureType.multipoint
-      ..properties = <String, dynamic>{"name": multiPoint.name}
-      ..geometry = multiPoint;
-    return feature;
   }
 
   /// Fit a marker on map

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+* Upgrade `flutter_map` dependency to `^0.13.1`
+* Upgrade `geopoint` dependency to `^1.0.0`
+* Removed support for GeoJson as the package `geojson` does not support nullsafety
+
 ## 0.10.0
 
 * Upgrade `flutter_map` dependency to `^0.12.0`
