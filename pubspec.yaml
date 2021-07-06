@@ -13,15 +13,12 @@ dependencies:
   flutter_map: ^0.12.0
   geojson: ^0.10.0
   geopoint: ^0.8.0
-  latlong: ^0.6.1
-  meta: any
+  latlong2: ^0.8.0
   rxdart: ^0.25.0
 
 dev_dependencies:
-  extra_pedantic: ^1.2.0
   flutter_test:
     sdk: flutter
-  pedantic: ^1.8.0
 
 flutter:
   uses-material-design: true
