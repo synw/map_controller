@@ -2,7 +2,7 @@ name: map_controller
 description: A map controller for Flutter map. Manage markers, lines and polygons.
 homepage: https://github.com/TesteurManiak
 repository: https://github.com/TesteurManiak/map_controller
-version: 0.10.0
+version: 0.11.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -10,9 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_map: ^0.12.0
-  geojson: ^0.10.0
-  geopoint: ^0.8.0
+  flutter_map: ^0.13.1
+  geopoint: ^1.0.0
   latlong2: ^0.8.0
   rxdart: ^0.25.0
 
