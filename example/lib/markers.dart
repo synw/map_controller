@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
-import 'package:latlong2/latlong.dart' as LL2;
+// import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:map_controller/map_controller.dart';
 
 class Place {
@@ -36,7 +36,7 @@ class _MarkersPageState extends State<MarkersPage> {
         statefulMapController.addMarker(
             name: place.name,
             marker: Marker(
-                point: LL2.LatLng(place.point.latitude, place.point.longitude),
+                point: LatLng(place.point.latitude, place.point.longitude),
                 builder: (BuildContext context) {
                   return const Icon(Icons.location_on);
                 }));
@@ -62,7 +62,7 @@ class _MarkersPageState extends State<MarkersPage> {
         child: FlutterMap(
           mapController: mapController,
           options: MapOptions(
-            center: LL2.LatLng(48.853831, 2.348722),
+            center: LatLng(48.853831, 2.348722),
             zoom: 11.0,
           ),
           layers: [
