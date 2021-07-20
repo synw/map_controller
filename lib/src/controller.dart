@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:map_controller/src/exceptions.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
@@ -247,8 +247,7 @@ class StatefulMapController {
           unawaited(addMarker(
             name: point.name,
             marker: Marker(
-                point:
-                    LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
+                point: point.geoPoint.point,
                 builder: (BuildContext context) => markerIcon),
           ));
           break;
@@ -258,7 +257,7 @@ class StatefulMapController {
             unawaited(addMarker(
               name: geoPoint.name,
               marker: Marker(
-                  point: LatLng(geoPoint.latitude, geoPoint.longitude),
+                  point: geoPoint.point,
                   builder: (BuildContext context) => markerIcon),
             ));
           }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart' as LL2;
 
 import '../models.dart';
 
@@ -18,7 +19,7 @@ class MapState {
   final Function notify;
 
   double _zoom = 1.0;
-  LatLng _center = LatLng(0.0, 0.0);
+  LL2.LatLng _center = LL2.LatLng(0.0, 0.0);
 
   /// Zoom in one level
   Future<void> zoomIn() async {
@@ -47,7 +48,7 @@ class MapState {
   }
 
   /// Center the map on a [LatLng]
-  Future<void> centerOnPoint(LatLng point) async {
+  Future<void> centerOnPoint(LL2.LatLng point) async {
     mapController.move(point, mapController.zoom);
     _center = point;
     notify("center", point, centerOnPoint, MapControllerChangeType.center);
