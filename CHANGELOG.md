@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0-nullsafe
+
+* Added nullsafety support
+* Changed rxdart dependency to `>=0.26.0 <0.28.0`
+
 ## 0.11.0
 
 * Upgrade `flutter_map` dependency to `^0.13.1`
