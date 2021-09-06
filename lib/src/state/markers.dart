@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 import '../exceptions.dart';
@@ -8,8 +6,7 @@ import '../models.dart';
 /// The state of the markers on the map
 class MarkersState {
   /// Provide a [MapController]
-  MarkersState({@required this.mapController, @required this.notify})
-      : assert(mapController != null);
+  MarkersState({required this.mapController, required this.notify});
 
   /// The Flutter Map controller
   final MapController mapController;
@@ -27,14 +24,7 @@ class MarkersState {
   Map<String, Marker> get namedMarkers => _namedMarkers;
 
   /// Add a marker on the map
-  Future<void> addMarker(
-      {@required String name, @required Marker marker}) async {
-    if (marker == null) {
-      throw ArgumentError("marker must not be null");
-    }
-    if (name == null) {
-      throw ArgumentError("name must not be null");
-    }
+  Future<void> addMarker({required String name, required Marker marker}) async {
     //print("STATE ADD MARKER $name");
     //print("STATE MARKERS: $_namedMarkers");
     try {
@@ -58,10 +48,7 @@ class MarkersState {
   }
 
   /// Remove a marker from the map
-  Future<void> removeMarker({@required String name}) async {
-    if (name == null) {
-      throw ArgumentError("name must not be null");
-    }
+  Future<void> removeMarker({required String name}) async {
     //if (name != "livemarker") {
     //print("STATE REMOVE MARKER $name");
     //print("STATE MARKERS: $_namedMarkers");
@@ -90,14 +77,14 @@ class MarkersState {
     print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
   }
 
-  int _markerAt(Marker marker, String name) {
-    int removeAt;
+  int? _markerAt(Marker? marker, String name) {
+    int? removeAt;
     if (!_namedMarkers.containsKey(name)) {
       return removeAt;
     }
     var i = 0;
     for (final m in _markers) {
-      if (m.point == _namedMarkers[name].point) {
+      if (m.point == _namedMarkers[name]!.point) {
         removeAt = i;
         break;
       }
@@ -107,10 +94,7 @@ class MarkersState {
   }
 
   /// Add multiple markers on the map
-  Future<void> addMarkers({@required Map<String, Marker> markers}) async {
-    if (markers == null) {
-      throw ArgumentError.notNull("markers must not be null");
-    }
+  Future<void> addMarkers({required Map<String, Marker> markers}) async {
     try {
       markers.forEach((k, v) {
         _namedMarkers[k] = v;
@@ -124,10 +108,7 @@ class MarkersState {
   }
 
   /// Remove multiple markers from the map
-  Future<void> removeMarkers({@required List<String> names}) async {
-    if (names == null) {
-      throw ArgumentError.notNull("names must not be null");
-    }
+  Future<void> removeMarkers({required List<String> names}) async {
     names.forEach(_namedMarkers.remove);
     _buildMarkers();
     notify(
@@ -136,7 +117,7 @@ class MarkersState {
 
   /// Fit a marker on map
   void fitOne(String name) {
-    final bounds = LatLngBounds()..extend(namedMarkers[name].point);
+    final bounds = LatLngBounds()..extend(namedMarkers[name]!.point);
     mapController.fitBounds(bounds);
   }
 
@@ -144,7 +125,7 @@ class MarkersState {
   void fitAll() {
     final bounds = LatLngBounds();
     for (final m in namedMarkers.keys) {
-      bounds.extend(namedMarkers[m].point);
+      bounds.extend(namedMarkers[m]!.point);
     }
     mapController.fitBounds(bounds);
   }
