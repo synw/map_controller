@@ -1,12 +1,11 @@
 import 'package:flutter_map/flutter_map.dart';
-import 'package:meta/meta.dart';
 
 import '../models.dart';
 
 /// State of the lines on the map
 class LinesState {
   /// Default contructor
-  LinesState({@required this.notify}) : assert(notify != null);
+  LinesState({required this.notify});
 
   /// The notify function
   final Function notify;
@@ -20,7 +19,7 @@ class LinesState {
   List<Polyline> get lines => _namedLines.values.toList();
 
   /// Add a line on the map
-  Future<void> addLine({@required String name, @required Polyline line}) async {
+  Future<void> addLine({required String name, required Polyline line}) async {
     _namedLines[name] = line;
     notify("updateLines", _namedLines[name], addLine,
         MapControllerChangeType.lines);
