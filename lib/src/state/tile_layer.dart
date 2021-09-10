@@ -9,7 +9,7 @@ import '../types.dart';
 class TileLayerState {
   /// Default contructor
   TileLayerState(
-      {@required this.type, @required this.notify, this.customTileLayer}) {
+      {required this.type, required this.notify, this.customTileLayer}) {
     _tileLayer = _tileLayerForType(type);
   }
 
@@ -17,14 +17,14 @@ class TileLayerState {
   TileLayerType type;
 
   /// A custom tile layer options
-  TileLayerOptions customTileLayer;
+  TileLayerOptions? customTileLayer;
 
   /// Function to notify the changefeed
   final Function notify;
 
-  TileLayerOptions _tileLayer;
+  TileLayerOptions? _tileLayer;
 
-  TileLayerOptions get tileLayer => _tileLayer;
+  TileLayerOptions? get tileLayer => _tileLayer;
 
   void switchTileLayer(TileLayerType layer) {
     _tileLayer = _tileLayerForType(layer);
@@ -32,8 +32,8 @@ class TileLayerState {
         MapControllerChangeType.tileLayer);
   }
 
-  TileLayerOptions _tileLayerForType(TileLayerType layer) {
-    TileLayerOptions tlo;
+  TileLayerOptions? _tileLayerForType(TileLayerType layer) {
+    TileLayerOptions? tlo;
     switch (layer) {
       case TileLayerType.hike:
         tlo = TileLayerOptions(
