@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+- Null safety
+
 ## 0.9.0
 
 - Update Flutter project and dependencies

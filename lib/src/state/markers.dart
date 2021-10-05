@@ -10,7 +10,7 @@ import '../models.dart';
 /// The state of the markers on the map
 class MarkersState {
   /// Provide a [MapController]
-  MarkersState({@required this.mapController, @required this.notify})
+  MarkersState({required this.mapController, required this.notify})
       : assert(mapController != null);
 
   /// The Flutter Map controller
@@ -20,23 +20,17 @@ class MarkersState {
   final Function notify;
 
   var _markers = <Marker>[];
-  final Map<String, Marker> _namedMarkers = {};
+  final Map<String?, Marker> _namedMarkers = {};
 
   /// The markers present on the map
   List<Marker> get markers => _markers;
 
   /// The markers present on the map and their names
-  Map<String, Marker> get namedMarkers => _namedMarkers;
+  Map<String?, Marker> get namedMarkers => _namedMarkers;
 
   /// Add a marker on the map
   Future<void> addMarker(
-      {@required String name, @required Marker marker}) async {
-    if (marker == null) {
-      throw ArgumentError("marker must not be null");
-    }
-    if (name == null) {
-      throw ArgumentError("name must not be null");
-    }
+      {required String? name, required Marker marker}) async {
     //print("STATE ADD MARKER $name");
     //print("STATE MARKERS: $_namedMarkers");
     try {
@@ -60,14 +54,7 @@ class MarkersState {
   }
 
   /// Remove a marker from the map
-  Future<void> removeMarker({@required String name}) async {
-    if (name == null) {
-      throw ArgumentError("name must not be null");
-    }
-    //if (name != "livemarker") {
-    //print("STATE REMOVE MARKER $name");
-    //print("STATE MARKERS: $_namedMarkers");
-    //}
+  Future<void> removeMarker({required String name}) async {
     try {
       //_buildMarkers();
       final removeAt = _markerAt(_namedMarkers[name], name);
@@ -92,14 +79,14 @@ class MarkersState {
     print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
   }
 
-  int _markerAt(Marker marker, String name) {
-    int removeAt;
+  int? _markerAt(Marker? marker, String? name) {
+    int? removeAt;
     if (!_namedMarkers.containsKey(name)) {
       return removeAt;
     }
     var i = 0;
     for (final m in _markers) {
-      if (m.point == _namedMarkers[name].point) {
+      if (m.point == _namedMarkers[name]!.point) {
         removeAt = i;
         break;
       }
@@ -109,10 +96,7 @@ class MarkersState {
   }
 
   /// Add multiple markers on the map
-  Future<void> addMarkers({@required Map<String, Marker> markers}) async {
-    if (markers == null) {
-      throw ArgumentError.notNull("markers must not be null");
-    }
+  Future<void> addMarkers({required Map<String, Marker> markers}) async {
     try {
       markers.forEach((k, v) {
         _namedMarkers[k] = v;
@@ -126,10 +110,7 @@ class MarkersState {
   }
 
   /// Remove multiple markers from the map
-  Future<void> removeMarkers({@required List<String> names}) async {
-    if (names == null) {
-      throw ArgumentError.notNull("names must not be null");
-    }
+  Future<void> removeMarkers({required List<String> names}) async {
     names.forEach(_namedMarkers.remove);
     _buildMarkers();
     notify(
@@ -138,14 +119,14 @@ class MarkersState {
 
   /// Export all markers to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPoint]
-  GeoJsonFeature toGeoJsonFeatures() {
+  GeoJsonFeature? toGeoJsonFeatures() {
     if (namedMarkers.isEmpty) {
       return null;
     }
     final multiPoint = GeoJsonMultiPoint();
     final geoPoints = <GeoPoint>[];
     for (final k in namedMarkers.keys) {
-      final m = namedMarkers[k];
+      final m = namedMarkers[k]!;
       geoPoints.add(GeoPoint(
         latitude: m.point.latitude,
         longitude: m.point.longitude,
@@ -154,8 +135,8 @@ class MarkersState {
     multiPoint
       ..name = "map_markers"
       ..geoSerie =
-          GeoSerie.fromNameAndType(name: multiPoint.name, typeStr: "group");
-    multiPoint.geoSerie.geoPoints = geoPoints;
+          GeoSerie.fromNameAndType(name: multiPoint.name!, typeStr: "group");
+    multiPoint.geoSerie!.geoPoints = geoPoints;
     final feature = GeoJsonFeature<GeoJsonMultiPoint>()
       ..type = GeoJsonFeatureType.multipoint
       ..properties = <String, dynamic>{"name": multiPoint.name}
@@ -165,7 +146,7 @@ class MarkersState {
 
   /// Fit a marker on map
   void fitOne(String name) {
-    final bounds = LatLngBounds()..extend(namedMarkers[name].point);
+    final bounds = LatLngBounds()..extend(namedMarkers[name]!.point);
     mapController.fitBounds(bounds);
   }
 
@@ -173,7 +154,7 @@ class MarkersState {
   void fitAll() {
     final bounds = LatLngBounds();
     for (final m in namedMarkers.keys) {
-      bounds.extend(namedMarkers[m].point);
+      bounds.extend(namedMarkers[m]!.point);
     }
     mapController.fitBounds(bounds);
   }
