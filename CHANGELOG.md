@@ -6,6 +6,7 @@
 * Upgrade `latlong2` dependency to `^0.8.1`
 * Added method `removeLines`
 * Putted back GeoJson features with the `geojson` package now that it is nullsafe
+* Updated example and fixed some issues with the nullsafety migration
 
 ## 0.12.0-nullsafe
 

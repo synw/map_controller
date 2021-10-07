@@ -6,15 +6,17 @@ import 'stateful_markers.dart';
 import 'tile_layer.dart';
 
 final Map<String, Widget Function(BuildContext)> routes = {
-  '/': (BuildContext context) => IndexPage(),
-  '/markers': (BuildContext context) => MarkersPage(),
-  '/tile_layer': (BuildContext context) => TileLayerPage(),
-  '/stateful_markers': (BuildContext context) => StatefulMarkersPage(),
+  '/': (BuildContext context) => const IndexPage(),
+  '/markers': (BuildContext context) => const MarkersPage(),
+  '/tile_layer': (BuildContext context) => const TileLayerPage(),
+  '/stateful_markers': (BuildContext context) => const StatefulMarkersPage(),
 };
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

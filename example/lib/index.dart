@@ -2,30 +2,32 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class IndexPage extends StatelessWidget {
+  const IndexPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: const <Widget>[
             if (!kIsWeb)
-              const MainButton(
+              MainButton(
                 icon: Icons.filter,
                 text: "Geojson",
                 link: "/geojson",
               ),
-            const MainButton(
+            MainButton(
               icon: Icons.location_on,
               text: "Markers",
               link: "/markers",
             ),
-            const MainButton(
+            MainButton(
               icon: Icons.edit_location,
               text: "Stateful markers",
               link: "/stateful_markers",
             ),
-            const MainButton(
+            MainButton(
               icon: Icons.map,
               text: "Tile layer",
               link: "/tile_layer",
@@ -36,8 +38,12 @@ class IndexPage extends StatelessWidget {
 }
 
 class MainButton extends StatelessWidget {
-  const MainButton({Key key, this.text, this.icon, this.link})
-      : super(key: key);
+  const MainButton({
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.link,
+  }) : super(key: key);
 
   final String text;
   final IconData icon;

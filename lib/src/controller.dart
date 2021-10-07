@@ -107,7 +107,11 @@ class StatefulMapController {
   void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) =>
       _statefulMarkersState.addStatefulMarkers(statefulMarkers);
 
-  void mutateMarker({String? name, String? property, dynamic value}) =>
+  void mutateMarker({
+    required String name,
+    required String property,
+    dynamic value,
+  }) =>
       _statefulMarkersState.mutate(name, property, value);
 
   /// The markers present on the map
@@ -306,7 +310,7 @@ class StatefulMapController {
     Icon markerIcon = const Icon(Icons.location_on),
     bool noIsolate = false,
   }) async {
-    print("From geojson $data");
+    debugPrint("From geojson $data");
 
     final geojson = GeoJson();
     geojson.processedFeatures.listen((GeoJsonFeature feature) {
