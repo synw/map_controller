@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0
+
+* Changed `flutter_map` dependency to `">=0.13.1 <0.15.0"`
+* Upgrade `latlong2` dependency to `^0.8.1`
+
 ## 0.12.0-nullsafe
 
 * Added nullsafety support
