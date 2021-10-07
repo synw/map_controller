@@ -19,8 +19,7 @@ class MapState {
   LatLng? _center = LatLng(0.0, 0.0);
 
   /// Zoom in one level
-  Future<void> zoomIn() async {
-    //print("ZOOM IN");
+  void zoomIn() {
     final z = mapController.zoom + 1;
     mapController.move(mapController.center, z);
     _zoom = z;
@@ -28,8 +27,7 @@ class MapState {
   }
 
   /// Zoom out one level
-  Future<void> zoomOut() async {
-    //print("ZOOM OUT");
+  void zoomOut() {
     final z = mapController.zoom - 1;
     mapController.move(mapController.center, z);
     _zoom = z;
@@ -37,15 +35,14 @@ class MapState {
   }
 
   /// Zoom to level
-  Future<void> zoomTo(double value) async {
-    //print("ZOOM TO $value");
+  void zoomTo(double value) async {
     mapController.move(mapController.center, value);
     _zoom = value;
     notify("zoom", value, zoomOut, MapControllerChangeType.zoom);
   }
 
   /// Center the map on a [LatLng]
-  Future<void> centerOnPoint(LatLng point) async {
+  void centerOnPoint(LatLng point) {
     mapController.move(point, mapController.zoom);
     _center = point;
     notify("center", point, centerOnPoint, MapControllerChangeType.center);

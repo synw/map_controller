@@ -24,13 +24,13 @@ class PolygonsState {
   List<Polygon> get polygons => _namedPolygons.values.toList();
 
   /// Add a polygon on the map
-  Future<void> addPolygon({
+  void addPolygon({
     required String name,
     required List<LatLng> points,
     required Color color,
     required double borderWidth,
     required Color borderColor,
-  }) async {
+  }) {
     _namedPolygons[name] = Polygon(
         points: points,
         color: color,
@@ -41,7 +41,7 @@ class PolygonsState {
   }
 
   /// Remove a polygon from the map
-  Future<void> removePolygon(String name) async {
+  void removePolygon(String name) {
     if (_namedPolygons.containsKey(name)) {
       _namedPolygons.remove(name);
       notify("updatePolygons", name, removePolygon,

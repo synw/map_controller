@@ -127,10 +127,10 @@ class StatefulMapController {
   /// If no markers were found return an empty list.
   List<Marker> getMarkers(List<String> names) {
     final markers = <Marker>[];
-    names.forEach((name) {
+    for (final name in names) {
       final marker = getMarker(name);
       if (marker != null) markers.add(marker);
-    });
+    }
     return markers;
   }
 
@@ -156,10 +156,10 @@ class StatefulMapController {
   /// If no markers were found return an empty list.
   List<Polyline> getLines(List<String> names) {
     final lines = <Polyline>[];
-    names.forEach((name) {
+    for (final name in names) {
       final line = getLine(name);
       if (line != null) lines.add(line);
-    });
+    }
     return lines;
   }
 
@@ -173,35 +173,35 @@ class StatefulMapController {
   TileLayerOptions? get tileLayer => _tileLayerState.tileLayer;
 
   /// Zoom in one level
-  Future<void> zoomIn() => _mapState.zoomIn();
+  void zoomIn() => _mapState.zoomIn();
 
   /// Zoom out one level
-  Future<void> zoomOut() => _mapState.zoomOut();
+  void zoomOut() => _mapState.zoomOut();
 
   /// Zoom to level
-  Future<void> zoomTo(double value) => _mapState.zoomTo(value);
+  void zoomTo(double value) => _mapState.zoomTo(value);
 
   /// Center the map on a [LatLng]
-  Future<void> centerOnPoint(LatLng point) => _mapState.centerOnPoint(point);
+  void centerOnPoint(LatLng point) => _mapState.centerOnPoint(point);
 
   /// The callback used to handle gestures and keep the state in sync
   void onPositionChanged(MapPosition pos, bool gesture) =>
       _mapState.onPositionChanged(pos, gesture);
 
   /// Add a marker on the map
-  Future<void> addMarker({required Marker marker, required String name}) =>
+  void addMarker({required Marker marker, required String name}) =>
       _markersState.addMarker(marker: marker, name: name);
 
   /// Remove a marker from the map
-  Future<void> removeMarker({required String name}) =>
+  void removeMarker({required String name}) =>
       _markersState.removeMarker(name: name);
 
   /// Add multiple markers to the map
-  Future<void> addMarkers({required Map<String, Marker> markers}) =>
+  void addMarkers({required Map<String, Marker> markers}) =>
       _markersState.addMarkers(markers: markers);
 
   /// Remove multiple makers from the map
-  Future<void> removeMarkers({required List<String> names}) =>
+  void removeMarkers({required List<String> names}) =>
       _markersState.removeMarkers(names: names);
 
   /// Fit bounds for all markers on map
@@ -211,20 +211,23 @@ class StatefulMapController {
   Future<void> fitMarker(String name) async => _markersState.fitOne(name);
 
   /// Fit bounds and zoom the map to center on a line
-  Future<void> fitLine(String name) async {
+  void fitLine(String name) {
     final line = _linesState.namedLines[name]!;
     final bounds = LatLngBounds();
-    line.points.forEach(bounds.extend);
+    for (final point in line.points) {
+      bounds.extend(point);
+    }
     mapController.fitBounds(bounds);
   }
 
   /// Add a line on the map
-  void addLine(
-      {required String name,
-      required List<LatLng> points,
-      double width = 3.0,
-      Color color = Colors.green,
-      bool isDotted = false}) {
+  void addLine({
+    required String name,
+    required List<LatLng> points,
+    double width = 3.0,
+    Color color = Colors.green,
+    bool isDotted = false,
+  }) {
     _linesState.addLine(
       name: name,
       line: Polyline(
@@ -270,10 +273,10 @@ class StatefulMapController {
   void removeLines(List<String> names) => _linesState.removeLines(names);
 
   /// Remove a polygon from the map
-  Future<void> removePolygon(String name) => _polygonsState.removePolygon(name);
+  void removePolygon(String name) => _polygonsState.removePolygon(name);
 
   /// Add a polygon on the map
-  Future<void> addPolygon({
+  void addPolygon({
     required String name,
     required List<LatLng> points,
     Color color = Colors.lightBlue,
@@ -307,14 +310,12 @@ class StatefulMapController {
           final point = feature.geometry as GeoJsonPoint;
           final pointName = point.name;
           if (pointName != null) {
-            unawaited(
-              addMarker(
-                name: pointName,
-                marker: Marker(
-                  point:
-                      LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
-                  builder: (BuildContext context) => markerIcon,
-                ),
+            addMarker(
+              name: pointName,
+              marker: Marker(
+                point:
+                    LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
+                builder: (BuildContext context) => markerIcon,
               ),
             );
           }
@@ -326,13 +327,11 @@ class StatefulMapController {
             for (final geoPoint in geoSerie.geoPoints) {
               final pointName = geoPoint.name;
               if (pointName != null) {
-                unawaited(
-                  addMarker(
-                    name: pointName,
-                    marker: Marker(
-                      point: LatLng(geoPoint.latitude, geoPoint.longitude),
-                      builder: (BuildContext context) => markerIcon,
-                    ),
+                addMarker(
+                  name: pointName,
+                  marker: Marker(
+                    point: LatLng(geoPoint.latitude, geoPoint.longitude),
+                    builder: (BuildContext context) => markerIcon,
                   ),
                 );
               }
@@ -360,16 +359,14 @@ class StatefulMapController {
         case GeoJsonFeatureType.polygon:
           final poly = feature.geometry as GeoJsonPolygon;
           for (final geoSerie in poly.geoSeries) {
-            unawaited(
-                addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
+            addPolygon(name: geoSerie.name, points: geoSerie.toLatLng());
           }
           break;
         case GeoJsonFeatureType.multipolygon:
           final mp = feature.geometry as GeoJsonMultiPolygon;
           for (final poly in mp.polygons) {
             for (final geoSerie in poly.geoSeries) {
-              unawaited(
-                  addPolygon(name: geoSerie.name, points: geoSerie.toLatLng()));
+              addPolygon(name: geoSerie.name, points: geoSerie.toLatLng());
             }
           }
           break;

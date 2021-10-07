@@ -27,9 +27,7 @@ class MarkersState {
   Map<String, Marker> get namedMarkers => _namedMarkers;
 
   /// Add a marker on the map
-  Future<void> addMarker({required String name, required Marker marker}) async {
-    //print("STATE ADD MARKER $name");
-    //print("STATE MARKERS: $_namedMarkers");
+  void addMarker({required String name, required Marker marker}) {
     try {
       //_buildMarkers();
       final markerAt = _markerAt(_namedMarkers[name], name);
@@ -47,15 +45,10 @@ class MarkersState {
     } catch (e) {
       throw MarkerException("Can not add marker: $e");
     }
-    //print("STATE MARKERS AFTER ADD: $_namedMarkers");
   }
 
   /// Remove a marker from the map
-  Future<void> removeMarker({required String name}) async {
-    //if (name != "livemarker") {
-    //print("STATE REMOVE MARKER $name");
-    //print("STATE MARKERS: $_namedMarkers");
-    //}
+  void removeMarker({required String name}) {
     try {
       //_buildMarkers();
       final removeAt = _markerAt(_namedMarkers[name], name);
@@ -124,11 +117,11 @@ class MarkersState {
   }
 
   /// Add multiple markers on the map
-  Future<void> addMarkers({required Map<String, Marker> markers}) async {
+  void addMarkers({required Map<String, Marker> markers}) {
     try {
-      markers.forEach((k, v) {
-        _namedMarkers[k] = v;
-      });
+      for (final entry in markers.entries) {
+        _namedMarkers[entry.key] = entry.value;
+      }
     } catch (e) {
       throw MarkerException("Can not add markers: $e");
     }
@@ -138,8 +131,10 @@ class MarkersState {
   }
 
   /// Remove multiple markers from the map
-  Future<void> removeMarkers({required List<String> names}) async {
-    names.forEach(_namedMarkers.remove);
+  void removeMarkers({required List<String> names}) {
+    for (final name in names) {
+      _namedMarkers.remove(name);
+    }
     _buildMarkers();
     notify(
         "updateMarkers", names, removeMarkers, MapControllerChangeType.markers);
@@ -162,7 +157,6 @@ class MarkersState {
 
   void _buildMarkers() {
     _markers = _namedMarkers.values.toList();
-    //print("AFTER BUILD MARKERS");
     //_printMarkers();
   }
 

@@ -27,10 +27,10 @@ class StatefulMarkersState {
   }
 
   void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) {
-    statefulMarkers.forEach((name, marker) {
-      _statefulMarkers[name] = marker;
-      _namedMarkers[name] = marker.marker;
-    });
+    for (final entry in statefulMarkers.entries) {
+      _statefulMarkers[entry.key] = entry.value;
+      _namedMarkers[entry.key] = entry.value.marker;
+    }
     notify("updateMarkers", statefulMarkers, addStatefulMarkers,
         MapControllerChangeType.markers);
   }

@@ -201,7 +201,6 @@ void initState() {
   sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
   super.initState();
 }
-
 ```
 
 ### Tile layer management
