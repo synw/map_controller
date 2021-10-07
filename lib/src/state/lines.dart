@@ -1,4 +1,6 @@
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geojson/geojson.dart';
+import 'package:geopoint/geopoint.dart';
 
 import '../controller.dart';
 import '../models.dart';
@@ -36,8 +38,34 @@ class LinesState {
 
   /// Remove multiple lines from the map
   void removeLines(List<String> names) async {
+    // TODO: This is a bit of a hack, but it works for now
     for (String name in names) {
       removeLine(name);
     }
+  }
+
+  /// Export all lines to a [GeoJsonFeature] with geometry
+  /// type [GeoJsonMultiLine]
+  GeoJsonFeature<GeoJsonMultiLine>? toGeoJsonFeatures() {
+    if (namedLines.isEmpty) {
+      return null;
+    }
+    final multiLine = GeoJsonMultiLine(name: "map_lines");
+    for (final k in namedLines.keys) {
+      final polyline = namedLines[k]!;
+      final line = GeoJsonLine()..name = k;
+      final geoSerie = GeoSerie(name: line.name!, type: GeoSerieType.line);
+      for (final point in polyline.points) {
+        geoSerie.geoPoints.add(
+            GeoPoint(latitude: point.latitude, longitude: point.longitude));
+      }
+      line.geoSerie = geoSerie;
+      multiLine.lines.add(line);
+    }
+    final feature = GeoJsonFeature<GeoJsonMultiLine>()
+      ..type = GeoJsonFeatureType.multiline
+      ..geometry = multiLine
+      ..properties = <String, dynamic>{"name": "map_lines"};
+    return feature;
   }
 }

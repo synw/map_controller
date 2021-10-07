@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_map: ">=0.13.1 <0.15.0"
+  geojson: ^1.0.0
   geopoint: ^1.0.0
   latlong2: ^0.8.1
   rxdart: ">=0.26.0 <0.28.0"

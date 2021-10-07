@@ -1,4 +1,6 @@
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geojson/geojson.dart';
+import 'package:geopoint/geopoint.dart';
 
 import '../controller.dart';
 import '../exceptions.dart';
@@ -76,6 +78,33 @@ class MarkersState {
       throw MarkerException("Can not remove marker: $e");
     }
     print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
+  }
+
+  /// Export all markers to a [GeoJsonFeature] with geometry
+  /// type [GeoJsonMultiPoint]
+  GeoJsonFeature? toGeoJsonFeatures() {
+    if (namedMarkers.isEmpty) {
+      return null;
+    }
+    final multiPoint = GeoJsonMultiPoint();
+    final geoPoints = <GeoPoint>[];
+    for (final k in namedMarkers.keys) {
+      final m = namedMarkers[k]!;
+      geoPoints.add(GeoPoint(
+        latitude: m.point.latitude,
+        longitude: m.point.longitude,
+      ));
+    }
+    multiPoint
+      ..name = "map_markers"
+      ..geoSerie =
+          GeoSerie.fromNameAndType(name: multiPoint.name!, typeStr: "group");
+    multiPoint.geoSerie!.geoPoints = geoPoints;
+    final feature = GeoJsonFeature<GeoJsonMultiPoint>()
+      ..type = GeoJsonFeatureType.multipoint
+      ..properties = <String, dynamic>{"name": multiPoint.name}
+      ..geometry = multiPoint;
+    return feature;
   }
 
   int? _markerAt(Marker? marker, String name) {

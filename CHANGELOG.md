@@ -4,6 +4,8 @@
 
 * Changed `flutter_map` dependency to `">=0.13.1 <0.15.0"`
 * Upgrade `latlong2` dependency to `^0.8.1`
+* Added method `removeLines`
+* Putted back GeoJson features with the `geojson` package now that it is nullsafe
 
 ## 0.12.0-nullsafe
 
