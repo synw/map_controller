@@ -29,11 +29,12 @@ typedef FeedNotifyFunction = void Function(
 /// The map controller
 class StatefulMapController {
   /// Provide a Flutter map [MapController]
-  StatefulMapController(
-      {required this.mapController,
-      this.tileLayerType = TileLayerType.normal,
-      this.customTileLayer,
-      this.verbose = false}) {
+  StatefulMapController({
+    required this.mapController,
+    this.tileLayerType = TileLayerType.normal,
+    this.customTileLayer,
+    this.verbose = false,
+  }) {
     // init state
     _markersState = MarkersState(mapController: mapController, notify: notify);
     _linesState = LinesState(notify: notify);
@@ -274,6 +275,10 @@ class StatefulMapController {
 
   /// Remove a polygon from the map
   void removePolygon(String name) => _polygonsState.removePolygon(name);
+
+  /// Remove multiple polygons from the map
+  void removePolygons(List<String> names) =>
+      _polygonsState.removePolygons(names);
 
   /// Add a polygon on the map
   void addPolygon({

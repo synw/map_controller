@@ -38,7 +38,7 @@ class LinesState {
 
   /// Remove multiple lines from the map
   void removeLines(List<String> names) async {
-    // TODO: This is a bit of a hack, but it works for now
+    // TODO: Optimize this
     for (String name in names) {
       removeLine(name);
     }

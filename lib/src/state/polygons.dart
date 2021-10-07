@@ -49,6 +49,14 @@ class PolygonsState {
     }
   }
 
+  /// Remove multiple polygons from the map
+  void removePolygons(List<String> names) {
+    // TODO: Optimize this
+    for (final name in names) {
+      removePolygon(name);
+    }
+  }
+
   /// Export all polygons to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPolygon]
   GeoJsonFeature<GeoJsonMultiPolygon>? toGeoJsonFeatures() {
