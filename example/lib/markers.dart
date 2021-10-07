@@ -13,9 +13,10 @@ class Place {
 }
 
 class _MarkersPageState extends State<MarkersPage> {
-  MapController mapController;
-  StatefulMapController statefulMapController;
-  StreamSubscription<StatefulMapControllerStateChange> sub;
+  final mapController = MapController();
+  late final statefulMapController =
+      StatefulMapController(mapController: mapController);
+  late final StreamSubscription<StatefulMapControllerStateChange> sub;
 
   final List<Place> places = [
     Place("Notre-Dame", LatLng(48.853831, 2.348722)),
@@ -31,7 +32,7 @@ class _MarkersPageState extends State<MarkersPage> {
   void addMarker(BuildContext context) {
     for (final place in places) {
       if (!_markersOnMap.contains(place)) {
-        print("Adding marker ${place.name}");
+        debugPrint("Adding marker ${place.name}");
         statefulMapController.addMarker(
             name: place.name,
             marker: Marker(
@@ -47,8 +48,6 @@ class _MarkersPageState extends State<MarkersPage> {
 
   @override
   void initState() {
-    mapController = MapController();
-    statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => setState(() => ready = true));
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
@@ -65,7 +64,7 @@ class _MarkersPageState extends State<MarkersPage> {
             zoom: 11.0,
           ),
           layers: [
-            statefulMapController.tileLayer,
+            statefulMapController.tileLayer!,
             MarkerLayerOptions(
               markers: statefulMapController.markers,
             ),
@@ -89,6 +88,8 @@ class _MarkersPageState extends State<MarkersPage> {
 }
 
 class MarkersPage extends StatefulWidget {
+  const MarkersPage({Key? key}) : super(key: key);
+
   @override
   _MarkersPageState createState() => _MarkersPageState();
 }

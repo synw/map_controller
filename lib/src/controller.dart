@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../map_controller.dart';
+import 'exceptions.dart';
 import 'models.dart';
 import 'state/lines.dart';
 import 'state/map.dart';
@@ -16,14 +18,23 @@ import 'state/stateful_markers.dart';
 import 'state/tile_layer.dart';
 import 'types.dart';
 
+/// Function to notify the changefeed
+typedef FeedNotifyFunction = void Function(
+  String name,
+  dynamic value,
+  Function from,
+  MapControllerChangeType type,
+);
+
 /// The map controller
 class StatefulMapController {
   /// Provide a Flutter map [MapController]
-  StatefulMapController(
-      {required this.mapController,
-      this.tileLayerType = TileLayerType.normal,
-      this.customTileLayer,
-      this.verbose = false}) {
+  StatefulMapController({
+    required this.mapController,
+    this.tileLayerType = TileLayerType.normal,
+    this.customTileLayer,
+    this.verbose = false,
+  }) {
     // init state
     _markersState = MarkersState(mapController: mapController, notify: notify);
     _linesState = LinesState(notify: notify);
@@ -96,7 +107,11 @@ class StatefulMapController {
   void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) =>
       _statefulMarkersState.addStatefulMarkers(statefulMarkers);
 
-  void mutateMarker({String? name, String? property, dynamic value}) =>
+  void mutateMarker({
+    required String name,
+    required String property,
+    dynamic value,
+  }) =>
       _statefulMarkersState.mutate(name, property, value);
 
   /// The markers present on the map
@@ -117,10 +132,10 @@ class StatefulMapController {
   /// If no markers were found return an empty list.
   List<Marker> getMarkers(List<String> names) {
     final markers = <Marker>[];
-    names.forEach((name) {
+    for (final name in names) {
       final marker = getMarker(name);
       if (marker != null) markers.add(marker);
-    });
+    }
     return markers;
   }
 
@@ -146,10 +161,10 @@ class StatefulMapController {
   /// If no markers were found return an empty list.
   List<Polyline> getLines(List<String> names) {
     final lines = <Polyline>[];
-    names.forEach((name) {
+    for (final name in names) {
       final line = getLine(name);
       if (line != null) lines.add(line);
-    });
+    }
     return lines;
   }
 
@@ -163,35 +178,35 @@ class StatefulMapController {
   TileLayerOptions? get tileLayer => _tileLayerState.tileLayer;
 
   /// Zoom in one level
-  Future<void> zoomIn() => _mapState.zoomIn();
+  void zoomIn() => _mapState.zoomIn();
 
   /// Zoom out one level
-  Future<void> zoomOut() => _mapState.zoomOut();
+  void zoomOut() => _mapState.zoomOut();
 
   /// Zoom to level
-  Future<void> zoomTo(double value) => _mapState.zoomTo(value);
+  void zoomTo(double value) => _mapState.zoomTo(value);
 
   /// Center the map on a [LatLng]
-  Future<void> centerOnPoint(LatLng point) => _mapState.centerOnPoint(point);
+  void centerOnPoint(LatLng point) => _mapState.centerOnPoint(point);
 
   /// The callback used to handle gestures and keep the state in sync
   void onPositionChanged(MapPosition pos, bool gesture) =>
       _mapState.onPositionChanged(pos, gesture);
 
   /// Add a marker on the map
-  Future<void> addMarker({required Marker marker, required String name}) =>
+  void addMarker({required Marker marker, required String name}) =>
       _markersState.addMarker(marker: marker, name: name);
 
   /// Remove a marker from the map
-  Future<void> removeMarker({required String name}) =>
+  void removeMarker({required String name}) =>
       _markersState.removeMarker(name: name);
 
   /// Add multiple markers to the map
-  Future<void> addMarkers({required Map<String, Marker> markers}) =>
+  void addMarkers({required Map<String, Marker> markers}) =>
       _markersState.addMarkers(markers: markers);
 
   /// Remove multiple makers from the map
-  Future<void> removeMarkers({required List<String> names}) =>
+  void removeMarkers({required List<String> names}) =>
       _markersState.removeMarkers(names: names);
 
   /// Fit bounds for all markers on map
@@ -201,21 +216,24 @@ class StatefulMapController {
   Future<void> fitMarker(String name) async => _markersState.fitOne(name);
 
   /// Fit bounds and zoom the map to center on a line
-  Future<void> fitLine(String name) async {
+  void fitLine(String name) {
     final line = _linesState.namedLines[name]!;
     final bounds = LatLngBounds();
-    line.points.forEach(bounds.extend);
+    for (final point in line.points) {
+      bounds.extend(point);
+    }
     mapController.fitBounds(bounds);
   }
 
   /// Add a line on the map
-  Future<void> addLine(
-      {required String name,
-      required List<LatLng> points,
-      double width = 3.0,
-      Color color = Colors.green,
-      bool isDotted = false}) async {
-    await _linesState.addLine(
+  void addLine({
+    required String name,
+    required List<LatLng> points,
+    double width = 3.0,
+    Color color = Colors.green,
+    bool isDotted = false,
+  }) {
+    _linesState.addLine(
       name: name,
       line: Polyline(
         points: points,
@@ -227,16 +245,17 @@ class StatefulMapController {
   }
 
   /// Add a line on the map
-  Future<void> addLineFromGeoPoints(
-      {required String name,
-      required List<GeoPoint> geoPoints,
-      double width = 3.0,
-      Color color = Colors.green,
-      bool isDotted = false}) async {
+  void addLineFromGeoPoints({
+    required String name,
+    required List<GeoPoint> geoPoints,
+    double width = 3.0,
+    Color color = Colors.green,
+    bool isDotted = false,
+  }) {
     final points =
         GeoSerie(type: GeoSerieType.line, name: "serie", geoPoints: geoPoints)
             .toLatLng();
-    await _linesState.addLine(
+    _linesState.addLine(
       name: name,
       line: Polyline(
         points: points,
@@ -248,24 +267,31 @@ class StatefulMapController {
   }
 
   /// Add a line on the map.
-  Future<void> addPolyline(
-      {required String name, required Polyline polyline}) async {
-    await _linesState.addLine(name: name, line: polyline);
+  void addPolyline({required String name, required Polyline polyline}) {
+    _linesState.addLine(name: name, line: polyline);
   }
 
   /// Remove a line from the map
-  Future<void> removeLine(String name) => _linesState.removeLine(name);
+  void removeLine(String name) => _linesState.removeLine(name);
+
+  /// Remove multiple lines from the map
+  void removeLines(List<String> names) => _linesState.removeLines(names);
 
   /// Remove a polygon from the map
-  Future<void> removePolygon(String name) => _polygonsState.removePolygon(name);
+  void removePolygon(String name) => _polygonsState.removePolygon(name);
+
+  /// Remove multiple polygons from the map
+  void removePolygons(List<String> names) =>
+      _polygonsState.removePolygons(names);
 
   /// Add a polygon on the map
-  Future<void> addPolygon(
-          {required String name,
-          required List<LatLng> points,
-          Color color = Colors.lightBlue,
-          double borderWidth = 0.0,
-          Color borderColor = const Color(0xFFFFFF00)}) =>
+  void addPolygon({
+    required String name,
+    required List<LatLng> points,
+    Color color = Colors.lightBlue,
+    double borderWidth = 0.0,
+    Color borderColor = const Color(0xFFFFFF00),
+  }) =>
       _polygonsState.addPolygon(
           name: name,
           points: points,
@@ -277,13 +303,128 @@ class StatefulMapController {
   void switchTileLayer(TileLayerType layer) =>
       _tileLayerState.switchTileLayer(layer);
 
+  /// Display some geojson data on the map
+  Future<void> fromGeoJson(
+    String data, {
+    bool verbose = false,
+    Icon markerIcon = const Icon(Icons.location_on),
+    bool noIsolate = false,
+  }) async {
+    debugPrint("From geojson $data");
+
+    final geojson = GeoJson();
+    geojson.processedFeatures.listen((GeoJsonFeature feature) {
+      switch (feature.type) {
+        case GeoJsonFeatureType.point:
+          final point = feature.geometry as GeoJsonPoint;
+          final pointName = point.name;
+          if (pointName != null) {
+            addMarker(
+              name: pointName,
+              marker: Marker(
+                point:
+                    LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
+                builder: (BuildContext context) => markerIcon,
+              ),
+            );
+          }
+          break;
+        case GeoJsonFeatureType.multipoint:
+          final mp = feature.geometry as GeoJsonMultiPoint;
+          final geoSerie = mp.geoSerie;
+          if (geoSerie != null) {
+            for (final geoPoint in geoSerie.geoPoints) {
+              final pointName = geoPoint.name;
+              if (pointName != null) {
+                addMarker(
+                  name: pointName,
+                  marker: Marker(
+                    point: LatLng(geoPoint.latitude, geoPoint.longitude),
+                    builder: (BuildContext context) => markerIcon,
+                  ),
+                );
+              }
+            }
+          }
+          break;
+        case GeoJsonFeatureType.line:
+          final line = feature.geometry as GeoJsonLine;
+          final lineName = line.name;
+          final geoSerie = line.geoSerie;
+          if (lineName != null && geoSerie != null) {
+            addLine(name: lineName, points: geoSerie.toLatLng());
+          }
+          break;
+        case GeoJsonFeatureType.multiline:
+          final ml = feature.geometry as GeoJsonMultiLine;
+          for (final line in ml.lines) {
+            final lineName = line.name;
+            final geoSerie = line.geoSerie;
+            if (lineName != null && geoSerie != null) {
+              addLine(name: lineName, points: geoSerie.toLatLng());
+            }
+          }
+          break;
+        case GeoJsonFeatureType.polygon:
+          final poly = feature.geometry as GeoJsonPolygon;
+          for (final geoSerie in poly.geoSeries) {
+            addPolygon(name: geoSerie.name, points: geoSerie.toLatLng());
+          }
+          break;
+        case GeoJsonFeatureType.multipolygon:
+          final mp = feature.geometry as GeoJsonMultiPolygon;
+          for (final poly in mp.polygons) {
+            for (final geoSerie in poly.geoSeries) {
+              addPolygon(name: geoSerie.name, points: geoSerie.toLatLng());
+            }
+          }
+          break;
+        case GeoJsonFeatureType.geometryCollection:
+          // TODO : implement
+          throw const NotImplementedException(
+              "GeoJsonFeatureType.geometryCollection Not implemented");
+      }
+    });
+    if (noIsolate) {
+      await geojson.parseInMainThread(data);
+    } else {
+      await geojson.parse(data);
+    }
+  }
+
+  /// Export all the map assets to a [GeoJsonFeatureCollection]
+  GeoJsonFeatureCollection toGeoJsonFeatures() {
+    final featureCollection = GeoJsonFeatureCollection()
+      ..collection = <GeoJsonFeature>[];
+    final markersFeature = _markersState.toGeoJsonFeatures();
+    final linesFeature = _linesState.toGeoJsonFeatures();
+    final polygonsFeature = _polygonsState.toGeoJsonFeatures();
+    if (markersFeature != null) {
+      featureCollection.collection.add(markersFeature);
+    }
+    if (linesFeature != null) {
+      featureCollection.collection.add(linesFeature);
+    }
+    if (polygonsFeature != null) {
+      featureCollection.collection.add(polygonsFeature);
+    }
+    return featureCollection;
+  }
+
+  /// Convert the map assets to a geojson string
+  String toGeoJson() => toGeoJsonFeatures().serialize();
+
   /// Notify to the changefeed
   void notify(
-      String name, dynamic value, Function from, MapControllerChangeType type) {
+    String name,
+    dynamic value,
+    Function from,
+    MapControllerChangeType type,
+  ) {
     final change = StatefulMapControllerStateChange(
         name: name, value: value, from: from, type: type);
     if (verbose) {
-      print("Map state change: $change");
+      debugPrint("Map state change: $change");
     }
     _subject.add(change);
   }

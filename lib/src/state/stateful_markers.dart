@@ -1,5 +1,6 @@
 import 'package:flutter_map/flutter_map.dart';
 
+import '../controller.dart';
 import '../models.dart';
 
 class StatefulMarkersState {
@@ -10,7 +11,7 @@ class StatefulMarkersState {
   final MapController mapController;
 
   /// The notification function
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   final _statefulMarkers = <String?, StatefulMarker>{};
   final _namedMarkers = <String?, Marker>{};
@@ -26,15 +27,15 @@ class StatefulMarkersState {
   }
 
   void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) {
-    statefulMarkers.forEach((name, marker) {
-      _statefulMarkers[name] = marker;
-      _namedMarkers[name] = marker.marker;
-    });
+    for (final entry in statefulMarkers.entries) {
+      _statefulMarkers[entry.key] = entry.value;
+      _namedMarkers[entry.key] = entry.value.marker;
+    }
     notify("updateMarkers", statefulMarkers, addStatefulMarkers,
         MapControllerChangeType.markers);
   }
 
-  void mutate(String? name, String? property, dynamic value) {
+  void mutate(String name, String property, dynamic value) {
     _statefulMarkers[name]!.mutate(property, value);
     addStatefulMarker(name, _statefulMarkers[name]!);
   }

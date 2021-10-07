@@ -12,9 +12,10 @@ class Place {
 }
 
 class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
-  MapController mapController;
-  StatefulMapController statefulMapController;
-  StreamSubscription<StatefulMapControllerStateChange> sub;
+  final mapController = MapController();
+  late final statefulMapController =
+      StatefulMapController(mapController: mapController);
+  late final StreamSubscription<StatefulMapControllerStateChange> sub;
 
   final List<Place> places = [
     Place("Notre-Dame", LatLng(48.853831, 2.348722)),
@@ -30,7 +31,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
   void addMarker(BuildContext context) {
     for (final place in places) {
       if (!_markersOnMap.contains(place)) {
-        print("Adding marker ${place.name}");
+        debugPrint("Adding marker ${place.name}");
         statefulMapController.addStatefulMarker(
             name: place.name,
             statefulMarker: StatefulMarker(
@@ -39,7 +40,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
                 width: 150.0,
                 state: <String, dynamic>{"showText": false},
                 point: place.point,
-                builder: (BuildContext context, Map<String, dynamic> state) {
+                builder: (context, state) {
                   Widget w;
                   final markerIcon = IconButton(
                       icon: const Icon(Icons.location_on),
@@ -69,8 +70,6 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
 
   @override
   void initState() {
-    mapController = MapController();
-    statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => setState(() => ready = true));
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
@@ -87,7 +86,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
             zoom: 11.0,
           ),
           layers: [
-            statefulMapController.tileLayer,
+            statefulMapController.tileLayer!,
             MarkerLayerOptions(
                 markers: statefulMapController
                     .getMarkers(['Notre-Dame', 'Montmartre'])),
@@ -111,6 +110,8 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
 }
 
 class StatefulMarkersPage extends StatefulWidget {
+  const StatefulMarkersPage({Key? key}) : super(key: key);
+
   @override
   _StatefulMarkersPageState createState() => _StatefulMarkersPageState();
 }
