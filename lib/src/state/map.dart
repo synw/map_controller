@@ -1,6 +1,7 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../controller.dart';
 import '../models.dart';
 
 /// State of the map
@@ -12,7 +13,7 @@ class MapState {
   final MapController mapController;
 
   /// Function to notify the changefeed
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   double? _zoom = 1.0;
   LatLng? _center = LatLng(0.0, 0.0);

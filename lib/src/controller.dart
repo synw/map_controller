@@ -16,6 +16,14 @@ import 'state/stateful_markers.dart';
 import 'state/tile_layer.dart';
 import 'types.dart';
 
+/// Function to notify the changefeed
+typedef FeedNotifyFunction = void Function(
+  String name,
+  dynamic value,
+  Function from,
+  MapControllerChangeType type,
+);
+
 /// The map controller
 class StatefulMapController {
   /// Provide a Flutter map [MapController]
@@ -209,13 +217,13 @@ class StatefulMapController {
   }
 
   /// Add a line on the map
-  Future<void> addLine(
+  void addLine(
       {required String name,
       required List<LatLng> points,
       double width = 3.0,
       Color color = Colors.green,
-      bool isDotted = false}) async {
-    await _linesState.addLine(
+      bool isDotted = false}) {
+    _linesState.addLine(
       name: name,
       line: Polyline(
         points: points,
@@ -227,16 +235,17 @@ class StatefulMapController {
   }
 
   /// Add a line on the map
-  Future<void> addLineFromGeoPoints(
-      {required String name,
-      required List<GeoPoint> geoPoints,
-      double width = 3.0,
-      Color color = Colors.green,
-      bool isDotted = false}) async {
+  void addLineFromGeoPoints({
+    required String name,
+    required List<GeoPoint> geoPoints,
+    double width = 3.0,
+    Color color = Colors.green,
+    bool isDotted = false,
+  }) {
     final points =
         GeoSerie(type: GeoSerieType.line, name: "serie", geoPoints: geoPoints)
             .toLatLng();
-    await _linesState.addLine(
+    _linesState.addLine(
       name: name,
       line: Polyline(
         points: points,
@@ -248,24 +257,27 @@ class StatefulMapController {
   }
 
   /// Add a line on the map.
-  Future<void> addPolyline(
-      {required String name, required Polyline polyline}) async {
-    await _linesState.addLine(name: name, line: polyline);
+  void addPolyline({required String name, required Polyline polyline}) {
+    _linesState.addLine(name: name, line: polyline);
   }
 
   /// Remove a line from the map
-  Future<void> removeLine(String name) => _linesState.removeLine(name);
+  void removeLine(String name) => _linesState.removeLine(name);
+
+  /// Remove multiple lines from the map
+  void removeLines(List<String> names) => _linesState.removeLines(names);
 
   /// Remove a polygon from the map
   Future<void> removePolygon(String name) => _polygonsState.removePolygon(name);
 
   /// Add a polygon on the map
-  Future<void> addPolygon(
-          {required String name,
-          required List<LatLng> points,
-          Color color = Colors.lightBlue,
-          double borderWidth = 0.0,
-          Color borderColor = const Color(0xFFFFFF00)}) =>
+  Future<void> addPolygon({
+    required String name,
+    required List<LatLng> points,
+    Color color = Colors.lightBlue,
+    double borderWidth = 0.0,
+    Color borderColor = const Color(0xFFFFFF00),
+  }) =>
       _polygonsState.addPolygon(
           name: name,
           points: points,
@@ -279,11 +291,15 @@ class StatefulMapController {
 
   /// Notify to the changefeed
   void notify(
-      String name, dynamic value, Function from, MapControllerChangeType type) {
+    String name,
+    dynamic value,
+    Function from,
+    MapControllerChangeType type,
+  ) {
     final change = StatefulMapControllerStateChange(
         name: name, value: value, from: from, type: type);
     if (verbose) {
-      print("Map state change: $change");
+      debugPrint("Map state change: $change");
     }
     _subject.add(change);
   }

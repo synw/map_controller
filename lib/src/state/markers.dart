@@ -1,5 +1,6 @@
 import 'package:flutter_map/flutter_map.dart';
 
+import '../controller.dart';
 import '../exceptions.dart';
 import '../models.dart';
 
@@ -12,7 +13,7 @@ class MarkersState {
   final MapController mapController;
 
   /// The notification function
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   var _markers = <Marker>[];
   final Map<String, Marker> _namedMarkers = {};

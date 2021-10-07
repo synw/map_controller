@@ -1,5 +1,6 @@
 import 'package:flutter_map/flutter_map.dart';
 
+import '../controller.dart';
 import '../models.dart';
 
 class StatefulMarkersState {
@@ -10,7 +11,7 @@ class StatefulMarkersState {
   final MapController mapController;
 
   /// The notification function
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   final _statefulMarkers = <String?, StatefulMarker>{};
   final _namedMarkers = <String?, Marker>{};

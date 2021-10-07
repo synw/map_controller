@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
+import '../controller.dart';
 import '../models.dart';
 import '../types.dart';
 
@@ -20,7 +21,7 @@ class TileLayerState {
   TileLayerOptions? customTileLayer;
 
   /// Function to notify the changefeed
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   TileLayerOptions? _tileLayer;
 

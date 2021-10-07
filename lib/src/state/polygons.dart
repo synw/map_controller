@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../controller.dart';
 import '../models.dart';
 
 /// State of the polygons on the map
@@ -9,7 +11,7 @@ class PolygonsState {
   PolygonsState({required this.notify});
 
   /// The notify function
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   final Map<String, Polygon> _namedPolygons = {};
 
