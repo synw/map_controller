@@ -13,13 +13,13 @@ class StatefulMarkersState {
   /// The notification function
   final FeedNotifyFunction notify;
 
-  final _statefulMarkers = <String?, StatefulMarker>{};
+  final _statefulMarkers = <String, StatefulMarker>{};
   final _namedMarkers = <String?, Marker>{};
 
   List<Marker> get markers => _namedMarkers.values.toList();
-  Map<String?, StatefulMarker> get statefulMarkers => _statefulMarkers;
+  Map<String, StatefulMarker> get statefulMarkers => _statefulMarkers;
 
-  void addStatefulMarker(String? name, StatefulMarker statefulMarker) {
+  void addStatefulMarker(String name, StatefulMarker statefulMarker) {
     _statefulMarkers[name] = statefulMarker;
     _namedMarkers[name] = statefulMarker.marker;
     notify("updateMarkers", statefulMarker, addStatefulMarker,

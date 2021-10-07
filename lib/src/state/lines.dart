@@ -38,10 +38,8 @@ class LinesState {
 
   /// Remove multiple lines from the map
   void removeLines(List<String> names) async {
-    // TODO: Optimize this
-    for (String name in names) {
-      removeLine(name);
-    }
+    _namedLines.removeWhere((key, value) => names.contains(key));
+    notify("updateLines", names, removeLines, MapControllerChangeType.lines);
   }
 
   /// Export all lines to a [GeoJsonFeature] with geometry

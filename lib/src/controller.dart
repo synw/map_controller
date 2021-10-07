@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
@@ -100,8 +101,10 @@ class StatefulMapController {
   Map<String?, StatefulMarker> get statefulMarkers =>
       _statefulMarkersState.statefulMarkers;
 
-  void addStatefulMarker(
-          {String? name, required StatefulMarker statefulMarker}) =>
+  void addStatefulMarker({
+    required String name,
+    required StatefulMarker statefulMarker,
+  }) =>
       _statefulMarkersState.addStatefulMarker(name, statefulMarker);
 
   void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) =>
@@ -132,9 +135,10 @@ class StatefulMapController {
   /// If no markers were found return an empty list.
   List<Marker> getMarkers(List<String> names) {
     final markers = <Marker>[];
+    final _statefulMarkers = _statefulMarkersState.statefulMarkers;
     for (final name in names) {
-      final marker = getMarker(name);
-      if (marker != null) markers.add(marker);
+      final marker = _statefulMarkers[name];
+      if (marker != null) markers.add(marker.marker);
     }
     return markers;
   }
@@ -293,11 +297,12 @@ class StatefulMapController {
     Color borderColor = const Color(0xFFFFFF00),
   }) =>
       _polygonsState.addPolygon(
-          name: name,
-          points: points,
-          color: color,
-          borderWidth: borderWidth,
-          borderColor: borderColor);
+        name: name,
+        points: points,
+        color: color,
+        borderWidth: borderWidth,
+        borderColor: borderColor,
+      );
 
   /// Switch to a tile layer
   void switchTileLayer(TileLayerType layer) =>
@@ -308,7 +313,7 @@ class StatefulMapController {
     String data, {
     bool verbose = false,
     Icon markerIcon = const Icon(Icons.location_on),
-    bool noIsolate = false,
+    bool noIsolate = kIsWeb,
   }) async {
     debugPrint("From geojson $data");
 
