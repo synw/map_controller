@@ -1,29 +1,49 @@
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:map_controller/map_controller.dart';
 
 import '../utils/custom_tests.dart';
 import '../utils/test_app.dart';
 
 void main() {
   group('StatefulMapController', () {
-    final mapController = MapController();
-    final statefulController = StatefulMapController(
-      mapController: mapController,
-    );
-
     testFlutterMap(
       'mapController is the same instance as passed to constructor',
-      (tester) async {
-        expect(statefulController.mapController, mapController);
+      (tester, mapController, statefulMapController) async {
+        expect(statefulMapController.mapController, mapController);
       },
     );
 
-    testFlutterMap('zoom', (tester) async {
-      await tester.pumpWidget(
-        TestApp(mapController: statefulController.mapController),
-      );
-      expect(statefulController.zoom, 13.0);
-    });
+    testFlutterMap(
+      'zoom',
+      (tester, mapController, statefulMapController) async {
+        await tester.pumpWidget(
+          TestApp(mapController: statefulMapController.mapController),
+        );
+        expect(statefulMapController.zoom, 13.0);
+      },
+    );
+
+    testFlutterMap(
+      'zoomIn',
+      (tester, mapController, statefulMapController) async {
+        await tester.pumpWidget(
+          TestApp(mapController: statefulMapController.mapController),
+        );
+        expect(statefulMapController.zoom, 13.0);
+        statefulMapController.zoomIn();
+        expect(statefulMapController.zoom, 14.0);
+      },
+    );
+
+    testFlutterMap(
+      'zoomOut',
+      (tester, mapController, statefulMapController) async {
+        await tester.pumpWidget(
+          TestApp(mapController: statefulMapController.mapController),
+        );
+        expect(statefulMapController.zoom, 13.0);
+        statefulMapController.zoomOut();
+        expect(statefulMapController.zoom, 12.0);
+      },
+    );
   });
 }
