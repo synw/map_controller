@@ -36,7 +36,9 @@ class StatefulMarkersState {
   }
 
   void mutate(String name, String property, dynamic value) {
-    _statefulMarkers[name]!.mutate(property, value);
-    addStatefulMarker(name, _statefulMarkers[name]!);
+    if (_statefulMarkers.containsKey(name)) {
+      _statefulMarkers[name]!.mutate(property, value);
+      addStatefulMarker(name, _statefulMarkers[name]!);
+    }
   }
 }
