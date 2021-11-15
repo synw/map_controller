@@ -101,7 +101,7 @@ class StatefulMapController {
   LatLng get center => mapController.center;
 
   /// The stateful markers present on the map
-  Map<String?, StatefulMarker> get statefulMarkers =>
+  Map<String, StatefulMarker> get statefulMarkers =>
       _statefulMarkersState.statefulMarkers;
 
   void addStatefulMarker({

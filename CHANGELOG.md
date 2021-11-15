@@ -7,6 +7,7 @@
 * Added method `removeLines`
 * Putted back GeoJson features with the `geojson` package now that it is nullsafe
 * Updated example and fixed some issues with the nullsafety migration
+* Added unit tests
 
 ## 0.12.0-nullsafe
 
