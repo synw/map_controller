@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_bool_literals_in_conditional_expressions
+    - avoid_escaping_inner_quotes
+    - parameter_assignments
+    - prefer_null_aware_method_calls
+    - require_trailing_commas
+    - use_is_even_rather_than_modulo
+    - use_named_constants
+    - use_to_and_as_if_applicable
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options

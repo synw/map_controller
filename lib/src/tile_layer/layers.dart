@@ -4,11 +4,8 @@ import '../controller.dart';
 import '../types.dart';
 
 class _MapTileLayerNormalState extends State<MapTileLayerNormal> {
-  _MapTileLayerNormalState({required this.controller});
-
-  final StatefulMapController controller;
-
-  TileLayerType? _tileLayerType;
+  late final StatefulMapController controller = widget.controller;
+  late final TileLayerType _tileLayerType = controller.tileLayerType;
 
   @override
   Widget build(BuildContext context) {
@@ -27,22 +24,19 @@ class _MapTileLayerNormalState extends State<MapTileLayerNormal> {
 /// Normal tile layer
 class MapTileLayerNormal extends StatefulWidget {
   /// Provide a controller
-  const MapTileLayerNormal({required this.controller});
+  const MapTileLayerNormal({Key? key, required this.controller})
+      : super(key: key);
 
   /// The map controller
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerNormalState createState() =>
-      _MapTileLayerNormalState(controller: controller);
+  _MapTileLayerNormalState createState() => _MapTileLayerNormalState();
 }
 
 class _MapTileLayerMonochromeState extends State<MapTileLayerMonochrome> {
-  _MapTileLayerMonochromeState({required this.controller});
-
-  final StatefulMapController controller;
-
-  TileLayerType? _tileLayerType;
+  late final StatefulMapController controller = widget.controller;
+  late final TileLayerType _tileLayerType = controller.tileLayerType;
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +55,19 @@ class _MapTileLayerMonochromeState extends State<MapTileLayerMonochrome> {
 /// Monochrome tile layer
 class MapTileLayerMonochrome extends StatefulWidget {
   /// Provide a controller
-  const MapTileLayerMonochrome({required this.controller});
+  const MapTileLayerMonochrome({Key? key, required this.controller})
+      : super(key: key);
 
   /// The map controller
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerMonochromeState createState() =>
-      _MapTileLayerMonochromeState(controller: controller);
+  _MapTileLayerMonochromeState createState() => _MapTileLayerMonochromeState();
 }
 
 class _MapTileLayerTopographyState extends State<MapTileLayerTopography> {
-  _MapTileLayerTopographyState({required this.controller});
-
-  final StatefulMapController controller;
-
-  TileLayerType? _tileLayerType;
+  late final StatefulMapController controller = widget.controller;
+  late final TileLayerType _tileLayerType = controller.tileLayerType;
 
   @override
   Widget build(BuildContext context) {
@@ -95,22 +86,19 @@ class _MapTileLayerTopographyState extends State<MapTileLayerTopography> {
 /// Topography tile layer
 class MapTileLayerTopography extends StatefulWidget {
   /// Provide a controller
-  const MapTileLayerTopography({required this.controller});
+  const MapTileLayerTopography({Key? key, required this.controller})
+      : super(key: key);
 
   /// The map controller
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerTopographyState createState() =>
-      _MapTileLayerTopographyState(controller: controller);
+  _MapTileLayerTopographyState createState() => _MapTileLayerTopographyState();
 }
 
 class _MapTileLayerHikeState extends State<MapTileLayerHike> {
-  _MapTileLayerHikeState({required this.controller});
-
-  final StatefulMapController controller;
-
-  TileLayerType? _tileLayerType;
+  late final StatefulMapController controller = widget.controller;
+  late final TileLayerType _tileLayerType = controller.tileLayerType;
 
   @override
   Widget build(BuildContext context) {
@@ -129,22 +117,19 @@ class _MapTileLayerHikeState extends State<MapTileLayerHike> {
 /// Hike tile layer
 class MapTileLayerHike extends StatefulWidget {
   /// Provide a controller
-  const MapTileLayerHike({required this.controller});
+  const MapTileLayerHike({Key? key, required this.controller})
+      : super(key: key);
 
   /// The map controller
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerHikeState createState() =>
-      _MapTileLayerHikeState(controller: controller);
+  _MapTileLayerHikeState createState() => _MapTileLayerHikeState();
 }
 
 class _MapTileLayerCustomState extends State<MapTileLayerCustom> {
-  _MapTileLayerCustomState({required this.controller});
-
-  final StatefulMapController controller;
-
-  TileLayerType? _tileLayerType;
+  late final StatefulMapController controller = widget.controller;
+  late final TileLayerType _tileLayerType = controller.tileLayerType;
 
   @override
   Widget build(BuildContext context) {
@@ -163,12 +148,12 @@ class _MapTileLayerCustomState extends State<MapTileLayerCustom> {
 /// Custom tile layer
 class MapTileLayerCustom extends StatefulWidget {
   /// Provide a controller
-  const MapTileLayerCustom({required this.controller});
+  const MapTileLayerCustom({Key? key, required this.controller})
+      : super(key: key);
 
   /// The map controller
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerCustomState createState() =>
-      _MapTileLayerCustomState(controller: controller);
+  _MapTileLayerCustomState createState() => _MapTileLayerCustomState();
 }

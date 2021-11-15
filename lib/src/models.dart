@@ -3,7 +3,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 typedef StatefulMarkerBuidler = Widget Function(
-    BuildContext, Map<String?, dynamic>);
+  BuildContext,
+  Map<String, dynamic>,
+);
 
 class StatefulMarker {
   StatefulMarker({
@@ -19,20 +21,21 @@ class StatefulMarker {
   final double width;
   final double height;
   final AnchorAlign anchorAlign;
-  final Map<String?, dynamic> state;
+  final Map<String, dynamic> state;
   StatefulMarkerBuidler builder;
 
   Marker get marker => _build();
 
-  void mutate(String? name, dynamic value) => state[name] = value;
+  void mutate(String name, dynamic value) => state[name] = value;
 
   Marker _build() {
     return Marker(
-        anchorPos: AnchorPos.align(anchorAlign),
-        point: point,
-        width: width,
-        height: height,
-        builder: (BuildContext c) => builder(c, state));
+      anchorPos: AnchorPos.align(anchorAlign),
+      point: point,
+      width: width,
+      height: height,
+      builder: (BuildContext c) => builder(c, state),
+    );
   }
 }
 
@@ -85,6 +88,6 @@ class StatefulMapControllerStateChange {
   /// String representation
   @override
   String toString() {
-    return "${this.name} ${this.value} from ${this.from}";
+    return "$name $value from $from";
   }
 }

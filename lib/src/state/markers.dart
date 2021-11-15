@@ -1,5 +1,9 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geojson/geojson.dart';
+import 'package:geopoint/geopoint.dart';
 
+import '../controller.dart';
 import '../exceptions.dart';
 import '../models.dart';
 
@@ -12,7 +16,7 @@ class MarkersState {
   final MapController mapController;
 
   /// The notification function
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   var _markers = <Marker>[];
   final Map<String, Marker> _namedMarkers = {};
@@ -24,9 +28,7 @@ class MarkersState {
   Map<String, Marker> get namedMarkers => _namedMarkers;
 
   /// Add a marker on the map
-  Future<void> addMarker({required String name, required Marker marker}) async {
-    //print("STATE ADD MARKER $name");
-    //print("STATE MARKERS: $_namedMarkers");
+  void addMarker({required String name, required Marker marker}) {
     try {
       //_buildMarkers();
       final markerAt = _markerAt(_namedMarkers[name], name);
@@ -44,15 +46,10 @@ class MarkersState {
     } catch (e) {
       throw MarkerException("Can not add marker: $e");
     }
-    //print("STATE MARKERS AFTER ADD: $_namedMarkers");
   }
 
   /// Remove a marker from the map
-  Future<void> removeMarker({required String name}) async {
-    //if (name != "livemarker") {
-    //print("STATE REMOVE MARKER $name");
-    //print("STATE MARKERS: $_namedMarkers");
-    //}
+  void removeMarker({required String name}) {
     try {
       //_buildMarkers();
       final removeAt = _markerAt(_namedMarkers[name], name);
@@ -65,7 +62,11 @@ class MarkersState {
       throw MarkerException("Can not build for remove marker: $e");
     }
     notify(
-        "updateMarkers", name, removeMarker, MapControllerChangeType.markers);
+      "updateMarkers",
+      name,
+      removeMarker,
+      MapControllerChangeType.markers,
+    );
     try {
       final res = _namedMarkers.remove(name);
       if (res == null) {
@@ -74,7 +75,36 @@ class MarkersState {
     } catch (e) {
       throw MarkerException("Can not remove marker: $e");
     }
-    print("STATE MARKERS AFTER REMOVE: $_namedMarkers");
+    debugPrint("STATE MARKERS AFTER REMOVE: $_namedMarkers");
+  }
+
+  /// Export all markers to a [GeoJsonFeature] with geometry
+  /// type [GeoJsonMultiPoint]
+  GeoJsonFeature? toGeoJsonFeatures() {
+    if (namedMarkers.isEmpty) {
+      return null;
+    }
+    final multiPoint = GeoJsonMultiPoint();
+    final geoPoints = <GeoPoint>[];
+    for (final k in namedMarkers.keys) {
+      final m = namedMarkers[k]!;
+      geoPoints.add(
+        GeoPoint(
+          latitude: m.point.latitude,
+          longitude: m.point.longitude,
+        ),
+      );
+    }
+    multiPoint
+      ..name = "map_markers"
+      ..geoSerie =
+          GeoSerie.fromNameAndType(name: multiPoint.name!, typeStr: "group");
+    multiPoint.geoSerie!.geoPoints = geoPoints;
+    final feature = GeoJsonFeature<GeoJsonMultiPoint>()
+      ..type = GeoJsonFeatureType.multipoint
+      ..properties = <String, dynamic>{"name": multiPoint.name}
+      ..geometry = multiPoint;
+    return feature;
   }
 
   int? _markerAt(Marker? marker, String name) {
@@ -94,25 +124,35 @@ class MarkersState {
   }
 
   /// Add multiple markers on the map
-  Future<void> addMarkers({required Map<String, Marker> markers}) async {
+  void addMarkers({required Map<String, Marker> markers}) {
     try {
-      markers.forEach((k, v) {
-        _namedMarkers[k] = v;
-      });
+      for (final entry in markers.entries) {
+        _namedMarkers[entry.key] = entry.value;
+      }
     } catch (e) {
       throw MarkerException("Can not add markers: $e");
     }
     _buildMarkers();
     notify(
-        "updateMarkers", markers, addMarkers, MapControllerChangeType.markers);
+      "updateMarkers",
+      markers,
+      addMarkers,
+      MapControllerChangeType.markers,
+    );
   }
 
   /// Remove multiple markers from the map
-  Future<void> removeMarkers({required List<String> names}) async {
-    names.forEach(_namedMarkers.remove);
+  void removeMarkers({required List<String> names}) {
+    for (final name in names) {
+      _namedMarkers.remove(name);
+    }
     _buildMarkers();
     notify(
-        "updateMarkers", names, removeMarkers, MapControllerChangeType.markers);
+      "updateMarkers",
+      names,
+      removeMarkers,
+      MapControllerChangeType.markers,
+    );
   }
 
   /// Fit a marker on map
@@ -132,7 +172,6 @@ class MarkersState {
 
   void _buildMarkers() {
     _markers = _namedMarkers.values.toList();
-    //print("AFTER BUILD MARKERS");
     //_printMarkers();
   }
 

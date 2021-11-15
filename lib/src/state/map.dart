@@ -1,6 +1,7 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../controller.dart';
 import '../models.dart';
 
 /// State of the map
@@ -12,14 +13,13 @@ class MapState {
   final MapController mapController;
 
   /// Function to notify the changefeed
-  final Function notify;
+  final FeedNotifyFunction notify;
 
   double? _zoom = 1.0;
   LatLng? _center = LatLng(0.0, 0.0);
 
   /// Zoom in one level
-  Future<void> zoomIn() async {
-    //print("ZOOM IN");
+  void zoomIn() {
     final z = mapController.zoom + 1;
     mapController.move(mapController.center, z);
     _zoom = z;
@@ -27,8 +27,7 @@ class MapState {
   }
 
   /// Zoom out one level
-  Future<void> zoomOut() async {
-    //print("ZOOM OUT");
+  void zoomOut() {
     final z = mapController.zoom - 1;
     mapController.move(mapController.center, z);
     _zoom = z;
@@ -36,15 +35,14 @@ class MapState {
   }
 
   /// Zoom to level
-  Future<void> zoomTo(double value) async {
-    //print("ZOOM TO $value");
+  void zoomTo(double value) async {
     mapController.move(mapController.center, value);
     _zoom = value;
     notify("zoom", value, zoomOut, MapControllerChangeType.zoom);
   }
 
   /// Center the map on a [LatLng]
-  Future<void> centerOnPoint(LatLng point) async {
+  void centerOnPoint(LatLng point) {
     mapController.move(point, mapController.zoom);
     _center = point;
     notify("center", point, centerOnPoint, MapControllerChangeType.center);
@@ -57,13 +55,21 @@ class MapState {
     //print("Position changed: zoom ${posChange.zoom} / ${posChange.center}");
     if (posChange.zoom != _zoom) {
       _zoom = posChange.zoom;
-      notify("zoom", posChange.zoom, onPositionChanged,
-          MapControllerChangeType.zoom);
+      notify(
+        "zoom",
+        posChange.zoom,
+        onPositionChanged,
+        MapControllerChangeType.zoom,
+      );
     }
     if (posChange.center != _center) {
       _center = posChange.center;
-      notify("center", posChange.center, onPositionChanged,
-          MapControllerChangeType.center);
+      notify(
+        "center",
+        posChange.center,
+        onPositionChanged,
+        MapControllerChangeType.center,
+      );
     }
   }
 }

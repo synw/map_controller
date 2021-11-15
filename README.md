@@ -6,65 +6,65 @@ Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
 ## Usage
 
-   ```dart
-   import 'dart:async';
-   import 'package:flutter/material.dart';
-   import 'package:flutter_map/flutter_map.dart';
-   import 'package:latlong/latlong.dart';
-   import 'package:map_controller/map_controller.dart';
+```dart
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
+import 'package:map_controller/map_controller.dart';
 
-   class _MapPageState extends State<MapPage> {
-     MapController mapController;
-     StatefulMapController statefulMapController;
-     StreamSubscription<StatefulMapControllerStateChange> sub;
+class _MapPageState extends State<MapPage> {
+   MapController mapController;
+   StatefulMapController statefulMapController;
+   StreamSubscription<StatefulMapControllerStateChange> sub;
    
-     @override
-     void initState() {
-       // intialize the controllers
-       mapController = MapController();
-       statefulMapController = StatefulMapController(mapController: mapController);
+   @override
+   void initState() {
+      // intialize the controllers
+      mapController = MapController();
+      statefulMapController = StatefulMapController(mapController: mapController);
 
-       // wait for the controller to be ready before using it
-       statefulMapController.onReady.then((_) => print("The map controller is ready")));
+      // wait for the controller to be ready before using it
+      statefulMapController.onReady.then((_) => print("The map controller is ready")));
 
-       /// [Important] listen to the changefeed to rebuild the map on changes:
-       /// this will rebuild the map when for example addMarker or any method 
-       /// that mutates the map assets is called
-       sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
-       super.initState();
-     }
+      /// [Important] listen to the changefeed to rebuild the map on changes:
+      /// this will rebuild the map when for example addMarker or any method 
+      /// that mutates the map assets is called
+      sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
+      super.initState();
+   }
    
-     @override
-     Widget build(BuildContext context) {
-       return Scaffold(
+   @override
+   Widget build(BuildContext context) {
+      return Scaffold(
          body: SafeArea(
-             child: Stack(children: <Widget>[
-           FlutterMap(
-             mapController: mapController,
-             options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
-             layers: [
-               MarkerLayerOptions(markers: statefulMapController.markers),
-               PolylineLayerOptions(polylines: statefulMapController.lines),
-               PolygonLayerOptions(polygons: statefulMapController.polygons)
-             ],
-           ),
-           // ...
+            child: Stack(children: <Widget>[
+               FlutterMap(
+                  mapController: mapController,
+                  options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
+                  layers: [
+                     MarkerLayerOptions(markers: statefulMapController.markers),
+                     PolylineLayerOptions(polylines: statefulMapController.lines),
+                     PolygonLayerOptions(polygons: statefulMapController.polygons),
+                  ],
+               ),
+            // ...
          ])),
-       );
-     }
-   
-     @override
-     void dispose() {
-       sub.cancel();
-       super.dispose();
-     }
+      );
    }
    
-   class MapPage extends StatefulWidget {
-     @override
-     _MapPageState createState() => _MapPageState();
+   @override
+   void dispose() {
+      sub.cancel();
+      super.dispose();
    }
-   ```
+}
+   
+class MapPage extends StatefulWidget {
+   @override
+   _MapPageState createState() => _MapPageState();
+}
+```
 
 ## Api
 
@@ -80,89 +80,80 @@ Api for the [StatefulMapController](https://pub.dev/documentation/map_controller
 
 **`zoomOut()`**: decrease the zoom level by 1
 
-**`zoomTo`**(`Double` *value*): zoom to the provided value
+**`zoomTo()`**: zoom to the provided value
 
 #### Center
 
 **`center`**: get the current center `LatLng` value
 
-**`centerOnPoint`**(`LatLng` *point*): center on the `LatLng` value
+**`centerOnPoint()`**: center on the `LatLng` value
 
 ### Map assets
 
 #### Markers
 
-**`addMarker`**(`String` *name*, `Marker` *marker*): add a named marker on the map
+**`addMarker()`**: add a named marker on the map
 
-**`addMarkers`**(`Map<String, Marker>` *markers*): add several named markers on the map
+**`addMarkers()`**: add several named markers on the map
 
-**`removeMarker`**(`String` *name*, `Marker` *marker*): remove a named marker from the map
+**`removeMarker()`**: remove a named marker from the map
 
-**`removeMarkers`**(`Map<String, Marker>` *markers*): remove several named markers from the map
+**`removeMarkers()`**: remove several named markers from the map
 
 **`markers`**: get the markers that are on the map
 
 **`namedMarkers`**: get the markers with their names that are on the map
 
-**`getMarker`**(`String` *name*): return the marker with the corresponding name
+**`getMarker()`**: return the marker with the corresponding name
 
-**`getMarkers`**(`List<String>` *names*): return the markers with the corresponding names
+**`getMarkers()`**: return the markers with the corresponding names
 
 #### Stateful markers
 
 *New in 0.7*: the stateful makers hold their own state and can be mutated 
 
-   ```dart
-   statefulMapController.addStatefulMarker(
-      name: "some marker",
-      statefulMarker: StatefulMarker(
-         height: 80.0,
-         width: 120.0,
-         state: <String, dynamic>{"showText": false},
-         point: LatLng(48.853831, 2.348722),
-         builder: (BuildContext context, Map<String, dynamic> state) {
-            Widget w;
-            final markerIcon = IconButton(
-               icon: const Icon(Icons.location_on),
-               onPressed: () => statefulMapController.mutateMarker(
-                     name: "some marker",
-                     property: "showText",
-                     value: !(state["showText"] as bool)));
-            if (state["showText"] == true) {
-               w = Column(children: <Widget>[
+```dart
+statefulMapController.addStatefulMarker(
+   name: "some marker",
+   statefulMarker: StatefulMarker(
+      height: 80.0,
+      width: 120.0,
+      state: <String, dynamic>{"showText": false},
+      point: LatLng(48.853831, 2.348722),
+      builder: (BuildContext context, Map<String, dynamic> state) {
+         Widget w;
+         final markerIcon = IconButton(
+            icon: const Icon(Icons.location_on),
+            onPressed: () => statefulMapController.mutateMarker(
+               name: "some marker",
+               property: "showText",
+               value: !(state["showText"] as bool)));
+         if (state["showText"] == true) {
+            w = Column(children: <Widget>[
                markerIcon,
                Container(
-                     color: Colors.white,
-                     child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Text(place.name, textScaleFactor: 1.3))),
-               ]);
-            } else {
-               w = markerIcon;
-            }
-            return w;
-         })
-      );
-   ```
+                  color: Colors.white,
+                  child: Padding(
+                     padding: const EdgeInsets.all(5.0),
+                     child: Text(place.name, textScaleFactor: 1.3))),
+            ]);
+         } else {
+            w = markerIcon;
+         }
+         return w;
+      })
+);
+```
 
 #### Lines
 
-**`addLine`**(`String` *name*,
-          `List<LatLng>` *points*,
-          `double` *width* = 1.0,
-          `Color` *color* = Colors.green,
-          `bool` *isDotted* = false): add a line on the map
+**`addLine()`**: add a line on the map
 
 **`lines`**: get the lines that are on the map
 
 #### Polygons
 
-**`addPolygon`**(`String` *name*,
-          `List<LatLng>` *points*,
-          `double` *width* = 1.0,
-          `Color` *color* = const Color(0xFF00FF00),
-          `double` *borderWidth* = 0.0,
-          `Color` *borderColor* = const Color(0xFFFFFF00)): add a polygon on the map
+**`addPolygon`**: add a polygon on the map
 
 **`polygons`**: get the polygons that are on the map
 
@@ -170,30 +161,29 @@ Api for the [StatefulMapController](https://pub.dev/documentation/map_controller
 
 Execute some code right after the map is ready:
 
-   ```dart
-   @override
-   void initState() {
-      statefulMapController.onReady.then((_) {
-         setState((_) =>_ready = true);
-      });
-      super.initState();
-   }
-   ```
+```dart
+@override
+void initState() {
+   statefulMapController.onReady.then((_) {
+      setState((_) =>_ready = true);
+   });
+   super.initState();
+}
+```
 
 ### Changefeed
 
 A changefeed is available: it's a stream with all state changes from the map controller. Use it to update the map when a change occurs:
 
-   ```dart
-   statefulMapController.onReady.then((_) {
-       statefulMapController.changeFeed.listen((change) => setState(() {}));
-      });
-   }
-   ```
+```dart
+statefulMapController.onReady.then((_) {
+   statefulMapController.changeFeed.listen((change) => setState(() {}));
+});
+```
 
 ### Geojson data
 
- The map controller can draw on the map from geojson data:
+The map controller can draw on the map from geojson data:
 
 ```dart
 void loadData() async {
@@ -211,14 +201,13 @@ void initState() {
   sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
   super.initState();
 }
-
 ```
 
 ### Tile layer management
 
 Some predefined tile layers are available.
 
-   ```dart
+```dart
    FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -234,13 +223,13 @@ Some predefined tile layers are available.
 
 To switch tile layers at runtime use:
 
-   ```dart
+```dart
    statefulMapController.switchTileLayer(TileLayerType.monochrome);
    ```
 
 Available layers:
 
-   ```dart
+```dart
    TileLayerType.normal
    TileLayerType.topography
    TileLayerType.monochrome
@@ -249,7 +238,7 @@ Available layers:
 
 A tile layers bar is available:
 
-   ```dart
+```dart
    Stack(children: <Widget>[
       FlutterMap(
          mapController: mapController,
