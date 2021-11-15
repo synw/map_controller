@@ -47,7 +47,10 @@ class StatefulMapController {
       tileLayerType = TileLayerType.custom;
     }
     _tileLayerState = TileLayerState(
-        type: tileLayerType, customTileLayer: customTileLayer, notify: notify);
+      type: tileLayerType,
+      customTileLayer: customTileLayer,
+      notify: notify,
+    );
     mapController.onReady.then((_) {
       // fire the map is ready callback
       if (!_readyCompleter.isCompleted) {
@@ -387,7 +390,8 @@ class StatefulMapController {
         case GeoJsonFeatureType.geometryCollection:
           // TODO : implement
           throw const NotImplementedException(
-              "GeoJsonFeatureType.geometryCollection Not implemented");
+            "GeoJsonFeatureType.geometryCollection Not implemented",
+          );
       }
     });
     if (noIsolate) {
@@ -427,7 +431,11 @@ class StatefulMapController {
     MapControllerChangeType type,
   ) {
     final change = StatefulMapControllerStateChange(
-        name: name, value: value, from: from, type: type);
+      name: name,
+      value: value,
+      from: from,
+      type: type,
+    );
     if (verbose) {
       debugPrint("Map state change: $change");
     }

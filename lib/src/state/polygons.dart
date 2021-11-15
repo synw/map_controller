@@ -32,28 +32,41 @@ class PolygonsState {
     required Color borderColor,
   }) {
     _namedPolygons[name] = Polygon(
-        points: points,
-        color: color,
-        borderStrokeWidth: borderWidth,
-        borderColor: borderColor);
-    notify("updatePolygons", _namedPolygons[name], addPolygon,
-        MapControllerChangeType.polygons);
+      points: points,
+      color: color,
+      borderStrokeWidth: borderWidth,
+      borderColor: borderColor,
+    );
+    notify(
+      "updatePolygons",
+      _namedPolygons[name],
+      addPolygon,
+      MapControllerChangeType.polygons,
+    );
   }
 
   /// Remove a polygon from the map
   void removePolygon(String name) {
     if (_namedPolygons.containsKey(name)) {
       _namedPolygons.remove(name);
-      notify("updatePolygons", name, removePolygon,
-          MapControllerChangeType.polygons);
+      notify(
+        "updatePolygons",
+        name,
+        removePolygon,
+        MapControllerChangeType.polygons,
+      );
     }
   }
 
   /// Remove multiple polygons from the map
   void removePolygons(List<String> names) {
     _namedPolygons.removeWhere((key, value) => names.contains(key));
-    notify("updatePolygons", names, removePolygons,
-        MapControllerChangeType.polygons);
+    notify(
+      "updatePolygons",
+      names,
+      removePolygons,
+      MapControllerChangeType.polygons,
+    );
   }
 
   /// Export all polygons to a [GeoJsonFeature] with geometry
@@ -70,7 +83,8 @@ class PolygonsState {
           GeoSerie(name: polygon.name!, type: GeoSerieType.polygon);
       for (final point in mapPolygon.points) {
         geoSerie.geoPoints.add(
-            GeoPoint(latitude: point.latitude, longitude: point.longitude));
+          GeoPoint(latitude: point.latitude, longitude: point.longitude),
+        );
       }
       polygon.geoSeries = [geoSerie];
       multiPolygon.polygons.add(polygon);

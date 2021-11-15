@@ -62,7 +62,11 @@ class MarkersState {
       throw MarkerException("Can not build for remove marker: $e");
     }
     notify(
-        "updateMarkers", name, removeMarker, MapControllerChangeType.markers);
+      "updateMarkers",
+      name,
+      removeMarker,
+      MapControllerChangeType.markers,
+    );
     try {
       final res = _namedMarkers.remove(name);
       if (res == null) {
@@ -84,10 +88,12 @@ class MarkersState {
     final geoPoints = <GeoPoint>[];
     for (final k in namedMarkers.keys) {
       final m = namedMarkers[k]!;
-      geoPoints.add(GeoPoint(
-        latitude: m.point.latitude,
-        longitude: m.point.longitude,
-      ));
+      geoPoints.add(
+        GeoPoint(
+          latitude: m.point.latitude,
+          longitude: m.point.longitude,
+        ),
+      );
     }
     multiPoint
       ..name = "map_markers"
@@ -128,7 +134,11 @@ class MarkersState {
     }
     _buildMarkers();
     notify(
-        "updateMarkers", markers, addMarkers, MapControllerChangeType.markers);
+      "updateMarkers",
+      markers,
+      addMarkers,
+      MapControllerChangeType.markers,
+    );
   }
 
   /// Remove multiple markers from the map
@@ -138,7 +148,11 @@ class MarkersState {
     }
     _buildMarkers();
     notify(
-        "updateMarkers", names, removeMarkers, MapControllerChangeType.markers);
+      "updateMarkers",
+      names,
+      removeMarkers,
+      MapControllerChangeType.markers,
+    );
   }
 
   /// Fit a marker on map

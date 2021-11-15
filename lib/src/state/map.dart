@@ -55,13 +55,21 @@ class MapState {
     //print("Position changed: zoom ${posChange.zoom} / ${posChange.center}");
     if (posChange.zoom != _zoom) {
       _zoom = posChange.zoom;
-      notify("zoom", posChange.zoom, onPositionChanged,
-          MapControllerChangeType.zoom);
+      notify(
+        "zoom",
+        posChange.zoom,
+        onPositionChanged,
+        MapControllerChangeType.zoom,
+      );
     }
     if (posChange.center != _center) {
       _center = posChange.center;
-      notify("center", posChange.center, onPositionChanged,
-          MapControllerChangeType.center);
+      notify(
+        "center",
+        posChange.center,
+        onPositionChanged,
+        MapControllerChangeType.center,
+      );
     }
   }
 }

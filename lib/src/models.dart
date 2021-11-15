@@ -3,7 +3,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 typedef StatefulMarkerBuidler = Widget Function(
-    BuildContext, Map<String, dynamic>);
+  BuildContext,
+  Map<String, dynamic>,
+);
 
 class StatefulMarker {
   StatefulMarker({
@@ -28,11 +30,12 @@ class StatefulMarker {
 
   Marker _build() {
     return Marker(
-        anchorPos: AnchorPos.align(anchorAlign),
-        point: point,
-        width: width,
-        height: height,
-        builder: (BuildContext c) => builder(c, state));
+      anchorPos: AnchorPos.align(anchorAlign),
+      point: point,
+      width: width,
+      height: height,
+      builder: (BuildContext c) => builder(c, state),
+    );
   }
 }
 

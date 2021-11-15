@@ -24,8 +24,12 @@ class LinesState {
   /// Add a line on the map
   void addLine({required String name, required Polyline line}) {
     _namedLines[name] = line;
-    notify("updateLines", _namedLines[name], addLine,
-        MapControllerChangeType.lines);
+    notify(
+      "updateLines",
+      _namedLines[name],
+      addLine,
+      MapControllerChangeType.lines,
+    );
   }
 
   /// Remove a line from the map
@@ -55,7 +59,8 @@ class LinesState {
       final geoSerie = GeoSerie(name: line.name!, type: GeoSerieType.line);
       for (final point in polyline.points) {
         geoSerie.geoPoints.add(
-            GeoPoint(latitude: point.latitude, longitude: point.longitude));
+          GeoPoint(latitude: point.latitude, longitude: point.longitude),
+        );
       }
       line.geoSerie = geoSerie;
       multiLine.lines.add(line);

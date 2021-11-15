@@ -22,8 +22,12 @@ class StatefulMarkersState {
   void addStatefulMarker(String name, StatefulMarker statefulMarker) {
     _statefulMarkers[name] = statefulMarker;
     _namedMarkers[name] = statefulMarker.marker;
-    notify("updateMarkers", statefulMarker, addStatefulMarker,
-        MapControllerChangeType.markers);
+    notify(
+      "updateMarkers",
+      statefulMarker,
+      addStatefulMarker,
+      MapControllerChangeType.markers,
+    );
   }
 
   void addStatefulMarkers(Map<String, StatefulMarker> statefulMarkers) {
@@ -31,14 +35,16 @@ class StatefulMarkersState {
       _statefulMarkers[entry.key] = entry.value;
       _namedMarkers[entry.key] = entry.value.marker;
     }
-    notify("updateMarkers", statefulMarkers, addStatefulMarkers,
-        MapControllerChangeType.markers);
+    notify(
+      "updateMarkers",
+      statefulMarkers,
+      addStatefulMarkers,
+      MapControllerChangeType.markers,
+    );
   }
 
   void mutate(String name, String property, dynamic value) {
-    if (_statefulMarkers.containsKey(name)) {
-      _statefulMarkers[name]!.mutate(property, value);
-      addStatefulMarker(name, _statefulMarkers[name]!);
-    }
+    _statefulMarkers[name]!.mutate(property, value);
+    addStatefulMarker(name, _statefulMarkers[name]!);
   }
 }

@@ -9,8 +9,11 @@ import '../types.dart';
 /// The state of the tile layer
 class TileLayerState {
   /// Default contructor
-  TileLayerState(
-      {required this.type, required this.notify, this.customTileLayer}) {
+  TileLayerState({
+    required this.type,
+    required this.notify,
+    this.customTileLayer,
+  }) {
     _tileLayer = _tileLayerForType(type);
   }
 
@@ -29,8 +32,12 @@ class TileLayerState {
 
   void switchTileLayer(TileLayerType layer) {
     _tileLayer = _tileLayerForType(layer);
-    notify("switchTileLayer", layer, switchTileLayer,
-        MapControllerChangeType.tileLayer);
+    notify(
+      "switchTileLayer",
+      layer,
+      switchTileLayer,
+      MapControllerChangeType.tileLayer,
+    );
   }
 
   TileLayerOptions? _tileLayerForType(TileLayerType layer) {
@@ -38,28 +45,28 @@ class TileLayerState {
     switch (layer) {
       case TileLayerType.hike:
         tlo = TileLayerOptions(
-            urlTemplate: "https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-            tileProvider: kIsWeb
-                ? _NonCachingNetworkTileProvider()
-                : NetworkTileProvider());
+          urlTemplate: "https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+          tileProvider:
+              kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
+        );
         break;
       case TileLayerType.topography:
         tlo = TileLayerOptions(
-            urlTemplate: "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-            tileProvider: kIsWeb
-                ? _NonCachingNetworkTileProvider()
-                : NetworkTileProvider());
+          urlTemplate: "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+          tileProvider:
+              kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
+        );
         break;
       case TileLayerType.monochrome:
         tlo = TileLayerOptions(
-            urlTemplate:
-                "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-            tileProvider: kIsWeb
-                ? _NonCachingNetworkTileProvider()
-                : NetworkTileProvider());
+          urlTemplate:
+              "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+          tileProvider:
+              kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
+        );
         break;
       case TileLayerType.custom:
         if (customTileLayer != null) {
@@ -70,11 +77,11 @@ class TileLayerState {
         break;
       default:
         tlo = TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-            tileProvider: kIsWeb
-                ? _NonCachingNetworkTileProvider()
-                : NetworkTileProvider());
+          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+          tileProvider:
+              kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
+        );
     }
     return tlo;
   }
