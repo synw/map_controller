@@ -81,7 +81,7 @@ class StatefulMapController {
   late TileLayerState _tileLayerState;
   late StatefulMarkersState _statefulMarkersState;
 
-  final Completer<void> _readyCompleter = Completer<void>();
+  final _readyCompleter = Completer<void>();
   final _subject = PublishSubject<StatefulMapControllerStateChange>();
 
   /// On ready callback: this is fired when the contoller is ready
