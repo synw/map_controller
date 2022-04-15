@@ -8,16 +8,14 @@ import 'package:geopoint/geopoint.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../map_controller.dart';
+import '../map_controller_plus.dart';
 import 'exceptions.dart';
-import 'models.dart';
 import 'state/lines.dart';
 import 'state/map.dart';
 import 'state/markers.dart';
 import 'state/polygons.dart';
 import 'state/stateful_markers.dart';
 import 'state/tile_layer.dart';
-import 'types.dart';
 
 /// Function to notify the changefeed
 typedef FeedNotifyFunction = void Function(
@@ -121,8 +119,13 @@ class StatefulMapController {
       _statefulMarkersState.mutate(name, property, value);
 
   /// The markers present on the map
-  List<Marker> get markers =>
-      _markersState.markers..addAll(_statefulMarkersState.markers);
+  List<Marker> get markers {
+    final _markers = <Marker>[];
+    _markers
+      ..addAll(_markersState.markers)
+      ..addAll(_statefulMarkersState.markers);
+    return _markers;
+  }
 
   /// Return a [Marker] corresponding to [name] from the [StatefulMarkersState].
   Marker? getMarker(String name) {

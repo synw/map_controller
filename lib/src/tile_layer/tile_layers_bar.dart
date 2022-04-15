@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../map_controller.dart';
-import '../controller.dart';
-import '../types.dart';
+import '../../map_controller_plus.dart';
 
 class _TileLayersBarState extends State<TileLayersBar> {
   late final StatefulMapController controller = widget.controller;
