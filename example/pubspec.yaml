@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  map_controller:
+  map_controller_plus:
     path: ../
   provider: ^6.0.1
 

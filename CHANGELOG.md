@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.1
+
+* Prevent `markers` number from increasing
+
 ## 0.13.0
 
 * Changed `flutter_map` dependency to `">=0.13.1 <0.15.0"`
