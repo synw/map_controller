@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:map_controller/map_controller.dart';
+import 'package:map_controller_plus/map_controller_plus.dart';
 
 class Place {
   Place(this.name, this.point);
