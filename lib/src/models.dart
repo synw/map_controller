@@ -26,7 +26,7 @@ class StatefulMarker {
 
   Marker get marker => _build();
 
-  void mutate(String name, dynamic value) => state[name] = value;
+  void mutate(String name, Object? value) => state[name] = value;
 
   Marker _build() {
     return Marker(

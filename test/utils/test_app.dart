@@ -9,7 +9,7 @@ class TestApp extends StatefulWidget {
   const TestApp({Key? key, this.mapController}) : super(key: key);
 
   @override
-  _TestAppState createState() => _TestAppState();
+  State<TestApp> createState() => _TestAppState();
 }
 
 class _TestAppState extends State<TestApp> {

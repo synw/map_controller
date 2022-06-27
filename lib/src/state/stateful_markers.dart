@@ -43,8 +43,8 @@ class StatefulMarkersState {
     );
   }
 
-  void mutate(String name, String property, dynamic value) {
-    _statefulMarkers[name]!.mutate(property, value);
+  void mutate(String name, String property, Object? value) {
+    _statefulMarkers[name]?.mutate(property, value);
     addStatefulMarker(name, _statefulMarkers[name]!);
   }
 }
