@@ -1,8 +1,8 @@
-# Map controller
+# Map Controller Plus
 
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
-[View the web demo](https://synw.github.io/map_controller)
+**This is a fork from [synw's map_controller package](https://pub.dev/packages/map_controller) made because the project has been abandoned. This new and improved version supports the latest version of the [flutter_map](https://pub.dev/packages/flutter_map) package.**
 
 ## Usage
 
@@ -13,13 +13,20 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:map_controller/map_controller.dart';
 
+class MapPage extends StatefulWidget {
+   @override
+   State<MapPage> createState() => _MapPageState();
+}
+
 class _MapPageState extends State<MapPage> {
-   MapController mapController;
-   StatefulMapController statefulMapController;
-   StreamSubscription<StatefulMapControllerStateChange> sub;
+   late final MapController mapController;
+   late final StatefulMapController statefulMapController;
+   late final StreamSubscription<StatefulMapControllerStateChange> sub;
    
    @override
    void initState() {
+      super.initState();
+
       // intialize the controllers
       mapController = MapController();
       statefulMapController = StatefulMapController(mapController: mapController);
@@ -31,7 +38,6 @@ class _MapPageState extends State<MapPage> {
       /// this will rebuild the map when for example addMarker or any method 
       /// that mutates the map assets is called
       sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
-      super.initState();
    }
    
    @override
@@ -59,11 +65,6 @@ class _MapPageState extends State<MapPage> {
       super.dispose();
    }
 }
-   
-class MapPage extends StatefulWidget {
-   @override
-   _MapPageState createState() => _MapPageState();
-}
 ```
 
 ## Api
@@ -74,39 +75,28 @@ Api for the [StatefulMapController](https://pub.dev/documentation/map_controller
 
 #### Zoom
 
-**`zoom`**: get the current zoom value
-
-**`zoomIn()`**: increase the zoom level by 1
-
-**`zoomOut()`**: decrease the zoom level by 1
-
-**`zoomTo()`**: zoom to the provided value
+* `zoom`: get the current zoom value
+* `zoomIn()`: increase the zoom level by 1
+* `zoomOut()`: decrease the zoom level by 1
+* `zoomTo()`: zoom to the provided value
 
 #### Center
 
-**`center`**: get the current center `LatLng` value
-
-**`centerOnPoint()`**: center on the `LatLng` value
+* `center`: get the current center `LatLng` value
+* `centerOnPoint()`: center on the `LatLng` value
 
 ### Map assets
 
 #### Markers
 
-**`addMarker()`**: add a named marker on the map
-
-**`addMarkers()`**: add several named markers on the map
-
-**`removeMarker()`**: remove a named marker from the map
-
-**`removeMarkers()`**: remove several named markers from the map
-
-**`markers`**: get the markers that are on the map
-
-**`namedMarkers`**: get the markers with their names that are on the map
-
-**`getMarker()`**: return the marker with the corresponding name
-
-**`getMarkers()`**: return the markers with the corresponding names
+* `addMarker()`: add a named marker on the map
+* `addMarkers()`: add several named markers on the map
+* `removeMarker()`: remove a named marker from the map
+* `removeMarkers()`: remove several named markers from the map
+* `markers`: get the markers that are on the map
+* `namedMarkers`: get the markers with their names that are on the map
+* `getMarker()`: return the marker with the corresponding name
+* `getMarkers()`: return the markers with the corresponding names
 
 #### Stateful markers
 
@@ -147,15 +137,13 @@ statefulMapController.addStatefulMarker(
 
 #### Lines
 
-**`addLine()`**: add a line on the map
-
-**`lines`**: get the lines that are on the map
+* `addLine()`: add a line on the map
+* `lines`: get the lines that are on the map
 
 #### Polygons
 
-**`addPolygon`**: add a polygon on the map
-
-**`polygons`**: get the polygons that are on the map
+* `addPolygon`: add a polygon on the map
+* `polygons`: get the polygons that are on the map
 
 ### On ready callback
 
@@ -164,10 +152,10 @@ Execute some code right after the map is ready:
 ```dart
 @override
 void initState() {
+   super.initState();
    statefulMapController.onReady.then((_) {
       setState((_) =>_ready = true);
    });
-   super.initState();
 }
 ```
 
@@ -208,49 +196,58 @@ void initState() {
 Some predefined tile layers are available.
 
 ```dart
-   FlutterMap(
-      mapController: mapController,
-      options: MapOptions(
-         center: LatLng(48.853831, 2.348722), zoom: 11.0),
-      layers: [
-         // Use the map controller's tile layer
-         statefulMapController.tileLayer,
-         MarkerLayerOptions(markers: statefulMapController.markers),
-         // ...
-      ],
-   )
-   ```
+FlutterMap(
+   mapController: mapController,
+   options: MapOptions(
+      center: LatLng(48.853831, 2.348722),
+      zoom: 11.0,
+   ),
+   layers: [
+      // Use the map controller's tile layer
+      statefulMapController.tileLayer,
+      MarkerLayerOptions(markers: statefulMapController.markers),
+      
+      // ...
+   ],
+)
+```
 
 To switch tile layers at runtime use:
 
 ```dart
-   statefulMapController.switchTileLayer(TileLayerType.monochrome);
-   ```
+statefulMapController.switchTileLayer(TileLayerType.monochrome);
+```
 
 Available layers:
 
 ```dart
-   TileLayerType.normal
-   TileLayerType.topography
-   TileLayerType.monochrome
-   TileLayerType.hike
-   ```
+TileLayerType.normal
+TileLayerType.topography
+TileLayerType.monochrome
+TileLayerType.hike
+```
 
 A tile layers bar is available:
 
 ```dart
-   Stack(children: <Widget>[
+Stack(
+   children: <Widget>[
       FlutterMap(
          mapController: mapController,
-         options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
+         options: MapOptions(
+            center: LatLng(48.853831, 2.348722),
+            zoom: 11.0,
+         ),
          layers: [
-         statefulMapController.tileLayer,
-         MarkerLayerOptions(markers: statefulMapController.markers),
+            statefulMapController.tileLayer,
+            MarkerLayerOptions(markers: statefulMapController.markers),
          ],
       ),
       Positioned(
          top: 15.0,
          right: 15.0,
-         child: TileLayersBar(controller: statefulMapController))
-   ])
-   ```
+         child: TileLayersBar(controller: statefulMapController),
+      ),
+   ],
+);
+```
