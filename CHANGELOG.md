@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.0
+
+### Breaking Changes
+
+* `StatefulMapController.mutateMarker` now requires you to pass a `value` which became an `Object?`
+* `StatefulMapController.onPositionChanged`'s `gesture` parameter is now a positional argument
+
+### Non-breaking Changes
+
+* `StatefulMapController.notify`'s `value` parameter is now an `Object?`
+* `StatefulMarker.mutate`'s `value` parameter is now an `Object?`
+* Bumped dependency `rxdart` version to `0.27.4`
+* Bumped dev_dependency `flutter_lints` version to `2.0.1`
+* Changed dependency `flutter_map` version constraints to `">=1.1.1 <2.0.0"`
+* Replaced dev_dependency `mockito` by `mocktail`
+
 ## 0.13.1
 
 * Prevent `markers` number from increasing

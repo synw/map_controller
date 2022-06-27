@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockHttpClientResponse extends Mock implements HttpClientResponse {
   final _stream = readFile();

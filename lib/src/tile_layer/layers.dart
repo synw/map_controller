@@ -31,7 +31,7 @@ class MapTileLayerNormal extends StatefulWidget {
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerNormalState createState() => _MapTileLayerNormalState();
+  State<MapTileLayerNormal> createState() => _MapTileLayerNormalState();
 }
 
 class _MapTileLayerMonochromeState extends State<MapTileLayerMonochrome> {
@@ -62,7 +62,7 @@ class MapTileLayerMonochrome extends StatefulWidget {
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerMonochromeState createState() => _MapTileLayerMonochromeState();
+  State<MapTileLayerMonochrome> createState() => _MapTileLayerMonochromeState();
 }
 
 class _MapTileLayerTopographyState extends State<MapTileLayerTopography> {
@@ -93,7 +93,7 @@ class MapTileLayerTopography extends StatefulWidget {
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerTopographyState createState() => _MapTileLayerTopographyState();
+  State<MapTileLayerTopography> createState() => _MapTileLayerTopographyState();
 }
 
 class _MapTileLayerHikeState extends State<MapTileLayerHike> {
@@ -124,7 +124,7 @@ class MapTileLayerHike extends StatefulWidget {
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerHikeState createState() => _MapTileLayerHikeState();
+  State<MapTileLayerHike> createState() => _MapTileLayerHikeState();
 }
 
 class _MapTileLayerCustomState extends State<MapTileLayerCustom> {
@@ -155,5 +155,5 @@ class MapTileLayerCustom extends StatefulWidget {
   final StatefulMapController controller;
 
   @override
-  _MapTileLayerCustomState createState() => _MapTileLayerCustomState();
+  State<MapTileLayerCustom> createState() => _MapTileLayerCustomState();
 }

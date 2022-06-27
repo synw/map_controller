@@ -2,20 +2,20 @@ name: Flutter Web CI
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [master, dev]
   pull_request:
-    branches: [ master, dev ]
+    branches: [master, dev]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: subosito/flutter-action@v1
-    - run: flutter pub get
-    - run: flutter format --set-exit-if-changed .
-    - name: Analyze project source
-      run: flutter analyze
-      working-directory: ./lib
-    - name: Test
-      run: flutter test
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1.5.3
+      - run: flutter pub get
+      - run: flutter format --set-exit-if-changed .
+      - name: Analyze project source
+        run: flutter analyze
+        working-directory: ./lib
+      - name: Test
+        run: flutter test

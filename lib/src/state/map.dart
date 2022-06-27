@@ -51,8 +51,7 @@ class MapState {
   /// Tell listeners that the zoom or center has changed
   ///
   /// This is used to handle the gestures
-  void onPositionChanged(MapPosition posChange, bool gesture) {
-    //print("Position changed: zoom ${posChange.zoom} / ${posChange.center}");
+  void onPositionChanged(MapPosition posChange, {required bool gesture}) {
     if (posChange.zoom != _zoom) {
       _zoom = posChange.zoom;
       notify(

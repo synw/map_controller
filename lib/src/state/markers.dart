@@ -99,7 +99,7 @@ class MarkersState {
       ..name = "map_markers"
       ..geoSerie =
           GeoSerie.fromNameAndType(name: multiPoint.name!, typeStr: "group");
-    multiPoint.geoSerie!.geoPoints = geoPoints;
+    multiPoint.geoSerie?.geoPoints = geoPoints;
     final feature = GeoJsonFeature<GeoJsonMultiPoint>()
       ..type = GeoJsonFeatureType.multipoint
       ..properties = <String, dynamic>{"name": multiPoint.name}
@@ -108,13 +108,12 @@ class MarkersState {
   }
 
   int? _markerAt(Marker? marker, String name) {
+    if (!_namedMarkers.containsKey(name)) return null;
     int? removeAt;
-    if (!_namedMarkers.containsKey(name)) {
-      return removeAt;
-    }
+    final markerAt = _namedMarkers[name]!;
     var i = 0;
     for (final m in _markers) {
-      if (m.point == _namedMarkers[name]!.point) {
+      if (m.point == markerAt.point) {
         removeAt = i;
         break;
       }

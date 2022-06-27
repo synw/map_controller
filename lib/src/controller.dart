@@ -20,7 +20,7 @@ import 'state/tile_layer.dart';
 /// Function to notify the changefeed
 typedef FeedNotifyFunction = void Function(
   String name,
-  dynamic value,
+  Object? value,
   Function from,
   MapControllerChangeType type,
 );
@@ -114,17 +114,17 @@ class StatefulMapController {
   void mutateMarker({
     required String name,
     required String property,
-    dynamic value,
+    required Object? value,
   }) =>
       _statefulMarkersState.mutate(name, property, value);
 
   /// The markers present on the map
   List<Marker> get markers {
-    final _markers = <Marker>[];
-    _markers
+    final localMarkers = <Marker>[];
+    localMarkers
       ..addAll(_markersState.markers)
       ..addAll(_statefulMarkersState.markers);
-    return _markers;
+    return localMarkers;
   }
 
   /// Return a [Marker] corresponding to [name] from the [StatefulMarkersState].
@@ -141,9 +141,9 @@ class StatefulMapController {
   /// If no markers were found return an empty list.
   List<Marker> getMarkers(List<String> names) {
     final markers = <Marker>[];
-    final _statefulMarkers = _statefulMarkersState.statefulMarkers;
+    final localStatefulMarkers = _statefulMarkersState.statefulMarkers;
     for (final name in names) {
-      final marker = _statefulMarkers[name];
+      final marker = localStatefulMarkers[name];
       if (marker != null) markers.add(marker.marker);
     }
     return markers;
@@ -200,8 +200,8 @@ class StatefulMapController {
   void centerOnPoint(LatLng point) => _mapState.centerOnPoint(point);
 
   /// The callback used to handle gestures and keep the state in sync
-  void onPositionChanged(MapPosition pos, bool gesture) =>
-      _mapState.onPositionChanged(pos, gesture);
+  void onPositionChanged(MapPosition pos, {required bool gesture}) =>
+      _mapState.onPositionChanged(pos, gesture: gesture);
 
   /// Add a marker on the map
   void addMarker({required Marker marker, required String name}) =>
@@ -429,7 +429,7 @@ class StatefulMapController {
   /// Notify to the changefeed
   void notify(
     String name,
-    dynamic value,
+    Object? value,
     Function from,
     MapControllerChangeType type,
   ) {

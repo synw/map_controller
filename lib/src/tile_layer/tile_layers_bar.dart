@@ -81,5 +81,5 @@ class TileLayersBar extends StatefulWidget {
   final StatefulMapController controller;
 
   @override
-  _TileLayersBarState createState() => _TileLayersBarState();
+  State<TileLayersBar> createState() => _TileLayersBarState();
 }
