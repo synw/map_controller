@@ -2,7 +2,7 @@
 
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
-**This is a fork from [synw's map_controller package](https://pub.dev/packages/map_controller) made because the project has been abandoned. This new and improved version supports the latest version of the [flutter_map](https://pub.dev/packages/flutter_map) package.**
+**This is a fork from [synw's map_controller package](https://pub.dev/packages/map_controller) made because the project has been abandoned. This new and improved version supports the latest version of the [flutter_map](https://pub.dev/packages/flutter_map) package. If you need a feature or a fix you can [open an issue on the forked repository](https://github.com/TesteurManiak/map_controller/issues).**
 
 ## Usage
 
