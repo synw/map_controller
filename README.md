@@ -222,9 +222,9 @@ Stack(
             center: LatLng(48.853831, 2.348722),
             zoom: 11.0,
          ),
-         layers: [
+         children: [
             statefulMapController.tileLayer,
-            MarkerLayerOptions(markers: statefulMapController.markers),
+            MarkerLayer(markers: statefulMapController.markers),
          ],
       ),
       Positioned(
