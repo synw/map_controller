@@ -1,5 +1,7 @@
 # Map Controller Plus
 
+![Pub Version](https://img.shields.io/pub/v/map_controller_plus)
+
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 
 **This is a fork from [synw's map_controller package](https://pub.dev/packages/map_controller) made because the project has been abandoned. This new and improved version supports the latest version of the [flutter_map](https://pub.dev/packages/flutter_map) package. If you need a feature or a fix you can [open an issue on the forked repository](https://github.com/TesteurManiak/map_controller/issues).**
@@ -10,8 +12,8 @@ Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
-import 'package:map_controller/map_controller.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:map_controller_plus/map_controller_plus.dart';
 
 class MapPage extends StatefulWidget {
    @override
@@ -31,13 +33,17 @@ class _MapPageState extends State<MapPage> {
       mapController = MapController();
       statefulMapController = StatefulMapController(mapController: mapController);
 
-      // wait for the controller to be ready before using it
-      statefulMapController.onReady.then((_) => print("The map controller is ready")));
-
       /// [Important] listen to the changefeed to rebuild the map on changes:
       /// this will rebuild the map when for example addMarker or any method 
       /// that mutates the map assets is called
       sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
+   }
+
+   @override
+   void dispose() {
+      sub.cancel();
+      mapController.dispose();
+      super.dispose();
    }
    
    @override
@@ -48,21 +54,15 @@ class _MapPageState extends State<MapPage> {
                FlutterMap(
                   mapController: mapController,
                   options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
-                  layers: [
-                     MarkerLayerOptions(markers: statefulMapController.markers),
-                     PolylineLayerOptions(polylines: statefulMapController.lines),
-                     PolygonLayerOptions(polygons: statefulMapController.polygons),
+                  children: [
+                     MarkerLayer(markers: statefulMapController.markers),
+                     PolylineLayer(polylines: statefulMapController.lines),
+                     PolygonLayer(polygons: statefulMapController.polygons),
                   ],
                ),
             // ...
          ])),
       );
-   }
-   
-   @override
-   void dispose() {
-      sub.cancel();
-      super.dispose();
    }
 }
 ```
@@ -145,28 +145,12 @@ statefulMapController.addStatefulMarker(
 * `addPolygon`: add a polygon on the map
 * `polygons`: get the polygons that are on the map
 
-### On ready callback
-
-Execute some code right after the map is ready:
-
-```dart
-@override
-void initState() {
-   super.initState();
-   statefulMapController.onReady.then((_) {
-      setState((_) =>_ready = true);
-   });
-}
-```
-
 ### Changefeed
 
 A changefeed is available: it's a stream with all state changes from the map controller. Use it to update the map when a change occurs:
 
 ```dart
-statefulMapController.onReady.then((_) {
-   statefulMapController.changeFeed.listen((change) => setState(() {}));
-});
+statefulMapController.changeFeed.listen((change) => setState(() {}));
 ```
 
 ### Geojson data
@@ -183,11 +167,11 @@ void loadData() async {
 
 @override
 void initState() {
+  super.initState();
   mapController = MapController();
   statefulMapController = StatefulMapController(mapController: mapController);
-  statefulMapController.onReady.then((_) => loadData());
+  loadData();
   sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
-  super.initState();
 }
 ```
 
@@ -202,10 +186,10 @@ FlutterMap(
       center: LatLng(48.853831, 2.348722),
       zoom: 11.0,
    ),
-   layers: [
+   children: [
       // Use the map controller's tile layer
       statefulMapController.tileLayer,
-      MarkerLayerOptions(markers: statefulMapController.markers),
+      MarkerLayer(markers: statefulMapController.markers),
       
       // ...
    ],
@@ -238,9 +222,9 @@ Stack(
             center: LatLng(48.853831, 2.348722),
             zoom: 11.0,
          ),
-         layers: [
+         children: [
             statefulMapController.tileLayer,
-            MarkerLayerOptions(markers: statefulMapController.markers),
+            MarkerLayer(markers: statefulMapController.markers),
          ],
       ),
       Positioned(
