@@ -1,19 +1,29 @@
 # Changelog
 
+## 2.0.0
+
+### Breaking Changes
+
+* Migrated to `flutter_map: ^3.0.0`
+* Bumped Dart sdk min version to `2.18.0`
+* Removed `onReady` callback (not needed anymore)
+
+### Non-breaking Changes
+
+* Bumped dependency `rxdart` version to `0.27.5`
+
 ## 1.0.0
 
 ### Breaking Changes
 
 * `StatefulMapController.mutateMarker` now requires you to pass a `value` which became an `Object?`
 * `StatefulMapController.onPositionChanged`'s `gesture` parameter is now a positional argument
-* Migrated to `flutter_map: ^3.0.0`
-* Removed `onReady` callback (not needed anymore)
 
 ### Non-breaking Changes
 
 * `StatefulMapController.notify`'s `value` parameter is now an `Object?`
 * `StatefulMarker.mutate`'s `value` parameter is now an `Object?`
-* Bumped dependency `rxdart` version to `0.27.5`
+* Bumped dependency `rxdart` version to `0.27.4`
 * Bumped dev_dependency `flutter_lints` version to `2.0.1`
 * Bumped Dart sdk min version to `2.18.0`
 * Replaced dev_dependency `mockito` by `mocktail`
