@@ -49,12 +49,6 @@ class StatefulMapController {
       customTileLayer: customTileLayer,
       notify: notify,
     );
-    mapController.onReady.then((_) {
-      // fire the map is ready callback
-      if (!_readyCompleter.isCompleted) {
-        _readyCompleter.complete();
-      }
-    });
   }
 
   /// The Flutter Map [MapController]
@@ -67,7 +61,7 @@ class StatefulMapController {
   TileLayerType tileLayerType;
 
   /// A custom tile layer options
-  TileLayerOptions? customTileLayer;
+  TileLayer? customTileLayer;
 
   /// Verbosity level
   final bool verbose;
@@ -79,11 +73,7 @@ class StatefulMapController {
   late TileLayerState _tileLayerState;
   late StatefulMarkersState _statefulMarkersState;
 
-  final _readyCompleter = Completer<void>();
   final _subject = PublishSubject<StatefulMapControllerStateChange>();
-
-  /// On ready callback: this is fired when the contoller is ready
-  Future<void> get onReady => _readyCompleter.future;
 
   /// A stream with changes occuring on the map
   Stream<StatefulMapControllerStateChange> get changeFeed =>
@@ -185,7 +175,7 @@ class StatefulMapController {
   Map<String, Polygon> get namedPolygons => _polygonsState.namedPolygons;
 
   /// The current map tile layer
-  TileLayerOptions? get tileLayer => _tileLayerState.tileLayer;
+  TileLayer? get tileLayer => _tileLayerState.tileLayer;
 
   /// Zoom in one level
   void zoomIn() => _mapState.zoomIn();

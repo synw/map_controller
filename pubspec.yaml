@@ -2,14 +2,14 @@ name: map_controller_plus
 description: A map controller for Flutter map. Manage markers, lines and polygons.
 homepage: https://github.com/TesteurManiak
 repository: https://github.com/TesteurManiak/map_controller
-version: 0.13.1
+version: 1.0.0
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_map: ">=0.13.1 <0.15.0"
+  flutter_map: ^3.0.0
   geojson: ^1.0.0
   geopoint: ^1.0.0
   latlong2: ^0.8.1

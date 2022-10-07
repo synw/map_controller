@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0
+
+**Breaking changes**
+
+* Migrated to `flutter_map: ^3.0.0`
+* Removed `onReady` callback (not needed anymore)
+
 ## 0.13.1
 
 * Prevent `markers` number from increasing

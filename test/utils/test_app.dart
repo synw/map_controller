@@ -23,12 +23,12 @@ class _TestAppState extends State<TestApp> {
             center: LatLng(45.5231, -122.6765),
             zoom: 13.0,
           ),
-          layers: [
-            TileLayerOptions(
+          children: [
+            TileLayer(
               urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              subdomains: ['a', 'b', 'c'],
+              subdomains: const ['a', 'b', 'c'],
             ),
-            MarkerLayerOptions(
+            MarkerLayer(
               markers: [
                 Marker(
                   width: 80.0,
