@@ -26,7 +26,6 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
   ];
 
   final _markersOnMap = <Place>[];
-  bool ready = false;
 
   void addMarker(BuildContext context) {
     for (final place in places) {
@@ -70,9 +69,8 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
 
   @override
   void initState() {
-    statefulMapController.onReady.then((_) => setState(() => ready = true));
-    sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
+    sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
   }
 
   @override
@@ -85,20 +83,18 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
             center: LatLng(48.853831, 2.348722),
             zoom: 11.0,
           ),
-          layers: [
+          children: [
             statefulMapController.tileLayer!,
-            MarkerLayerOptions(
+            MarkerLayer(
                 markers: statefulMapController
                     .getMarkers(['Notre-Dame', 'Montmartre'])),
           ],
         ),
       ),
-      floatingActionButton: ready
-          ? FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: () => addMarker(context),
-            )
-          : const Text(""),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => addMarker(context),
+      ),
     );
   }
 

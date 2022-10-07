@@ -21,14 +21,13 @@ class TileLayerState {
   TileLayerType type;
 
   /// A custom tile layer options
-  TileLayerOptions? customTileLayer;
+  TileLayer? customTileLayer;
 
   /// Function to notify the changefeed
   final FeedNotifyFunction notify;
 
-  TileLayerOptions? _tileLayer;
-
-  TileLayerOptions? get tileLayer => _tileLayer;
+  TileLayer? _tileLayer;
+  TileLayer? get tileLayer => _tileLayer;
 
   void switchTileLayer(TileLayerType layer) {
     _tileLayer = _tileLayerForType(layer);
@@ -40,30 +39,30 @@ class TileLayerState {
     );
   }
 
-  TileLayerOptions? _tileLayerForType(TileLayerType layer) {
-    TileLayerOptions? tlo;
+  TileLayer? _tileLayerForType(TileLayerType layer) {
+    TileLayer? tlo;
     switch (layer) {
       case TileLayerType.hike:
-        tlo = TileLayerOptions(
+        tlo = TileLayer(
           urlTemplate: "https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
+          subdomains: const ['a', 'b', 'c'],
           tileProvider:
               kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
         );
         break;
       case TileLayerType.topography:
-        tlo = TileLayerOptions(
+        tlo = TileLayer(
           urlTemplate: "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
+          subdomains: const ['a', 'b', 'c'],
           tileProvider:
               kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
         );
         break;
       case TileLayerType.monochrome:
-        tlo = TileLayerOptions(
+        tlo = TileLayer(
           urlTemplate:
               "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
+          subdomains: const ['a', 'b', 'c'],
           tileProvider:
               kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
         );
@@ -76,9 +75,9 @@ class TileLayerState {
         }
         break;
       default:
-        tlo = TileLayerOptions(
+        tlo = TileLayer(
           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
+          subdomains: const ['a', 'b', 'c'],
           tileProvider:
               kIsWeb ? _NonCachingNetworkTileProvider() : NetworkTileProvider(),
         );
@@ -89,7 +88,7 @@ class TileLayerState {
 
 class _NonCachingNetworkTileProvider extends TileProvider {
   @override
-  ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+  ImageProvider getImage(Coords<num> coords, TileLayer options) {
     return NetworkImage(getTileUrl(coords, options));
   }
 }

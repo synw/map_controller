@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_map: ">=1.1.1 <2.0.0"
+  flutter_map: ^3.0.0
   geojson: ^1.0.0
   geopoint: ^1.0.0
   latlong2: ^0.8.1

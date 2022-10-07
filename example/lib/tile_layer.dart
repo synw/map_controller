@@ -15,9 +15,8 @@ class _TileLayerPageState extends State<TileLayerPage> {
 
   @override
   void initState() {
-    statefulMapController.onReady.then((_) => setState(() => ready = true));
-    sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
+    sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
   }
 
   @override
@@ -28,9 +27,9 @@ class _TileLayerPageState extends State<TileLayerPage> {
         FlutterMap(
           mapController: mapController,
           options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
-          layers: [
+          children: [
             statefulMapController.tileLayer!,
-            MarkerLayerOptions(markers: statefulMapController.markers),
+            MarkerLayer(markers: statefulMapController.markers),
           ],
         ),
         Positioned(

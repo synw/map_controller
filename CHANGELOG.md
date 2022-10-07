@@ -16,6 +16,8 @@
 * Changed dependency `flutter_map` version constraints to `">=1.1.1 <2.0.0"`
 * Replaced dev_dependency `mockito` by `mocktail`
 
+* Migrated to `flutter_map: ^3.0.0`
+* Removed `onReady` callback (not needed anymore)
 ## 0.13.1
 
 * Prevent `markers` number from increasing
