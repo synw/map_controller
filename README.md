@@ -187,51 +187,14 @@ FlutterMap(
       zoom: 11.0,
    ),
    children: [
-      // Use the map controller's tile layer
-      statefulMapController.tileLayer,
+      TileLayer(
+         urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+         subdomains: const ['a', 'b', 'c'],
+         userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+      ),
       MarkerLayer(markers: statefulMapController.markers),
       
       // ...
    ],
 )
-```
-
-To switch tile layers at runtime use:
-
-```dart
-statefulMapController.switchTileLayer(TileLayerType.monochrome);
-```
-
-Available layers:
-
-```dart
-TileLayerType.normal
-TileLayerType.topography
-TileLayerType.monochrome
-TileLayerType.hike
-```
-
-A tile layers bar is available:
-
-```dart
-Stack(
-   children: <Widget>[
-      FlutterMap(
-         mapController: mapController,
-         options: MapOptions(
-            center: LatLng(48.853831, 2.348722),
-            zoom: 11.0,
-         ),
-         children: [
-            statefulMapController.tileLayer,
-            MarkerLayer(markers: statefulMapController.markers),
-         ],
-      ),
-      Positioned(
-         top: 15.0,
-         right: 15.0,
-         child: TileLayersBar(controller: statefulMapController),
-      ),
-   ],
-);
 ```

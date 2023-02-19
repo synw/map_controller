@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0-dev.2
+
+* Updated `README.md` to reflect the new API
+* Exposed `exceptions.dart` file
+* Fixed [#3](https://github.com/TesteurManiak/map_controller_plus/issues/3)
+
 ## 3.0.0-dev.1
 
 * Removed [rxdart](https://pub.dev/packages/rxdart) dependency
