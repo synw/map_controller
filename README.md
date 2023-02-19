@@ -1,6 +1,6 @@
 # Map Controller Plus
 
-![Pub Version](https://img.shields.io/pub/v/map_controller_plus)
+[![Pub Version](https://img.shields.io/pub/v/map_controller_plus)](https://pub.dev/packages/map_controller_plus)
 
 Stateful map controller for Flutter Map. Manage markers, lines and polygons.
 

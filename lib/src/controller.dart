@@ -311,7 +311,9 @@ class StatefulMapController {
     Icon markerIcon = const Icon(Icons.location_on),
     bool noIsolate = kIsWeb,
   }) async {
-    debugPrint("From geojson $data");
+    if (verbose) {
+      debugPrint("From geojson $data");
+    }
 
     final geojson = GeoJson();
     geojson.processedFeatures.listen((GeoJsonFeature feature) {
