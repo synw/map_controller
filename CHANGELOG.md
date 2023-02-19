@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.0
+## 3.0.0-dev.1
 
 * Removed [rxdart](https://pub.dev/packages/rxdart) dependency
 * Cleaned and simplified the code of the package (check the breaking changes for more details)

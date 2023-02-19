@@ -14,8 +14,10 @@ class Place {
 
 class _MarkersPageState extends State<MarkersPage> {
   final mapController = MapController();
-  late final statefulMapController =
-      StatefulMapController(mapController: mapController);
+
+  late final statefulMapController = StatefulMapController(
+    mapController: mapController,
+  );
   late final StreamSubscription<StatefulMapControllerStateChange> sub;
 
   final List<Place> places = [
