@@ -1,9 +1,19 @@
 # Changelog
 
-## 2.1.0
+## 3.0.0
 
 * Removed [rxdart](https://pub.dev/packages/rxdart) dependency
-* Cleaned code
+* Cleaned and simplified the code of the package (check the breaking changes for more details)
+
+### Breaking Changes
+
+* Removed `TileLayerType` enum
+* Removed `TileLayersBar`, `MapTileLayerNormal`, `MapTileLayerMonochrome`, `MapTileLayerTopography`, `MapTileLayerHike`, `MapTileLayerCustom` widget
+* Removed `TileLayerState` class
+* Removed `StatefulMapController.tileLayerType` property
+* Removed `StatefulMapController.customTileLayer` property
+* Removed `StatefulMapController.tileLayer` property
+* Removed `StatefulMapController.switchTileLayer` method
 
 ## 2.0.0
 

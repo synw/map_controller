@@ -33,12 +33,14 @@ class _MarkersPageState extends State<MarkersPage> {
       if (!_markersOnMap.contains(place)) {
         debugPrint("Adding marker ${place.name}");
         statefulMapController.addMarker(
-            name: place.name,
-            marker: Marker(
-                point: place.point,
-                builder: (BuildContext context) {
-                  return const Icon(Icons.location_on);
-                }));
+          name: place.name,
+          marker: Marker(
+            point: place.point,
+            builder: (BuildContext context) {
+              return const Icon(Icons.location_on);
+            },
+          ),
+        );
         _markersOnMap.add(place);
         return;
       }
@@ -62,7 +64,7 @@ class _MarkersPageState extends State<MarkersPage> {
             zoom: 11.0,
           ),
           children: [
-            statefulMapController.tileLayer!,
+            // TODO: add a TileLayer
             MarkerLayer(
               markers: statefulMapController.markers,
             ),

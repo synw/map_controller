@@ -7,8 +7,10 @@ import 'package:map_controller_plus/map_controller_plus.dart';
 
 class _TileLayerPageState extends State<TileLayerPage> {
   final mapController = MapController();
-  late final statefulMapController =
-      StatefulMapController(mapController: mapController);
+
+  late final statefulMapController = StatefulMapController(
+    mapController: mapController,
+  );
   late final StreamSubscription<StatefulMapControllerStateChange> sub;
 
   bool ready = false;
@@ -23,20 +25,20 @@ class _TileLayerPageState extends State<TileLayerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Stack(children: <Widget>[
-        FlutterMap(
-          mapController: mapController,
-          options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
-          children: [
-            statefulMapController.tileLayer!,
-            MarkerLayer(markers: statefulMapController.markers),
+        child: Stack(
+          children: <Widget>[
+            FlutterMap(
+              mapController: mapController,
+              options:
+                  MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
+              children: [
+                // TODO: Add a tile layer
+                MarkerLayer(markers: statefulMapController.markers),
+              ],
+            ),
           ],
         ),
-        Positioned(
-            top: 15.0,
-            right: 15.0,
-            child: TileLayersBar(controller: statefulMapController))
-      ])),
+      ),
     );
   }
 

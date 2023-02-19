@@ -13,7 +13,6 @@ import 'package:map_controller_plus/src/state/map.dart';
 import 'package:map_controller_plus/src/state/markers.dart';
 import 'package:map_controller_plus/src/state/polygons.dart';
 import 'package:map_controller_plus/src/state/stateful_markers.dart';
-import 'package:map_controller_plus/src/state/tile_layer.dart';
 
 /// Function to notify the changefeed
 typedef FeedNotifyFunction = void Function(
@@ -28,8 +27,6 @@ class StatefulMapController {
   /// Provide a Flutter map [MapController]
   StatefulMapController({
     required this.mapController,
-    this.tileLayerType = TileLayerType.normal,
-    this.customTileLayer,
     this.verbose = false,
   }) {
     // init state
@@ -37,14 +34,8 @@ class StatefulMapController {
     _linesState = LinesState(notify: notify);
     _polygonsState = PolygonsState(notify: notify);
     _mapState = MapState(mapController: mapController, notify: notify);
-    _statefulMarkersState =
-        StatefulMarkersState(mapController: mapController, notify: notify);
-    if (customTileLayer != null) {
-      tileLayerType = TileLayerType.custom;
-    }
-    _tileLayerState = TileLayerState(
-      type: tileLayerType,
-      customTileLayer: customTileLayer,
+    _statefulMarkersState = StatefulMarkersState(
+      mapController: mapController,
       notify: notify,
     );
   }
@@ -55,12 +46,6 @@ class StatefulMapController {
   /// The Flutter Map [MapOptions]
   MapOptions? mapOptions;
 
-  /// The initial tile layer
-  TileLayerType tileLayerType;
-
-  /// A custom tile layer options
-  TileLayer? customTileLayer;
-
   /// Verbosity level
   final bool verbose;
 
@@ -68,7 +53,6 @@ class StatefulMapController {
   late MarkersState _markersState;
   late LinesState _linesState;
   late PolygonsState _polygonsState;
-  late TileLayerState _tileLayerState;
   late StatefulMarkersState _statefulMarkersState;
 
   final _subject =
@@ -171,9 +155,6 @@ class StatefulMapController {
 
   /// The named polygons present on the map
   Map<String, Polygon> get namedPolygons => _polygonsState.namedPolygons;
-
-  /// The current map tile layer
-  TileLayer? get tileLayer => _tileLayerState.tileLayer;
 
   /// Zoom in one level
   void zoomIn() => _mapState.zoomIn();
@@ -297,10 +278,6 @@ class StatefulMapController {
         borderWidth: borderWidth,
         borderColor: borderColor,
       );
-
-  /// Switch to a tile layer
-  void switchTileLayer(TileLayerType layer) =>
-      _tileLayerState.switchTileLayer(layer);
 
   /// Display some geojson data on the map
   Future<void> fromGeoJson(

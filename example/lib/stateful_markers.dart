@@ -84,7 +84,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
             zoom: 11.0,
           ),
           children: [
-            statefulMapController.tileLayer!,
+            // TODO: Add a tile layer
             MarkerLayer(
                 markers: statefulMapController
                     .getMarkers(['Notre-Dame', 'Montmartre'])),
