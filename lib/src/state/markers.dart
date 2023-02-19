@@ -95,7 +95,9 @@ class MarkersState {
     final geoPoints = <GeoPoint>[];
 
     for (final k in namedMarkers.keys) {
-      final m = namedMarkers[k]!;
+      final m = namedMarkers[k];
+
+      if (m == null) continue;
 
       geoPoints.add(
         GeoPoint(
@@ -123,7 +125,9 @@ class MarkersState {
   int? _markerAt(Marker marker, String name) {
     final markerAt = _namedMarkers[name];
 
-    if (markerAt == null) return null;
+    if (markerAt == null) {
+      throw MarkerException('Marker $name not found');
+    }
 
     int? removeAt;
     for (int i = 0; i < _markers.length; i++) {
@@ -172,7 +176,9 @@ class MarkersState {
   void fitOne(String name) {
     final marker = namedMarkers[name];
 
-    if (marker == null) return;
+    if (marker == null) {
+      throw MarkerException("Marker $name not found");
+    }
 
     final bounds = LatLngBounds()..extend(marker.point);
     mapController.fitBounds(bounds);

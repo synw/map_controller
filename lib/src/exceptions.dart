@@ -5,6 +5,11 @@ class MarkerException implements Exception {
 
   /// The error message
   final String message;
+
+  @override
+  String toString() {
+    return "MarkerException: $message";
+  }
 }
 
 /// An exception for a not implemented feature
@@ -14,4 +19,9 @@ class NotImplementedException implements Exception {
 
   /// The error message
   final String message;
+
+  @override
+  String toString() {
+    return "NotImplementedException: $message";
+  }
 }
