@@ -3,9 +3,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
 import 'package:latlong2/latlong.dart';
-
-import '../controller.dart';
-import '../models.dart';
+import 'package:map_controller_plus/src/controller.dart';
+import 'package:map_controller_plus/src/models.dart';
 
 /// State of the polygons on the map
 class PolygonsState {

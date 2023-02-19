@@ -1,8 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:map_controller_plus/src/controller.dart';
+import 'package:map_controller_plus/src/models.dart';
+import 'package:map_controller_plus/src/types.dart';
 
-import '../../map_controller_plus.dart';
+/// The tile layers bar
+class TileLayersBar extends StatefulWidget {
+  /// Provide a controller
+  const TileLayersBar({
+    super.key,
+    required this.controller,
+  });
+
+  /// The map controller
+  final StatefulMapController controller;
+
+  @override
+  State<TileLayersBar> createState() => _TileLayersBarState();
+}
 
 class _TileLayersBarState extends State<TileLayersBar> {
   late final StatefulMapController controller = widget.controller;
@@ -19,11 +35,18 @@ class _TileLayersBarState extends State<TileLayersBar> {
     super.initState();
   }
 
-  Widget _buildLayers() {
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         IconButton(
-          iconSize: 30.0,
+          iconSize: 30,
           color: (_tileLayerType == TileLayerType.normal)
               ? Colors.blueGrey
               : Colors.grey,
@@ -32,7 +55,7 @@ class _TileLayersBarState extends State<TileLayersBar> {
           onPressed: () => controller.switchTileLayer(TileLayerType.normal),
         ),
         IconButton(
-          iconSize: 30.0,
+          iconSize: 30,
           color: (_tileLayerType == TileLayerType.monochrome)
               ? Colors.blueGrey
               : Colors.grey,
@@ -41,7 +64,7 @@ class _TileLayersBarState extends State<TileLayersBar> {
           onPressed: () => controller.switchTileLayer(TileLayerType.monochrome),
         ),
         IconButton(
-          iconSize: 30.0,
+          iconSize: 30,
           color: (_tileLayerType == TileLayerType.topography)
               ? Colors.blueGrey
               : Colors.grey,
@@ -50,7 +73,7 @@ class _TileLayersBarState extends State<TileLayersBar> {
           onPressed: () => controller.switchTileLayer(TileLayerType.topography),
         ),
         IconButton(
-          iconSize: 30.0,
+          iconSize: 30,
           color: (_tileLayerType == TileLayerType.hike)
               ? Colors.blueGrey
               : Colors.grey,
@@ -61,25 +84,4 @@ class _TileLayersBarState extends State<TileLayersBar> {
       ],
     );
   }
-
-  @override
-  Widget build(BuildContext context) => _buildLayers();
-
-  @override
-  void dispose() {
-    _sub.cancel();
-    super.dispose();
-  }
-}
-
-/// The tile layers bar
-class TileLayersBar extends StatefulWidget {
-  /// Provide a controller
-  const TileLayersBar({Key? key, required this.controller}) : super(key: key);
-
-  /// The map controller
-  final StatefulMapController controller;
-
-  @override
-  State<TileLayersBar> createState() => _TileLayersBarState();
 }

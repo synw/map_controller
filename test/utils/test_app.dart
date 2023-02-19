@@ -3,10 +3,13 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class TestApp extends StatefulWidget {
-  final MapController? mapController;
-
   /// Test widget to show a map with a marker with a zoom level of `13.0`.
-  const TestApp({Key? key, this.mapController}) : super(key: key);
+  const TestApp({
+    super.key,
+    this.mapController,
+  });
+
+  final MapController? mapController;
 
   @override
   State<TestApp> createState() => _TestAppState();
@@ -21,7 +24,6 @@ class _TestAppState extends State<TestApp> {
           mapController: widget.mapController,
           options: MapOptions(
             center: LatLng(45.5231, -122.6765),
-            zoom: 13.0,
           ),
           children: [
             TileLayer(
@@ -31,8 +33,8 @@ class _TestAppState extends State<TestApp> {
             MarkerLayer(
               markers: [
                 Marker(
-                  width: 80.0,
-                  height: 80.0,
+                  width: 80,
+                  height: 80,
                   point: LatLng(45.5231, -122.6765),
                   builder: (ctx) => const FlutterLogo(),
                 ),

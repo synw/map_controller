@@ -1,13 +1,15 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-
-import '../controller.dart';
-import '../models.dart';
+import 'package:map_controller_plus/src/controller.dart';
+import 'package:map_controller_plus/src/models.dart';
 
 /// State of the map
 class MapState {
   /// Default constructor
-  MapState({required this.mapController, required this.notify});
+  MapState({
+    required this.mapController,
+    required this.notify,
+  });
 
   /// The [MapController]
   final MapController mapController;
@@ -15,8 +17,8 @@ class MapState {
   /// Function to notify the changefeed
   final FeedNotifyFunction notify;
 
-  double? _zoom = 1.0;
-  LatLng? _center = LatLng(0.0, 0.0);
+  double _zoom = 1;
+  LatLng _center = LatLng(0, 0);
 
   /// Zoom in one level
   void zoomIn() {
@@ -35,7 +37,7 @@ class MapState {
   }
 
   /// Zoom to level
-  void zoomTo(double value) async {
+  void zoomTo(double value) {
     mapController.move(mapController.center, value);
     _zoom = value;
     notify("zoom", value, zoomOut, MapControllerChangeType.zoom);
@@ -52,8 +54,11 @@ class MapState {
   ///
   /// This is used to handle the gestures
   void onPositionChanged(MapPosition posChange, {required bool gesture}) {
-    if (posChange.zoom != _zoom) {
-      _zoom = posChange.zoom;
+    final newZoom = posChange.zoom;
+    final newCenter = posChange.center;
+
+    if (newZoom != null && newZoom != _zoom) {
+      _zoom = newZoom;
       notify(
         "zoom",
         posChange.zoom,
@@ -61,8 +66,9 @@ class MapState {
         MapControllerChangeType.zoom,
       );
     }
-    if (posChange.center != _center) {
-      _center = posChange.center;
+
+    if (newCenter != null && newCenter != _center) {
+      _center = newCenter;
       notify(
         "center",
         posChange.center,

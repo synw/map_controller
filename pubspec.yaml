@@ -14,14 +14,10 @@ dependencies:
   geojson: ^1.0.0
   geopoint: ^1.0.0
   latlong2: ^0.8.1
-  rxdart: ^0.27.5
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  fd_lints: ^1.0.2
   flutter_test:
     sdk: flutter
   meta: ^1.8.0
   mocktail: ^0.3.0
-
-flutter:
-  uses-material-design: true

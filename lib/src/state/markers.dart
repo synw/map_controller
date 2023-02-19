@@ -1,16 +1,17 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
-
-import '../controller.dart';
-import '../exceptions.dart';
-import '../models.dart';
+import 'package:map_controller_plus/src/controller.dart';
+import 'package:map_controller_plus/src/exceptions.dart';
+import 'package:map_controller_plus/src/models.dart';
 
 /// The state of the markers on the map
 class MarkersState {
   /// Provide a [MapController]
-  MarkersState({required this.mapController, required this.notify});
+  MarkersState({
+    required this.mapController,
+    required this.notify,
+  });
 
   /// The Flutter Map controller
   final MapController mapController;
@@ -18,8 +19,8 @@ class MarkersState {
   /// The notification function
   final FeedNotifyFunction notify;
 
-  var _markers = <Marker>[];
-  final Map<String, Marker> _namedMarkers = {};
+  List<Marker> _markers = <Marker>[];
+  final _namedMarkers = <String, Marker>{};
 
   /// The markers present on the map
   List<Marker> get markers => _markers;
@@ -30,8 +31,12 @@ class MarkersState {
   /// Add a marker on the map
   void addMarker({required String name, required Marker marker}) {
     try {
-      //_buildMarkers();
-      final markerAt = _markerAt(_namedMarkers[name], name);
+      final marker = _namedMarkers[name];
+
+      if (marker == null) return;
+
+      final markerAt = _markerAt(marker, name);
+
       if (markerAt == null) {
         _markers.add(marker);
       } else {
@@ -51,8 +56,12 @@ class MarkersState {
   /// Remove a marker from the map
   void removeMarker({required String name}) {
     try {
-      //_buildMarkers();
-      final removeAt = _markerAt(_namedMarkers[name], name);
+      final marker = _namedMarkers[name];
+
+      if (marker == null) return;
+
+      final removeAt = _markerAt(marker, name);
+
       if (removeAt != null) {
         _markers.removeAt(removeAt);
       } else {
@@ -75,19 +84,19 @@ class MarkersState {
     } catch (e) {
       throw MarkerException("Can not remove marker: $e");
     }
-    debugPrint("STATE MARKERS AFTER REMOVE: $_namedMarkers");
   }
 
   /// Export all markers to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPoint]
-  GeoJsonFeature? toGeoJsonFeatures() {
-    if (namedMarkers.isEmpty) {
-      return null;
-    }
+  GeoJsonFeature<GeoJsonMultiPoint>? toGeoJsonFeatures() {
+    if (namedMarkers.isEmpty) return null;
+
     final multiPoint = GeoJsonMultiPoint();
     final geoPoints = <GeoPoint>[];
+
     for (final k in namedMarkers.keys) {
       final m = namedMarkers[k]!;
+
       geoPoints.add(
         GeoPoint(
           latitude: m.point.latitude,
@@ -97,28 +106,33 @@ class MarkersState {
     }
     multiPoint
       ..name = "map_markers"
-      ..geoSerie =
-          GeoSerie.fromNameAndType(name: multiPoint.name!, typeStr: "group");
+      ..geoSerie = GeoSerie.fromNameAndType(
+        name: multiPoint.name!,
+        typeStr: "group",
+      );
     multiPoint.geoSerie?.geoPoints = geoPoints;
+
     final feature = GeoJsonFeature<GeoJsonMultiPoint>()
       ..type = GeoJsonFeatureType.multipoint
       ..properties = <String, dynamic>{"name": multiPoint.name}
       ..geometry = multiPoint;
+
     return feature;
   }
 
-  int? _markerAt(Marker? marker, String name) {
-    if (!_namedMarkers.containsKey(name)) return null;
+  int? _markerAt(Marker marker, String name) {
+    final markerAt = _namedMarkers[name];
+
+    if (markerAt == null) return null;
+
     int? removeAt;
-    final markerAt = _namedMarkers[name]!;
-    var i = 0;
-    for (final m in _markers) {
-      if (m.point == markerAt.point) {
+    for (int i = 0; i < _markers.length; i++) {
+      if (_markers[i].point == markerAt.point) {
         removeAt = i;
         break;
       }
-      ++i;
     }
+
     return removeAt;
   }
 
@@ -156,7 +170,11 @@ class MarkersState {
 
   /// Fit a marker on map
   void fitOne(String name) {
-    final bounds = LatLngBounds()..extend(namedMarkers[name]!.point);
+    final marker = namedMarkers[name];
+
+    if (marker == null) return;
+
+    final bounds = LatLngBounds()..extend(marker.point);
     mapController.fitBounds(bounds);
   }
 
@@ -164,19 +182,16 @@ class MarkersState {
   void fitAll() {
     final bounds = LatLngBounds();
     for (final m in namedMarkers.keys) {
-      bounds.extend(namedMarkers[m]!.point);
+      final marker = namedMarkers[m];
+
+      if (marker == null) continue;
+
+      bounds.extend(marker.point);
     }
     mapController.fitBounds(bounds);
   }
 
   void _buildMarkers() {
     _markers = _namedMarkers.values.toList();
-    //_printMarkers();
   }
-
-  /*void _printMarkers() {
-    for (var k in _namedMarkers.keys) {
-      print("NAMED MARKER $k: ${_namedMarkers[k]}");
-    }
-  }*/
 }

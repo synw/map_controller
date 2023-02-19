@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-
-import '../controller.dart';
-import '../models.dart';
-import '../types.dart';
+import 'package:map_controller_plus/src/controller.dart';
+import 'package:map_controller_plus/src/models.dart';
+import 'package:map_controller_plus/src/types.dart';
 
 /// The state of the tile layer
 class TileLayerState {

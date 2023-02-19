@@ -1,7 +1,6 @@
 import 'package:flutter_map/flutter_map.dart';
-
-import '../controller.dart';
-import '../models.dart';
+import 'package:map_controller_plus/src/controller.dart';
+import 'package:map_controller_plus/src/models.dart';
 
 class StatefulMarkersState {
   /// Provide a [MapController]
