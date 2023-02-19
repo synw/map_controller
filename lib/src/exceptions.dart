@@ -11,17 +11,3 @@ class MarkerException implements Exception {
     return "MarkerException: $message";
   }
 }
-
-/// An exception for a not implemented feature
-class NotImplementedException implements Exception {
-  /// Default constructor
-  const NotImplementedException(this.message);
-
-  /// The error message
-  final String message;
-
-  @override
-  String toString() {
-    return "NotImplementedException: $message";
-  }
-}

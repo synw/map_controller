@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0-dev.3
+
+* Throw a `MarkerException` if a named marker is not found
+
+### Breaking Changes
+
+* Removed `NotImplementedException` class (use `UnimplementedError` instead)
+
 ## 3.0.0-dev.2
 
 * Updated `README.md` to reflect the new API

@@ -6,7 +6,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geopoint/geopoint.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:map_controller_plus/src/exceptions.dart';
 import 'package:map_controller_plus/src/models.dart';
 import 'package:map_controller_plus/src/state/lines.dart';
 import 'package:map_controller_plus/src/state/map.dart';
@@ -359,7 +358,7 @@ class StatefulMapController {
           break;
         case GeoJsonFeatureType.geometryCollection:
           // TODO : implement
-          throw const NotImplementedException(
+          throw UnimplementedError(
             "GeoJsonFeatureType.geometryCollection Not implemented",
           );
       }

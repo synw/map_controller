@@ -61,12 +61,11 @@ class MarkersState {
       if (marker == null) return;
 
       final removeAt = _markerAt(marker, name);
-
-      if (removeAt != null) {
-        _markers.removeAt(removeAt);
-      } else {
+      if (removeAt == null) {
         throw MarkerException("Can not find marker $name for removal");
       }
+
+      _markers.removeAt(removeAt);
     } catch (e) {
       throw MarkerException("Can not build for remove marker: $e");
     }
@@ -129,15 +128,13 @@ class MarkersState {
       throw MarkerException('Marker $name not found');
     }
 
-    int? removeAt;
     for (int i = 0; i < _markers.length; i++) {
       if (_markers[i].point == markerAt.point) {
-        removeAt = i;
-        break;
+        return i;
       }
     }
 
-    return removeAt;
+    return null;
   }
 
   /// Add multiple markers on the map
