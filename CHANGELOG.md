@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0
+
+* Removed [rxdart](https://pub.dev/packages/rxdart) dependency
+* Cleaned code
+
 ## 2.0.0
 
 ### Breaking Changes

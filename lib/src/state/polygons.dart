@@ -14,7 +14,7 @@ class PolygonsState {
   /// The notify function
   final FeedNotifyFunction notify;
 
-  final Map<String, Polygon> _namedPolygons = {};
+  final _namedPolygons = <String, Polygon>{};
 
   /// The named polygons on the map
   Map<String, Polygon> get namedPolygons => _namedPolygons;
@@ -71,15 +71,16 @@ class PolygonsState {
   /// Export all polygons to a [GeoJsonFeature] with geometry
   /// type [GeoJsonMultiPolygon]
   GeoJsonFeature<GeoJsonMultiPolygon>? toGeoJsonFeatures() {
-    if (namedPolygons.isEmpty) {
-      return null;
-    }
+    if (namedPolygons.isEmpty) return null;
+
     final multiPolygon = GeoJsonMultiPolygon(name: "map_polygons");
     for (final k in namedPolygons.keys) {
-      final mapPolygon = namedPolygons[k]!;
+      final mapPolygon = namedPolygons[k];
+
+      if (mapPolygon == null) continue;
+
       final polygon = GeoJsonPolygon()..name = k;
-      final geoSerie =
-          GeoSerie(name: polygon.name!, type: GeoSerieType.polygon);
+      final geoSerie = GeoSerie(name: k, type: GeoSerieType.polygon);
       for (final point in mapPolygon.points) {
         geoSerie.geoPoints.add(
           GeoPoint(latitude: point.latitude, longitude: point.longitude),
