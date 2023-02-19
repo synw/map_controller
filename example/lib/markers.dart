@@ -64,7 +64,11 @@ class _MarkersPageState extends State<MarkersPage> {
             zoom: 11.0,
           ),
           children: [
-            // TODO: add a TileLayer
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: const ['a', 'b', 'c'],
+              userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+            ),
             MarkerLayer(
               markers: statefulMapController.markers,
             ),

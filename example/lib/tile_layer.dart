@@ -32,7 +32,11 @@ class _TileLayerPageState extends State<TileLayerPage> {
               options:
                   MapOptions(center: LatLng(48.853831, 2.348722), zoom: 11.0),
               children: [
-                // TODO: Add a tile layer
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: const ['a', 'b', 'c'],
+                  userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+                ),
                 MarkerLayer(markers: statefulMapController.markers),
               ],
             ),
