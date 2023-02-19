@@ -41,11 +41,10 @@ class MockHttpClientRequest extends Mock implements HttpClientRequest {
 
 class MockClient extends Mock implements HttpClient {
   @override
-  Future<HttpClientRequest> getUrl(Uri url) =>
-      Future.value(MockHttpClientRequest());
+  Future<HttpClientRequest> getUrl(_) => Future.value(MockHttpClientRequest());
 }
 
 class MockHttpOverrides extends Mock implements HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context) => MockClient();
+  HttpClient createHttpClient(_) => MockClient();
 }
