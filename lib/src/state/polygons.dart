@@ -74,13 +74,11 @@ class PolygonsState {
     if (namedPolygons.isEmpty) return null;
 
     final multiPolygon = GeoJsonMultiPolygon(name: "map_polygons");
-    for (final k in namedPolygons.keys) {
-      final mapPolygon = namedPolygons[k];
+    for (final entry in namedPolygons.entries) {
+      final mapPolygon = entry.value;
+      final polygon = GeoJsonPolygon()..name = entry.key;
+      final geoSerie = GeoSerie(name: entry.key, type: GeoSerieType.polygon);
 
-      if (mapPolygon == null) continue;
-
-      final polygon = GeoJsonPolygon()..name = k;
-      final geoSerie = GeoSerie(name: k, type: GeoSerieType.polygon);
       for (final point in mapPolygon.points) {
         geoSerie.geoPoints.add(
           GeoPoint(latitude: point.latitude, longitude: point.longitude),

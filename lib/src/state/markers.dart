@@ -93,10 +93,8 @@ class MarkersState {
     final multiPoint = GeoJsonMultiPoint();
     final geoPoints = <GeoPoint>[];
 
-    for (final k in namedMarkers.keys) {
-      final m = namedMarkers[k];
-
-      if (m == null) continue;
+    for (final entry in namedMarkers.entries) {
+      final m = entry.value;
 
       geoPoints.add(
         GeoPoint(
@@ -105,17 +103,20 @@ class MarkersState {
         ),
       );
     }
+
+    const name = "map_markers";
+
     multiPoint
-      ..name = "map_markers"
+      ..name = name
       ..geoSerie = GeoSerie.fromNameAndType(
-        name: multiPoint.name!,
+        name: name,
         typeStr: "group",
       );
     multiPoint.geoSerie?.geoPoints = geoPoints;
 
     final feature = GeoJsonFeature<GeoJsonMultiPoint>()
       ..type = GeoJsonFeatureType.multipoint
-      ..properties = <String, dynamic>{"name": multiPoint.name}
+      ..properties = <String, dynamic>{"name": name}
       ..geometry = multiPoint;
 
     return feature;
@@ -184,11 +185,8 @@ class MarkersState {
   /// Fit all markers on map
   void fitAll() {
     final bounds = LatLngBounds();
-    for (final m in namedMarkers.keys) {
-      final marker = namedMarkers[m];
-
-      if (marker == null) continue;
-
+    for (final entry in namedMarkers.entries) {
+      final marker = entry.value;
       bounds.extend(marker.point);
     }
     mapController.fitBounds(bounds);

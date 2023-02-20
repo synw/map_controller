@@ -52,13 +52,11 @@ class LinesState {
 
     final multiLine = GeoJsonMultiLine(name: "map_lines");
 
-    for (final k in namedLines.keys) {
-      final polyline = namedLines[k];
+    for (final entry in namedLines.entries) {
+      final polyline = entry.value;
 
-      if (polyline == null) continue;
-
-      final line = GeoJsonLine()..name = k;
-      final geoSerie = GeoSerie(name: k, type: GeoSerieType.line);
+      final line = GeoJsonLine()..name = entry.key;
+      final geoSerie = GeoSerie(name: entry.key, type: GeoSerieType.line);
 
       for (final point in polyline.points) {
         geoSerie.geoPoints.add(
