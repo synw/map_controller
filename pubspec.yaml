@@ -3,7 +3,7 @@ description: A map controller for Flutter map. Manage markers, lines and polygon
 homepage: https://github.com/TesteurManiak/map_controller_plus
 repository: https://github.com/TesteurManiak/map_controller_plus
 issue_tracker: https://github.com/TesteurManiak/map_controller_plus/issues
-version: 3.0.0-dev.3
+version: 3.0.0-dev.4
 environment:
   sdk: ">=2.18.0 <3.0.0"
 
@@ -14,6 +14,7 @@ dependencies:
   geojson: ^1.0.0
   geopoint: ^1.0.0
   latlong2: ^0.8.1
+  uuid: ^3.0.7
 
 dev_dependencies:
   fd_lints: ^1.0.2

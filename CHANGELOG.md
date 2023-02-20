@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0-dev.4
+
+* Fixed Polygon and multipolygon name issue
+
 ## 3.0.0-dev.3
 
 * Throw a `MarkerException` if a named marker is not found

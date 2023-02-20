@@ -12,6 +12,7 @@ import 'package:map_controller_plus/src/state/map.dart';
 import 'package:map_controller_plus/src/state/markers.dart';
 import 'package:map_controller_plus/src/state/polygons.dart';
 import 'package:map_controller_plus/src/state/stateful_markers.dart';
+import 'package:uuid/uuid.dart';
 
 /// Function to notify the changefeed
 typedef FeedNotifyFunction = void Function(
@@ -345,21 +346,25 @@ class StatefulMapController {
         case GeoJsonFeatureType.polygon:
           final poly = feature.geometry as GeoJsonPolygon;
           for (final geoSerie in poly.geoSeries) {
-            addPolygon(name: geoSerie.name, points: geoSerie.toLatLng());
+            final name =
+                geoSerie.name.isEmpty ? const Uuid().v4() : geoSerie.name;
+            addPolygon(name: name, points: geoSerie.toLatLng());
           }
           break;
         case GeoJsonFeatureType.multipolygon:
           final mp = feature.geometry as GeoJsonMultiPolygon;
           for (final poly in mp.polygons) {
             for (final geoSerie in poly.geoSeries) {
-              addPolygon(name: geoSerie.name, points: geoSerie.toLatLng());
+              final name =
+                  geoSerie.name.isEmpty ? const Uuid().v4() : geoSerie.name;
+              addPolygon(name: name, points: geoSerie.toLatLng());
             }
           }
           break;
         case GeoJsonFeatureType.geometryCollection:
           // TODO : implement
           throw UnimplementedError(
-            "GeoJsonFeatureType.geometryCollection Not implemented",
+            "GeoJsonFeatureType.geometryCollection not implemented",
           );
       }
     });
