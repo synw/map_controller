@@ -1,0 +1,23 @@
+name: Build example
+
+on:
+  workflow_run:
+    workflows: [Test workflow]
+    branches: master
+    types: [completed]
+
+jobs:
+  build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Build example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - uses: bluefireteam/flutter-gh-pages@v8
+        with:
+          workingDir: example
+          webRenderer: canvaskit
+          baseHref: /map_controller_plus/
