@@ -197,10 +197,7 @@ class StatefulMapController {
   /// Fit bounds and zoom the map to center on a line
   void fitLine(String name) {
     final line = _linesState.namedLines[name]!;
-    final bounds = LatLngBounds();
-    for (final point in line.points) {
-      bounds.extend(point);
-    }
+    final bounds = LatLngBounds.fromPoints(line.points);
     mapController.fitBounds(bounds);
   }
 

@@ -178,17 +178,15 @@ class MarkersState {
       throw MarkerException("Marker $name not found");
     }
 
-    final bounds = LatLngBounds()..extend(marker.point);
+    final bounds = LatLngBounds.fromPoints([marker.point]);
     mapController.fitBounds(bounds);
   }
 
   /// Fit all markers on map
   void fitAll() {
-    final bounds = LatLngBounds();
-    for (final entry in namedMarkers.entries) {
-      final marker = entry.value;
-      bounds.extend(marker.point);
-    }
+    final bounds = LatLngBounds.fromPoints(
+      namedMarkers.entries.map((e) => e.value.point).toList(),
+    );
     mapController.fitBounds(bounds);
   }
 
